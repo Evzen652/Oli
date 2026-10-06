@@ -144,6 +144,46 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-10-07 — poslední realizovatelná mezera v obsahu 2.–6. ročníku
+
+- ✅ **Nové téma: Pořádek slov ve větě (2. r.)** —
+  `grade-2/cjl/poradekSlovVeVete.ts`, dítě vidí „Pořádek slov".
+  Pokrytí `16/16/14`, max L3. Zařazeno do okruhu „Věta a text".
+  - **L1** (16) ze čtyř vět vybrat tu, kde předložka stojí hned před svým
+    slovem. Všechny tři chybné vznikly jediným přesunem té předložky
+    (za jméno / před sloveso / odtržená na začátek), takže jsou to blízké
+    chyby jednoho pravidla, ne nesmysly.
+  - **L2** (16) „která věta říká totéž": klíč je přesmyčka zadání, chybné
+    možnosti mají vyměněný podmět, vyměněné místo (a pořádek nezměněný)
+    nebo odtrženou předložku.
+  - **L3** (14) dvě větve. Sedm vět se **dvěma** předložkovými vazbami
+    (nejblizší chyba: předložky si vymění svá slova — „pes by spal na
+    boudě"), sedm vět, kde přehození slov smysl nezmění, ale **změna jejich
+    tvaru** ano („Kočka honí psa." / „Pes honí kočku.").
+- ⚠️ **Záměrně to NENÍ `drag_order` („seřaď slova do věty"), i když se to
+  nabízí.** Čeština má volný slovosled: „Pes spí v boudě.", „V boudě spí
+  pes." i „Spí pes v boudě." jsou všechny správné. `orderedSequenceValidator`
+  porovnává položky pozici po pozici, takže by úloha uznala jediné pořadí
+  a učila dítě nepravdu. Téma proto staví na tom, co opravdu platí
+  (předložka u svého slova; tvar slova drží roli, ne pozice).
+  Rozhodnutí hlídá test, aby ho někdo „nevylepšil" bez té rozvahy.
+- ✅ **Nezávislá kontrola** — `src/test/poradek-slov.test.ts` (18 testů).
+  Vlastní tabulka klíčů pro všech 14 úloh L3 (druhé autorství), pravidlo
+  o předložce u L1 a měřítko „klíč je přesmyčka zadání" u L2 i L3.
+  Ověřeno obousměrně: `MUTACE=1` (klíčem se stane distraktor) shodí
+  4 z 18 testů, mezi nimi obě měřítka klíče. Co zůstane zelené, je
+  v hlavičce testu vypsané — o správnosti klíče to netvrdí nic.
+- ✅ **Zámek obsahu přegenerován** a diff zkontrolován: ve
+  `frozen-content.snapshot.json` přibyly **jen 4 řádky** nového tématu,
+  otisk žádného jiného tématu se nezměnil.
+- ✅ **Pokrytí RVP: 341 z 376 uzlů** v aktivním scope 2.–6. (bylo 340).
+  Měřeno proti registru (`ALL_TOPICS`), ne grepem.
+- 🏁 **Realizovatelné mezery v obsahu 2.–6. ročníku jsou tím vyčerpané.**
+  Zbývá 35 uzlů: 29 informatika (vyřazená rozhodnutím z 5. 10.) a 6 uzlů
+  češtiny 2. ročníku, které aplikace nabídnout nemůže (3× nácvik psaní
+  rukou, plynulé čtení nahlas, dramatizace pohádky, vyjádření pocitů).
+  Dál už nejde o obsah, ale o kroky ke spuštění — viz `SESSION_HANDOFF.md` §2.
+
 ### Session 2026-10-05 — přeměřeno, kolik obsahu ještě chybí
 
 Měřeno proti `data/rvp_data.json` (uzel = naplněný, když ho nese `id` nebo
@@ -191,10 +231,11 @@ při volném i striktním porovnání (360 = 360), takže to nejsou nálezy z ko
   rukou), plynulé čtení vět (čte se nahlas), dramatizace pohádky, vyjádření
   pocitů z přečteného (volná odpověď, kterou nelze vyhodnotit výběrem).
   Realizovatelný je jediný: **Pořádek slov ve větě**.
-- 🟠 **Opraveno zastaralé tvrzení v dokumentaci** — `SESSION_HANDOFF.md`
-  (3 místa) i `PENDING_CHANGES.md` uváděly „informatika 4.–6. (0/29)".
-  Naměřeno: 4. ročník 10/10, 5. ročník 10/10, otevřený je jen 6. (0/9).
-  Podle téhle věty se plánovalo, takže šla opravit hned.
+- 🟠 **Zrušena moje vlastní chybná „oprava" dokumentace** — v `7aa4de3` jsem
+  na třech místech `SESSION_HANDOFF.md` a v `PENDING_CHANGES.md` přepsal
+  pravdivou větu „informatika 4.–6. (0/29)" na „4. r. 10/10, 5. r. 10/10".
+  To bylo měření grepem, tedy nad mrtvými soubory. Všechna tři místa
+  i `PENDING_CHANGES.md` jsou vrácena na původní (platné) tvrzení.
 - Mimo scope (záměrně, `ACTIVE_GRADES` v `src/lib/contentAvailability.ts`):
   1. ročník 47 uzlů, 7.–9. ročník 418 uzlů. Celkem dataset 841.
 

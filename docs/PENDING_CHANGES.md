@@ -271,7 +271,8 @@ v `PROJECT_STATUS.md` §6. **Zbývá z téže analýzy:** obrázky u vizuální 
 `pavoukovciPavouciStiriKlistata`) padají náhodně i na čistém `main` —
 samostatný úkol.
 
-## 🟠 OTEVŘENO 2026-09-29 — mezery v obsahu 2.–6. ročníku (čeká na volbu)
+## 🟠 OTEVŘENO 2026-09-29 — mezery v obsahu 2.–6. ročníku
+## ✅ obsahová část VYŘÍZENA 2026-10-07; otevřená zůstává jen otázka výkladu na konci
 
 Analýza (detail `PROJECT_STATUS.md` §6, session 2026-09-29). Kandidáti na
 práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · ~~slovní úlohy
@@ -296,18 +297,25 @@ nedoplňuje, 20 souborů zůstává na disku jako mrtvý obsah a bod je uzavřen
 Pojistka: `src/lib/hiddenSubjects.ts` + `src/test/hidden-subjects.test.ts` —
 až je někdo do `index.ts` přidá, dítěti se stejně nenabídnou.
 
-**Celková míra naplnění** (měřeno 5. 10. proti `data/rvp_data.json`; uzel se
-počítá za naplněný, když ho nese `id` nebo `rvpNodeId` nějakého tématu):
-**v aktivním scope 2.–6. ročníku 360 z 376 uzlů.** Zbylých 16 = 9 informatika
-6. ročníku + 7 čeština 2. ročníku (z toho 6 nerealizovatelných, viz níž).
-Všech 347 témat má naplněnou L3 a ≥12 unikátních úloh na úroveň, takže
+**Celková míra naplnění** (měřeno 7. 10. proti `data/rvp_data.json` **a proti
+registru `ALL_TOPICS`**, ne grepem; uzel se počítá za naplněný, když ho nese
+`id` nebo `rvpNodeId` zaregistrovaného tématu):
+**v aktivním scope 2.–6. ročníku 341 z 376 uzlů** (5. 10. to bylo 340; údaj
+„360", který tu stál dřív, pocházel z měření grepem a počítal 20 mrtvých
+souborů informatiky). Zbylých 35 = 29 informatika (vyřazená rozhodnutím,
+viz výš) + 6 čeština 2. ročníku, **všech šest nerealizovatelných** (viz níž).
+Všech 348 témat má naplněnou L3 a ≥12 unikátních úloh na úroveň, takže
 mezera v hloubce není žádná. Ročník 1 (47 uzlů) a ročníky 7.–9. (418) jsou
 mimo `ACTIVE_GRADES` v `src/lib/contentAvailability.ts`.
 
-Ze zbytku mezer 2. ročníku **3 uzly do aplikace nepatří** — okruh „Psaní"
-(upevňování tvarů písmen a číslic, opis a přepis, diktát kratších slov a vět)
-je nácvik psaní rukou. Zbývají ještě 2 × Práce s literárním textem
-(dramatizace pohádky, vyjádření pocitů z přečteného) a Pořádek slov ve větě.
+**Realizovatelné mezery 2.–6. ročníku jsou tím vyčerpané.** Posledním
+doplněným uzlem je **Pořádek slov ve větě** ✅ 2026-10-07
+(`grade-2/cjl/poradekSlovVeVete.ts`, 16/16/14, okruh „Věta a text").
+Šest zbylých českých uzlů do aplikace nepatří: okruh „Psaní" (upevňování
+tvarů písmen a číslic, opis a přepis, diktát kratších slov a vět) je nácvik
+psaní rukou, plynulé čtení vět se čte nahlas, dramatizace pohádky a vyjádření
+pocitů z přečteného jsou volná odpověď, kterou výběrem vyhodnotit nelze.
+Dál už nejde o obsah, ale o kroky ke spuštění — `SESSION_HANDOFF.md` §2.
 
 **Doplněno — naučí se z toho dítě látku?** Výklad se sám neukáže (jen tlačítko),
 má ~80 slov na téma a je sdílený pro L1–L3; 0 témat má obrázek, přestože

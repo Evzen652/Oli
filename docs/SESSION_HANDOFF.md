@@ -24,10 +24,12 @@
 >    rozdíl je 20 souborů informatiky, které na disku leží, ale **nikdo je
 >    neimportuje** (mrtvý obsah). Měř pokrytí vždy proti registru, ne grepem.
 >    Sloh a čtení 2. ročníku i oprava `rvpNodeId` jsou hotové.
->    **Informatika do aplikace nepatří — rozhodl Evžen 5. 10.** Zbývá tedy
->    **7 uzlů v češtině 2. ročníku**, z nichž šest aplikace nabídnout nemůže
->    (3× psaní rukou, čtení nahlas, dramatizace, vyjádření pocitů z textu)
->    a jediný realizovatelný je **Pořádek slov ve větě**.
+>    **Informatika do aplikace nepatří — rozhodl Evžen 5. 10.**
+>    🏁 **Obsah 2.–6. ročníku je hotový (7. 10., 341/376 uzlů).** Posledním
+>    doplněným tématem je **Pořádek slov ve větě** ve 2. ročníku. Zbylých
+>    6 uzlů češtiny 2. ročníku aplikace nabídnout nemůže (3× psaní rukou,
+>    čtení nahlas, dramatizace, vyjádření pocitů z textu), 29 je informatika.
+>    **Nepiš do dalšího předání „zbývá doplnit obsah" — nezbývá.**
 >
 > ⚠️ **Jedno rozhodnutí visí a blokuje úklid:** `data/rvp_data.json` nemá pro
 > 4. ani 5. ročník uzel se slovními úlohami, takže dvě nová témata mají
@@ -231,9 +233,10 @@ sdílený slovník zpětné vazby, který nerozlišoval 2./3. osobu podle úrovn
 Obsahový PLÁN je hotový (ročníky 1–6), ale to neznamená, že obsah je hotový —
 29. a 30. 9. se ukázalo, že mezery leží mimo plán: chybějící témata a formát
 odpovědi. Nepiš tedy do předání znovu „obsah už dělat není co"; zbylé
-kandidáty drží `PENDING_CHANGES.md`. K 5. 10. z nich zbývá jediný:
-„Pořádek slov ve větě" ve 2. ročníku. Sloh, čtení i `rvpNodeId` jsou
-hotové, informatika je rozhodnutím Evžena mimo aplikaci.
+kandidáty drží `PENDING_CHANGES.md`. K 7. 10. **nezbývá žádný**: poslední,
+„Pořádek slov ve větě" ve 2. ročníku, je hotový. Sloh, čtení i `rvpNodeId`
+jsou hotové, informatika je rozhodnutím Evžena mimo aplikaci. Obsahová
+větev tedy skončila — pokračuje se přípravou spuštění.
 
 Druhá větev je **příprava spuštění**: osm kroků v **§2**, z toho šest čeká
 výhradně na uživateli (účty, právní kontrola, podpisový klíč) a dva technické
@@ -713,10 +716,13 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
   uzly do datasetu (změnu READONLY souboru musí odsouhlasit Evžen), nebo
   ponechat a napsat proč. **Souvisí s** položkou „oprava 17 `rvpNodeId`"
   v `PENDING_CHANGES.md` — dávalo by smysl vyřešit obojí naráz.
-- **Zbylý kandidát z inventury mezer** (`PENDING_CHANGES.md`, sekce „mezery
-  v obsahu 2.–6. ročníku"): **Pořádek slov ve větě** ve 2. ročníku. Sloh
-  a čtení 2. ročníku jsou hotové (4. a 5. 10.), zbylých šest uzlů g2-cjl
-  aplikace nabídnout nemůže (psaní rukou, čtení nahlas, dramatizace,
+- ✅ **Inventura mezer je uzavřená** (`PENDING_CHANGES.md`, sekce „mezery
+  v obsahu 2.–6. ročníku"). Poslední kandidát **Pořádek slov ve větě**
+  ve 2. ročníku je hotový 7. 10. (`grade-2/cjl/poradekSlovVeVete.ts`,
+  16/16/14, test `src/test/poradek-slov.test.ts`). Záměrně to není
+  `drag_order` — čeština má volný slovosled, takže jediné uznané pořadí by
+  učilo nepravdu; důvod je v hlavičce obsahu i v testu. Zbylých šest uzlů
+  g2-cjl aplikace nabídnout nemůže (psaní rukou, čtení nahlas, dramatizace,
   volná odpověď).
 - ✅ **Informatika do aplikace nepatří (Evžen, 5. 10.) — uzavřeno.** Nikdy
   v ní nebyla: 20 souborů ve `grade-4/informatika/` a `grade-5/informatika/`

@@ -176,10 +176,11 @@ export const GRADE2_NAVIGATION: SubjectNav[] = [
       {
         id: "veta-text",
         name: "Věta a text",
-        description: "Druhy vět a orientace v textu.",
+        description: "Druhy vět, pořádek slov a orientace v textu.",
         emoji: "📝",
         topicIds: [
           "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-druhy-vet-oznamovaci-tazaci-rozkazovaci",
+          "g2-cjl-jazykova-vychova-slovo-a-veta-poradek-slov-ve-vete",
           "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-orientace-v-textu-veta-odstavec-nadpis",
         ],
       },
