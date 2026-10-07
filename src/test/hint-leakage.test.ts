@@ -498,3 +498,28 @@ describe("checkHintLeakage — rejstřík možností", () => {
     expect(r.ok).toBe(true);
   });
 });
+
+describe("checkHintLeakage — české uvozovky „…“", () => {
+  // Dřív `normalize()` odstraňovala `„`, ale ne zavírací `“`: ze zadání
+  // „slova „televize“" zbyl token `televize“` a slovo z otázky neplatilo jako
+  // „už v zadání" — 21 planých poplachů v tématu o přízvuku (7. 10. 2026).
+  // Obráceně ověřeno: se starým regexem padá druhý test. První je jen
+  // pojistka, že oprava leak v uvozovkách neschová (prošel by i předtím).
+  it("odpověď v uvozovkách v nápovědě → leak", () => {
+    const r = checkHintLeakage({
+      question: "Které slovo je podstatné jméno?",
+      correct_answer: "kočka",
+      hints: ["Hledej slovo, které pojmenuje věc nebo zvíře.", "Je to slovo „kočka“ — zvíře."],
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  it("slovo v uvozovkách v otázce smí nápověda zopakovat → ne-leak", () => {
+    const r = checkHintLeakage({
+      question: "Ve kterém zápisu slova „televize“ je správně vyznačený přízvuk?",
+      correct_answer: "TElevize",
+      hints: ["Přízvuk je v češtině na první slabice slova televize.", "Velkými písmeny je přízvučná slabika."],
+    });
+    expect(r.ok).toBe(true);
+  });
+});

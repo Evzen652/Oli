@@ -49,7 +49,10 @@ function normalize(s: string): string {
     // Čárka mezi číslicemi je desetinná — česká čísla („0,9") se jinak
     // rozpadnou na „0 9" a žádná číselná větev je pak nepozná.
     .replace(/(?<!\d),(?!\d)/g, " ")
-    .replace(/[.;:!?"'„"()]/g, " ")
+    // Uvozovky všech tvarů: české „…“ a ‚…‘ i anglické “…” a ‘…’. Dřív tu
+    // byly jen `"` a `„`, takže za zavírací `“` zůstalo slovo s uvozovkou
+    // („slovo“) a výskyt odpovědi se neshodl — autoři to obcházeli v obsahu.
+    .replace(/[.;:!?"'„“”‚‘’()]/g, " ")
     // "Krok N:" je jen pořadové číslo kroku v postupu, ne obsah nápovědy —
     // bez odstranění kolidovalo s číselnou odpovědí, kdykoli se shodovala
     // s pořadím kroku (např. hint "Krok 3: Vyděl číslo 1000." u odpovědi

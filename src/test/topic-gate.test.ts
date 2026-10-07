@@ -66,10 +66,31 @@ function invariantErrors(topic: TopicMetadata, t: PracticeTask, where: string): 
   if (topic.inputType === "comparison" && !["<", "=", ">"].includes(t.correctAnswer)) {
     e.push(`${where}: comparison correctAnswer není <,=,>`);
   }
+  const katalog = hintyVyjmenujiVsechnyMoznosti(t);
   for (const h of t.hints ?? []) {
-    if (t.correctAnswer.length >= 3 && h.includes(t.correctAnswer)) e.push(`${where}: hint prozrazuje odpověď`);
+    if (t.correctAnswer.length >= 3 && h.includes(t.correctAnswer) && !katalog) {
+      e.push(`${where}: hint prozrazuje odpověď`);
+    }
   }
   return e;
+}
+
+/**
+ * Rejstřík možností: nápovědy doslova jmenují KAŽDOU možnost, ne jen klíč
+ * („vy- = dokončení děje…, vý- = …, s- = …"). Odpověď v nich pak stojí
+ * nutně, ale nic neprozrazuje — dítě musí pořád vybrat podle pravidla.
+ * `hintLeakage.ts` tuhle výjimku má; brána ji neměla, a protože tady jde
+ * o TVRDÝ fail, autoři ji obcházeli přepisováním nápověd v obsahu.
+ *
+ * Záměrně přísnější než heuristika v `hintLeakage` (ta bere i shodu jednoho
+ * slova a práh dvou distraktorů): tvrdý fail smí povolit jen to, co je
+ * prokazatelně katalog — doslovný výskyt všech možností.
+ */
+function hintyVyjmenujiVsechnyMoznosti(t: PracticeTask): boolean {
+  if (!t.options || t.options.length < 2 || !t.hints?.length) return false;
+  if (/^-?\d+(?:[.,]\d+)?$/.test(t.correctAnswer.trim())) return false; // řada čísel končící klíčem je leak
+  const vse = t.hints.join(" ");
+  return t.options.every((o) => vse.includes(o));
 }
 
 function sampleLevel(topic: TopicMetadata, level: number, n: number): PracticeTask[] {
