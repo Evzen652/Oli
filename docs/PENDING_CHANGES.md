@@ -25,6 +25,12 @@ Detail v `PROJECT_STATUS.md` §6, session 2026-10-07b. Krátce, co se tu tím za
 - ✅ **Nově nalezeno a opraveno:** zásady připisovaly jazykovému modelu
   hodnocení a týdenní shrnutí (běží bez něj) a zamlčely rozbor chyb.
 
+- ✅ **Tipování bez znalosti v 9 tématech** — délka, velikost čísla,
+  znaménko, „jiný" začátek. `check:length` má režim `PO_TYPECH=1`,
+  `check:options` hlídá znaménko. Detail `PROJECT_STATUS.md` §6.
+  📌 Dvě gramatické chyby v klíčích vrstevnických vztahů prošly všemi
+  kontrolami — automatika gramatiku klíčů nehlídá, jen shodu s číslovkou.
+
 **Zůstává otevřené (rozhodnutí):** `android:allowBackup="true"` u dětské
 aplikace (záloha může nést přihlašovací token) — `STORE_DATA_FORMS.md` §6.
 

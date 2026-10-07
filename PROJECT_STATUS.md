@@ -186,6 +186,26 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   `anon-server-record.test.ts` — po splnění úkolu odejde právě jedno
   `record` s tématem, ročníkem, ořezaným skóre a tokenem z localStorage;
   výpadek serveru localStorage neshodí. Obráceně ověřeno.
+- ✅ **Tipování bez znalosti — 9 témat opraveno** (`db185f3`, `d029a54`,
+  `9a47b76`, `ae9dbd0`, `fdd3238`, `f677bda`). Začalo nestabilním testem
+  masové kultury; měření ukázalo, že `check:length` průměruje celé téma
+  a vzorec jednoho typu otázky schová. Nový režim `PO_TYPECH=1`
+  a `check:options` hlídá i znaménko. Z hrubých kandidátů ručně prověřeno,
+  opraveny jen distraktory (zámek drží), kromě jednoho tématu:
+  - klíč výrazně nejdelší: masová kultura (42 % → 0), shrnutí textu 5. r.
+    (62 % → 0), vrstevnické vztahy (38 % → 0), postavy 4. r. (2 úlohy);
+  - klíč největší číslo: mikroskop, NSN (typická chyba větší než klíč
+    byla v pořadí čtvrtá, `buildChoiceTask` bere tři);
+  - klíč jediné záporné číslo: dvě šablony teploty 5. r. (100 % → 0);
+  - klíč jediný „jiný" tvar: úhly, peníze v rodině (4), pohádka (3),
+    metafora, obec a region, pranostika.
+  - **V klíčích vrstevnických vztahů dvě gramatické chyby** („co by chtěl
+    dívat", „kdy jí ho vrátí" místo „mu") — zámek přegenerován, diff jen
+    toho tématu. Žádná kontrola je nechytila.
+  Vědomě ponecháno (důvody v `fdd3238`): bajka „Kdo…", osnova o míči 2. r.
+- ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
+  běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
+  (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).
 - 🟠 **Nález k rozhodnutí: prázdné dlaždice na kartách témat.** 305 z 348
   témat nemá obrázek ani emoji, karta má nahoře prázdnou tintovanou plochu
   (ověřeno v prohlížeči, 3. r. → Čeština → Sloh). Možnosti v
