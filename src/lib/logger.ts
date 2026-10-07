@@ -21,8 +21,14 @@ export function logSession(session: SessionData): void {
     boundaryViolation: session.stopReason === "boundary_violation",
   };
   auditLog.push(entry);
-  // In production, send to backend. For now, console only.
-  console.log("[AUDIT]", entry);
+  // Do konzole jen při vývoji. Dřív se logoval každý přechod sezení všude:
+  // v produkci do konzole prohlížeče dítěte a v testech ~19 MB výpisu
+  // (celá sada vypsala 19 MB, teď ~0,2 MB). Na chybu vitestu „Timeout
+  // calling onTaskUpdate“ to vliv nemělo — ověřeno, objevila se i potom.
+  // Záznam pro `getAuditLog()` zůstává beze změny.
+  if (import.meta.env.DEV && import.meta.env.MODE !== "test") {
+    console.log("[AUDIT]", entry);
+  }
 }
 
 export function getAuditLog(): readonly AuditLogEntry[] {
