@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef } from "react";
+import { pad } from "@/lib/czechGrammar";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { IllustrationImg } from "@/components/IllustrationImg";
@@ -861,7 +862,7 @@ export default function AdminDashboard() {
                     setProposalExplanation(parsed.explanation);
                     setTimeout(() => {
                       proposalRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-                      toast.success(`✅ AI navrhlo ${parsed.proposals.length} položek — zkontroluj a potvrď návrhy níže`, { duration: 6000 });
+                      toast.success(`✅ AI navrhlo ${pad(parsed.proposals.length, "POLOŽKA")} — zkontroluj a potvrď návrhy níže`, { duration: 6000 });
                     }, 200);
                   }}
                 />
@@ -993,7 +994,7 @@ export default function AdminDashboard() {
                     setProposalExplanation(parsed.explanation);
                     setTimeout(() => {
                       proposalRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-                      toast.success(`✅ AI navrhlo ${parsed.proposals.length} položek — zkontroluj a potvrď návrhy níže`, { duration: 6000 });
+                      toast.success(`✅ AI navrhlo ${pad(parsed.proposals.length, "POLOŽKA")} — zkontroluj a potvrď návrhy níže`, { duration: 6000 });
                     }, 200);
                   }}
                 />
@@ -1189,7 +1190,7 @@ export default function AdminDashboard() {
           setTimeout(() => {
             proposalRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
             toast.success(
-              `✅ AI navrhlo ${p.length} položek — zkontroluj a potvrď návrhy níže na stránce`,
+              `✅ AI navrhlo ${pad(p.length, "POLOŽKA")} — zkontroluj a potvrď návrhy níže na stránce`,
               { duration: 6000 }
             );
           }, 400);
@@ -1456,7 +1457,7 @@ function QuickAddCard({
           <div className="space-y-2">
             <input
               autoFocus
-              placeholder={`Název ${label}u…`}
+              placeholder={`Název ${label === "téma" ? "tématu" : `${label}u`}…`}
               value={name}
               onChange={(e) => setName(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter") handleSave(); if (e.key === "Escape") close(); }}

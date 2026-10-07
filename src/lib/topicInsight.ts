@@ -61,7 +61,7 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     funFact: "Nejstarší dochovaná násobilka pochází z Číny, je jí přes dva tisíce let a je zapsaná na bambusových proužcích.",
   },
   "matematika::Číslo a početní operace::Písemné početní operace": {
-    useful: "Písemný postup zvládne čísla, která už ti nevejdou do hlavy. Proto se ho drží účetní, prodavači i stavaři.",
+    useful: "Písemný postup zvládne čísla, která se ti už nevejdou do hlavy. Proto se ho drží účetní, prodavači i stavaři.",
     funFact: "Způsob, jak sčítáme pod sebou, se do Evropy dostal z arabských knih. Ještě ve 13. století se u nás počítalo na počitadle.",
   },
   "matematika::Číslo a početní operace::Velká čísla a desetinná čísla": {
@@ -382,7 +382,7 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     funFact: "Chammurapiho zákoník je vytesaný do kamenného sloupu vysokého přes dva metry. Dnes stojí v pařížském Louvru.",
   },
   "dejepis::Starověk::Starověká Indie a Čína": {
-    useful: "Číslice, které píšeš každý den, vznikly v Indii, a papír, na který je píšeš, vynalezli v Číně.",
+    useful: "Číslice, které píšeš každý den, vznikly v Indii a papír, na který je píšeš, vynalezli v Číně.",
     funFact: "Velkou čínskou zeď pouhým okem z Měsíce neuvidíš, i když se to často tvrdí. Je dlouhá, ale na to moc úzká.",
   },
   "dejepis::Starověk::Antika - Řecko": {

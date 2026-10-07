@@ -98,7 +98,7 @@ function getActions(props: AdminAIActionsProps): AIAction[] {
         },
         {
           label: "Pokrytí ročníků",
-          description: "Zkontroluje, zda má každý ročník dostatečný obsah, a označní mezery",
+          description: "Zkontroluje, zda má každý ročník dostatečný obsah, a označí mezery",
           prompt: `Analyzuj předmět "${selectedSubject}" a zkontroluj, zda má každý ročník (3.–9.) dostatečné pokrytí témat a dovedností. Označ mezery a navrhni doplnění.`,
           icon: <BarChart3 className="h-4 w-4" />,
         },

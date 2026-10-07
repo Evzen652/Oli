@@ -6,7 +6,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { getReadableSkillName } from "@/lib/skillReadableName";
-import { pad } from "@/lib/czechGrammar";
+import { pad, zNebo } from "@/lib/czechGrammar";
 
 export type ReportRange = "week" | "month" | "all";
 
@@ -242,7 +242,7 @@ export async function generateWeeklyReport(
         icon: "⚠️",
         label: "Chybovost",
         tone: "warn",
-        text: `Chybovost je vyšší (${wrong} z ${pad(attempts, "ÚLOHA")}) — to často znamená, že některé téma ještě nesedlo, ne že by žák nedával pozor.`,
+        text: `Chybovost je vyšší (${wrong} ${zNebo(attempts)} ${attempts} ${attempts === 1 ? "úlohy" : "úloh"}) — to často znamená, že některé téma ještě nesedlo, ne že by žák nedával pozor.`,
       });
     } else if (helpRatio >= 0.25) {
       detailParts.push({

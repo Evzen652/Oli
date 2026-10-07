@@ -867,7 +867,7 @@ const EVAL_LOW = [
   (_: number) => `Nevzdávej to — opakování je základ. Každý chybuje, důležité je pokračovat.`,
   (acc: number) => `${acc} % zatím, ale to se změní. Zkus to znovu, chyby jsou nejlepší učitel.`,
   (_: number) => `Tohle téma chce více procvičení — ty to ale zvládneš!`,
-  (_: number) => `Neboj se chybovat, tak se to naučíš. Jen nevzdávej to!`,
+  (_: number) => `Neboj se chybovat, tak se to naučíš. Jen to nevzdávej!`,
 ];
 const EVAL_START = [
   "Teprve začínáš — odvahu, tohle se naučit dá!",

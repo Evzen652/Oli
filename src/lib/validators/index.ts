@@ -500,7 +500,7 @@ export const sequenceStepValidator: Validator = {
       return {
         correct: false,
         errorType: "wrong_length",
-        feedback: `Očekáváno ${eSeq.length} kroků, dáno ${aSeq.length}`,
+        feedback: `Očekávaný počet kroků: ${eSeq.length}, zadáno: ${aSeq.length}`,
       };
     }
     let firstWrongIdx = -1;
@@ -552,7 +552,7 @@ export const chemicalBalanceValidator: Validator = {
       return {
         correct: false,
         errorType: "wrong_coef_count",
-        feedback: `Očekáváno ${expCoefs.length} koeficientů, dáno ${ansCoefs.length}`,
+        feedback: `Očekávaný počet koeficientů: ${expCoefs.length}, zadáno: ${ansCoefs.length}`,
       };
     }
 
@@ -598,7 +598,7 @@ export const timelineValidator: Validator = {
       return {
         correct: false,
         errorType: "wrong_length",
-        feedback: `Očekáváno ${eSeq.length} událostí, dáno ${aSeq.length}`,
+        feedback: `Očekávaný počet událostí: ${eSeq.length}, zadáno: ${aSeq.length}`,
       };
     }
     let firstWrongIdx = -1;
@@ -642,7 +642,7 @@ export const formulaBuilderValidator: Validator = {
       return {
         correct: false,
         errorType: "wrong_length",
-        feedback: `Očekáváno ${eTokens.length} dílů, dáno ${aTokens.length}`,
+        feedback: `Očekávaný počet dílů: ${eTokens.length}, zadáno: ${aTokens.length}`,
       };
     }
     for (let i = 0; i < eTokens.length; i++) {
@@ -706,7 +706,7 @@ export const diagramLabelValidator: Validator = {
       return {
         correct: false,
         errorType: "wrong_label_count",
-        feedback: `Očekáváno ${eLabels.length} popisků, dáno ${aLabels.length}`,
+        feedback: `Očekávaný počet popisků: ${eLabels.length}, zadáno: ${aLabels.length}`,
       };
     }
     let correctCount = 0;

@@ -19,7 +19,7 @@
  * Bez gamifikace (invariant projektu): žádné body ani série, a taky žádné
  * chválení do prázdna — když to nedopadlo, dítě se to dozví rovně.
  */
-import { pad } from "@/lib/czechGrammar";
+import { pad, zNebo } from "@/lib/czechGrammar";
 
 export type Audience = "parent" | "child";
 
@@ -238,7 +238,7 @@ function getParentRecommendations(sessions: SessionSummary[], overallPct: number
   if (helpRatio === 0 && grade >= 4 && totalAnswers >= 6) {
     tips.push("Dítě nápovědu vůbec nevyužívá, přitom výsledky jsou slabé. Může to znamenat, že spíše hádá než přemýšlí — zkuste se zeptat, jak o úlohách uvažuje.");
   } else if (helpRatio >= 0.6) {
-    tips.push("Nápověda se využívala ve více než polovině odpovědí. Látka pravděpodobně ještě není internalizovaná — procvičujte pomaleji a klaste důraz na porozumění, ne rychlost.");
+    tips.push("Nápověda se využívala ve více než polovině odpovědí. Látka pravděpodobně ještě není internalizovaná — procvičujte pomaleji a klaďte důraz na porozumění, ne rychlost.");
   } else if (helpRatio >= 0.4) {
     tips.push("Nápověda se využívala poměrně často. Je dobré trénovat vybavování bez ní — dítě si zkusí odpovědět samo a až pak se podívá.");
   } else if (helpRatio >= 0.2) {
@@ -312,9 +312,9 @@ function getParentRecommendations(sessions: SessionSummary[], overallPct: number
 
   // === PERFEKTNÍ VÝSLEDKY ===
   if (perfectCount >= 3) {
-    tips.push(`${perfectCount} ze ${n} cvičení dopadla na 100 % — výjimečná výkonnost, na kterou může být dítě velmi hrdé!`);
+    tips.push(`${perfectCount} ${zNebo(n)} ${n} cvičení ${perfectCount >= 2 && perfectCount <= 4 ? "dopadla" : "dopadlo"} na 100 % — výjimečná výkonnost, na kterou může být dítě velmi hrdé!`);
   } else if (perfectCount === 2) {
-    tips.push("Dvě cvičení dopadla na 100 % — dítě na to opakovaně ukázalo. Skvělý výsledek!");
+    tips.push("Dvě cvičení dopadla na 100 % — dítě opakovaně ukázalo, že na to má. Skvělý výsledek!");
   } else if (perfectCount === 1 && n >= 3) {
     tips.push("Jedno cvičení dopadlo na 100 % — dítě na to má. Motivujte ho, aby takového výsledku dosáhlo znovu.");
   }

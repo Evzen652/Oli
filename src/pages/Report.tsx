@@ -407,7 +407,7 @@ export default function Report() {
                           ? `Výsledky jsou smíšené — více chyb než správných odpovědí (${s.correct}/${s.attempts}).`
                           : `${nm} se zlepšuje (${a} %), ale látka ještě není pevně zažitá.`;
                       } else {
-                        evalText = `Téma dělá ${nm === "Dítě" ? "dítěti" : nm} velké potíže — správně pouze ${s.correct} z ${s.attempts} pokusů.`;
+                        evalText = `${nm} má s tématem velké potíže — správně pouze ${s.correct} z ${s.attempts} pokusů.`;
                       }
 
                       let tip: string;

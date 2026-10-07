@@ -103,7 +103,7 @@ export function AdminContentAudit({ trigger }: Props) {
                   Tento audit projde všechna cvičení a zkontroluje:
                 </p>
                 <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1 ml-2">
-                  <li>Generator nezhavaruje a vrací úlohy</li>
+                  <li>Generátor nezhavaruje a vrací úlohy</li>
                   <li>Každá úloha má neprázdnou otázku + odpověď</li>
                   <li>Formát úlohy odpovídá typu inputu</li>
                   <li>Nápověda neprozrazuje výsledek</li>

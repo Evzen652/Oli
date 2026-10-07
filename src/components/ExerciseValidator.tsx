@@ -274,7 +274,7 @@ export function ExerciseValidator({ open, onOpenChange, grade, hideSheet }: Exer
 
     setCurrentIdx(-1);
     setRunning(false);
-    toast({ title: "Validace dokončena", description: `Zkontrolováno ${initialSkills.length} dovedností` });
+    toast({ title: "Validace dokončena", description: `Počet zkontrolovaných dovedností: ${initialSkills.length}` });
   }, [grade, toast, filteredSkills, selectedSkill]);
 
   const applyFix = useCallback(async (result: ValidationResult) => {
@@ -629,7 +629,7 @@ export function ExerciseValidator({ open, onOpenChange, grade, hideSheet }: Exer
             <AlertDialogDescription>
               {running
                 ? "Validace stále běží. Pokud panel zavřete, výsledky se ztratí."
-                : `Máte ${unappliedCount} neaplikovaných oprav. Pokud panel zavřete, výsledky se ztratí.`}
+                : `Počet neaplikovaných oprav: ${unappliedCount}. Pokud panel zavřete, výsledky se ztratí.`}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

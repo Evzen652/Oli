@@ -50,7 +50,7 @@ describe("chemicalBalance validator", () => {
     const r = validateAnswer("2|2|3", "2|H2|+|1|O2|=|2|H2O", { inputType: "chemical_balance" });
     expect(r.correct).toBe(false);
     expect(r.errorType).toBe("wrong_coef_count");
-    expect(r.feedback).toMatch(/Očekáváno/);
+    expect(r.feedback).toMatch(/Očekávaný počet/);
   });
 
   it("špatný koeficient na 1. pozici → wrong_coef + feedback #1", () => {

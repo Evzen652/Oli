@@ -38,7 +38,7 @@ export default function Privacy() {
   return (
     <LegalLayout
       title="Zásady ochrany osobních údajů"
-      perex="Oli je aplikace pro děti, takže k datům přistupujeme opatrněji než je běžné. Neprodáváme je, neměříme chování napříč weby a nezobrazujeme reklamu. Níže je popsané, co konkrétně ukládáme a proč."
+      perex="Oli je aplikace pro děti, takže k datům přistupujeme opatrněji, než je běžné. Neprodáváme je, neměříme chování napříč weby a nezobrazujeme reklamu. Níže je popsané, co konkrétně ukládáme a proč."
     >
       <LegalSection id="spravce" title="Kdo za data odpovídá">
         {/* „Se sídlem" je podnikatelský obrat; provozovatelem je fyzická osoba,

@@ -1015,7 +1015,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   }, [open, loadCustomList]);
 
   const handleDeleteCustom = async (key: string) => {
-    if (!window.confirm(`Smazat vlastní ilustraci "${key}"?\n(Soubor ${key}.png ve storage zůstane — smaž ho ručně v Supabase Studio pokud chceš.)`)) return;
+    if (!window.confirm(`Smazat vlastní ilustraci "${key}"?\n(Soubor ${key}.png ve storage zůstane — smaž ho ručně v Supabase Studio, pokud chceš.)`)) return;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (supabase as any)
       .from("custom_illustrations")

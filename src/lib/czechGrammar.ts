@@ -50,6 +50,7 @@ export const NOUNS: Record<string, [string, string, string]> = {
   // Učení / cvičení
   ÚKOL:       ["úkol", "úkoly", "úkolů"],
   ÚLOHA:      ["úloha", "úlohy", "úloh"],
+  POLOŽKA:    ["položka", "položky", "položek"],
   CVIČENÍ:    ["cvičení", "cvičení", "cvičení"],
   OTÁZKA:     ["otázka", "otázky", "otázek"],
   ODPOVĚĎ:    ["odpověď", "odpovědi", "odpovědí"],

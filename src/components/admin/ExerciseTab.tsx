@@ -575,7 +575,7 @@ function SavedExercisesList({
     const w = warningsForRow(ex as Parameters<typeof warningsForRow>[0]);
     if (w.length > 0) {
       const ok = window.confirm(
-        `Tato úloha má ${w.length} možné varování:\n\n` +
+        `Tato úloha má ${w.length} ${w.length === 1 ? "možné" : w.length <= 4 ? "možná" : "možných"} varování:\n\n` +
         w.map((x) => `• ${x.message}`).join("\n") +
         `\n\nSchválit i tak? (žáci ji pak uvidí)`,
       );

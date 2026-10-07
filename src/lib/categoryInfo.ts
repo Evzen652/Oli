@@ -109,7 +109,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
       },
       {
         label: "Příklady po B",
-        illustration: "✅ Y/Ý: být, bydlit, bylina, kobyla, býk\n❌ I/Í: bít, bída, bič, bi̇rma",
+        illustration: "✅ Y/Ý: být, bydlit, bylina, kobyla, býk\n❌ I/Í: bít, bída, bič, biřmování",
       },
       {
         label: "Příbuzná slova",
@@ -149,9 +149,9 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     title: "Měření délky a odhad",
     hook: "Kolik je to daleko? Jak dlouhý je ten stůl? Měření ti dá odpovědi! 📏",
     whatIsIt:
-      "Měření je způsob, jak přesně zjistit, jak něco je dlouhé, těžké nebo kolik se toho vejde do nádoby. Používáme k tomu jednotky — centimetry, metry, kilogramy nebo litry.",
+      "Měření je způsob, jak přesně zjistit, jak je něco dlouhé, těžké nebo kolik se toho vejde do nádoby. Používáme k tomu jednotky — centimetry, metry, kilogramy nebo litry.",
     whyWeUseIt:
-      "Měření potřebuješ každý den — když zjišťuješ, jestli se vejdeš pod stůl, kolik vody nalít do konvice, nebo kolik váží batoh. Bez měření by se nedala postavit ani jedna budova!",
+      "Měření potřebuješ každý den — když zjišťuješ, jestli se vejdeš pod stůl, kolik vody nalít do konvice nebo kolik váží batoh. Bez měření by se nedala postavit ani jedna budova!",
     visualExamples: [
       {
         label: "Jednotky délky",
@@ -188,7 +188,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
       },
       {
         label: "Kde je potkáš",
-        illustration: "🪟 Okno → obdélník\n🛑 Stopka → osmistěn\n⚽ Míč → koule (3D kruh)\n🍕 Pizza → kruh\n📐 Trojúhelníkové pravítko → trojúhelník\n🏠 Střecha → trojúhelník",
+        illustration: "🪟 Okno → obdélník\n🛑 Stopka → osmiúhelník\n⚽ Míč → koule (3D kruh)\n🍕 Pizza → kruh\n📐 Trojúhelníkové pravítko → trojúhelník\n🏠 Střecha → trojúhelník",
       },
       {
         label: "Vlastnosti",
@@ -242,7 +242,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
       },
       {
         label: "Základ věty",
-        illustration: "Pes štěká na dvore.\n━━━  ━━━━\nPODMĚT  PŘÍSUDEK\nKdo? → pes   Co dělá? → štěká",
+        illustration: "Pes štěká na dvoře.\n━━━  ━━━━\nPODMĚT  PŘÍSUDEK\nKdo? → pes   Co dělá? → štěká",
       },
     ],
     funFact: "💡 Český jazyk má sedm pádů, což je mnohem více než v angličtině, a díky nim můžeme vyjádřit věci mnohem přesněji. 🤯",
@@ -266,7 +266,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
         illustration: "🟨 Vyjmenovaná slova: b_dlí, m_š, s_kora...\n🔤 Párové souhlásky: le_, chle_, obra_...\n🟫🟦 Tvrdé a měkké: r_by, č_slo...\n🏙️ Velká písmena: _raha, _etr...",
       },
     ],
-    funFact: "💡 Nejdelší věta v literatuře má přes 4000 slov a je z románu Ullyses od Jamese Joyce – představ si ji psát! ✍️📚",
+    funFact: "💡 Nejdelší věta v literatuře má přes 4000 slov a je z románu Odysseus od Jamese Joyce – představ si ji psát! ✍️📚",
   },
 
   "čeština::Pravopis": {
@@ -580,7 +580,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
         illustration: "1/2 + 1/3 = ?\n→ rozšířit na 6: 3/6 + 2/6 = 5/6\n\n💡 Najdi společného jmenovatele!",
       },
     ],
-    funFact: "💡 Na zeměkouli existuje asi 1,5 milionu druhů hub, a když bychom je všechny sečetli, dostaneme obrovskou rozmanitost! 🍄",
+    funFact: "💡 Na zeměkouli existuje asi 1,5 milionu druhů hub — to je obrovská rozmanitost! 🍄",
   },
 
   "matematika::Zlomky::Odčítání zlomků": {
@@ -652,7 +652,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
         illustration: "3 × 2/5 = (3 × 2) / 5 = 6/5 = 1 1/5\n\n🟡🟡⬜⬜⬜  ×3 =\n🟡🟡🟡🟡🟡 🟡⬜⬜⬜⬜\n= jeden celý a jedna pětinka",
       },
     ],
-    funFact: "💡 Násobení zlomku číslem a zlomek z čísla dávají stejný výsledek: 3 × 1/4 = 3/4, a 1/4 ze 3 = 3/4! Jsou to dvojčata. 👯",
+    funFact: "💡 Násobení zlomku číslem a zlomek z čísla dávají stejný výsledek: 3 × 1/4 = 3/4 a 1/4 ze 3 = 3/4! Jsou to dvojčata. 👯",
   },
 
   // ── MATEMATIKA: Geometrie (already have Geometrické tvary, Obvod, Měření) ──
@@ -704,7 +704,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     visualExamples: [
       { label: "Hlavní slova", illustration: "pýcha, pytel, pysk, netopýr, slepýš,\npyl, kopyto, klopýtat, třpytit se,\nzpytovat, pykat, pýřit se\n\n💡 + příbuzná: pytlík, pyšný, kopýtko..." },
     ],
-    funFact: "💡 'Pýl' je vyjmenované slovo po P a je to malý zázrak, který pomáhá květinám tvořit semínka a ovoce. 🐝🌸",
+    funFact: "💡 'Pyl' je vyjmenované slovo po P a je to malý zázrak, který pomáhá květinám tvořit semínka a ovoce. 🐝🌸",
   },
 
   "čeština::Vyjmenovaná slova::Vyjmenovaná slova po S": {
@@ -716,7 +716,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     visualExamples: [
       { label: "Hlavní slova", illustration: "syn, sytý, sýr, syrový, sýkora,\nsychravý, usychat, sypat\n\n💡 + příbuzná: synovec, sýrový, sýkorka, nasytit..." },
     ],
-    funFact: "💡 Slovo 'slyšet' je vyjmenované slovo po S, a víš, že sovy mají jedno ucho výše než druhé, aby lépe slyšely myši? 🦉👂",
+    funFact: "💡 Slovo 'slyšet' je vyjmenované slovo po L. A víš, že sovy mají jedno ucho výše než druhé, aby lépe slyšely myši? 🦉👂",
   },
 
   "čeština::Vyjmenovaná slova::Vyjmenovaná slova po V": {
@@ -740,7 +740,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     visualExamples: [
       { label: "Hlavní slova", illustration: "brzy, jazyk, nazývat, Ruzyně\n\n💡 + příbuzná: brzičko, jazykový,\njazykovědec, nazývaný..." },
     ],
-    funFact: "💡 Slovo 'brzy' je vyjmenované slovo po Z, a brzy svítá, když slyšíme kohouta! 🐓☀️",
+    funFact: "💡 Slovo 'brzy' je vyjmenované slovo po Z a brzy svítá, když slyšíme kohouta! 🐓☀️",
   },
 
   // ── ČEŠTINA: Pravopis ─────────────────────────────────
@@ -766,7 +766,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     visualExamples: [
       { label: "Přehled", illustration: "🧊 TVRDÉ: H CH K R D T N → Y/Ý\n🧸 MĚKKÉ: Ž Š Č Ř C J Ď Ť Ň → I/Í\n🔄 OBOJETNÉ: B F L M P S V Z → podle pravidel" },
     ],
-    funFact: "💡 Některé jazyky, jako třeba ruština, rozlišují tvrdé a měkké souhlásky, a ty ovlivňují, jak se vyslovují, podobně jako v češtině. 🇷🇺",
+    funFact: "💡 Některé jazyky, jako třeba ruština, rozlišují tvrdé a měkké souhlásky a ty ovlivňují, jak se vyslovují, podobně jako v češtině. 🇷🇺",
   },
 
   "čeština::Pravopis::Psaní velkých písmen": {
@@ -800,7 +800,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     title: "Rod a číslo podstatných jmen",
     hook: "TEN pes, TA kočka, TO okno — každé podstatné jméno má svůj rod! 👤",
     whatIsIt: "Podstatná jména mají rod (mužský, ženský, střední) a číslo (jednotné, množné). Rod poznáš pomocí ukazovacích zájmen ten/ta/to.",
-    whyWeUseIt: "Správný rod potřebuješ, aby ti seděly koncovky přídavných jmen a sloves — 'velký pes' ale 'velká kočka'.",
+    whyWeUseIt: "Správný rod potřebuješ, aby ti seděly koncovky přídavných jmen a sloves — 'velký pes', ale 'velká kočka'.",
     visualExamples: [
       { label: "Tři rody", illustration: "🔵 TEN pes, hrad, strom → mužský\n🔴 TA kočka, škola, ulice → ženský\n🟢 TO okno, město, moře → střední\n\n💡 Zkus si říct TEN/TA/TO + slovo!" },
     ],
@@ -816,7 +816,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     visualExamples: [
       { label: "Osoba a číslo", illustration: "já běžím (1. os. j.č.)\nty běžíš (2. os. j.č.)\non/ona běží (3. os. j.č.)\nmy běžíme (1. os. mn.č.)\nvy běžíte (2. os. mn.č.)\noni běží (3. os. mn.č.)" },
     ],
-    funFact: "💡 Slovesa jsou jako akciové hrdiny vět, protože popisují, co se děje, například když lev řve nebo slunce svítí. 🦁☀️",
+    funFact: "💡 Slovesa jsou jako akční hrdinové vět, protože popisují, co se děje, například když lev řve nebo slunce svítí. 🦁☀️",
   },
 
   "čeština::Mluvnice::Základ věty": {
@@ -826,7 +826,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     whatIsIt: "Základ věty tvoří podmět (o kom/čem věta je) a přísudek (co dělá nebo jaký je). Podmět a přísudek spolu tvoří skladební dvojici.",
     whyWeUseIt: "Když umíš najít základ věty, lépe rozumíš textu a správně tvoříš vlastní věty.",
     visualExamples: [
-      { label: "Příklad", illustration: "Pes štěká na dvore.\n━━━  ━━━━\nPODMĚT  PŘÍSUDEK\nKdo? → pes   Co dělá? → štěká\n\n💡 Podmět = kdo/co, Přísudek = co dělá" },
+      { label: "Příklad", illustration: "Pes štěká na dvoře.\n━━━  ━━━━\nPODMĚT  PŘÍSUDEK\nKdo? → pes   Co dělá? → štěká\n\n💡 Podmět = kdo/co, Přísudek = co dělá" },
     ],
     funFact: "💡 Základ věty je jako kostra domu, bez něj by se celá věta zřítila! 🏠🧱",
   },
@@ -840,7 +840,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     visualExamples: [
       { label: "Příklad", illustration: "Na louce stála kob_la. → Y (vyjm. po B)\nV trávě leze ha_. → D (had → hadi)\nR_by plavou v ř_ce. → Y, Í (tvrdé R, měkké Ř)" },
     ],
-    funFact: "💡 Mozek dokáže doplňovat chybějící informace, stejně jako ve doplňovacím diktátu, a často nám to usnadňuje čtení. 🧠🧩",
+    funFact: "💡 Mozek dokáže doplňovat chybějící informace, stejně jako v doplňovacím diktátu, a často nám to usnadňuje čtení. 🧠🧩",
   },
 
   // ── PRVOUKA ───────────────────────────────────────────
@@ -849,12 +849,12 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     buttonLabel: "Co všechno víš o svém těle?",
     title: "Lidské tělo",
     hook: "Tvoje tělo má přes 200 kostí a 600 svalů — je to úžasný stroj! 🦴",
-    whatIsIt: "Lidské tělo se skládá z kostry, svalů, orgánů a kůže. Každá část má svůj úkol — kostra drží tělo, svaly ho pohybují a orgány zajišťují, že žiješ.",
+    whatIsIt: "Lidské tělo se skládá z kostry, svalů, orgánů a kůže. Každá část má svůj úkol — kostra drží tělo, svaly jím pohybují a orgány zajišťují, že žiješ.",
     whyWeUseIt: "Když znáš své tělo, víš, jak o něj pečovat — proč cvičit, co jíst a proč spát.",
     visualExamples: [
       { label: "Hlavní orgány", illustration: "🧠 Mozek — řídí celé tělo\n❤️ Srdce — pumpuje krev\n🫁 Plíce — dýchání\n🟡 Žaludek — tráví jídlo\n🦴 Kostra — drží tělo\n💪 Svaly — pohyb" },
     ],
-    funFact: "💡 Každý člověk má unikátní otisky prstů, stejně jako každý sněhový vločka je jiná. ❄️🖐️",
+    funFact: "💡 Každý člověk má unikátní otisky prstů, stejně jako každá sněhová vločka je jiná. ❄️🖐️",
   },
 
   "prvouka::Člověk a jeho tělo::Smysly": {
@@ -1020,7 +1020,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     whatIsIt: "V tomto okruhu se dozvíš o nejznámějších českých pověstech, historických osobnostech a státních symbolech ČR.",
     whyWeUseIt: "Znalost historie a symbolů naší země ti pomůže pochopit, odkud pocházíme a na co můžeme být hrdí.",
     visualExamples: [
-      { label: "České pověsti", illustration: "⛰️ Praotec Čech → hora Říp\n👸 Kněžna Libuše → založila Prahu\n🏰 Karel IV → Karlův most, univerzita\n⚔️ Blaničtí rytíři → hora Blaník" },
+      { label: "České pověsti", illustration: "⛰️ Praotec Čech → hora Říp\n👸 Kněžna Libuše → založila Prahu\n🏰 Karel IV. → Karlův most, univerzita\n⚔️ Blaničtí rytíři → hora Blaník" },
       { label: "Státní symboly", illustration: "🇨🇿 Vlajka: bílá + červená + modrý klín\n🦁 Znak: dvouocasý lev\n🎵 Hymna: Kde domov můj\n🏛️ Prezident: Pražský hrad" },
     ],
     funFact: "💡 Pražský hrad je největší hradní komplex na světě — měří přes 570 metrů! 🏰",
@@ -1062,7 +1062,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
   "matematika::Čísla a operace::Písemné sčítání a odčítání": {
     buttonLabel: "K čemu je písemné počítání?",
     title: "Písemné sčítání a odčítání",
-    hook: "Když jsou čísla moc velká na hlavní počítání, pomůže ti písemný způsob — řádek pod řádkem! ✍️",
+    hook: "Když jsou čísla moc velká na počítání zpaměti, pomůže ti písemný způsob — řádek pod řádkem! ✍️",
     whatIsIt:
       "Písemné sčítání a odčítání je postup, kdy si čísla zapíšeš pod sebe (jednotky pod jednotky, desítky pod desítky) a počítáš od nejnižšího řádu. Při přechodu přes desítku přenášíš jedničku.",
     whyWeUseIt:
@@ -1185,7 +1185,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     visualExamples: [
       {
         label: "Mužský rod",
-        illustration: "🔵 Životné: pán, muž, předseda, soudce\n🔵 Neživotné: hrad, stroj\n\n'učitel' → jako PÁN (učitele, učiteli...)\n'les' → jako HRAD (lesa, lesu...)",
+        illustration: "🔵 Životné: pán, muž, předseda, soudce\n🔵 Neživotné: hrad, stroj\n\n'učitel' → jako MUŽ (učitele, učiteli...)\n'les' → jako HRAD (lesa, lesu...)",
       },
       {
         label: "Ženský rod",
@@ -1239,7 +1239,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
       },
       {
         label: "Časté chyby",
-        illustration: "❌ 'na stromě' → na stromU ✅ (vzor hrad)\n❌ 'o městě' → o městĚ ✅ (vzor město)\n\n💡 Vždy si řekni vzorové slovo v tom pádě!",
+        illustration: "❌ 'ty hradi' → ty hradY ✅ (vzor hrad)\n❌ 'ti pány' → ti pánI ✅ (vzor pán)\n\n💡 Vždy si řekni vzorové slovo v tom pádě!",
       },
     ],
     funFact: "💡 Čeština má tak bohaté koncovky, že mnohdy nepotřebuje předložky ani slovosled — význam je schovaný přímo v koncovce! 🇨🇿",
@@ -1388,9 +1388,9 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
   "vlastivěda::Historie a kultura::České pověsti a osobnosti": {
     buttonLabel: "Jaké máme pověsti?",
     title: "České pověsti a osobnosti",
-    hook: "Praotec Čech, kněžna Libuše, Karel IV — příběhy, které formovaly naši zemi! 🏰",
+    hook: "Praotec Čech, kněžna Libuše, Karel IV. — příběhy, které formovaly naši zemi! 🏰",
     whatIsIt:
-      "České pověsti jsou staré příběhy o vzniku českého národa a důležitých místech. Osobnosti jako Karel IV nebo Jan Amos Komenský změnily naši historii.",
+      "České pověsti jsou staré příběhy o vzniku českého národa a důležitých místech. Osobnosti jako Karel IV. nebo Jan Amos Komenský změnily naši historii.",
     whyWeUseIt:
       "Pověsti a osobnosti ti pomohou pochopit, odkud pocházíme, co je pro naši zemi důležité a na co můžeme být hrdí.",
     visualExamples: [
@@ -1400,10 +1400,10 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
       },
       {
         label: "Historické osobnosti",
-        illustration: "👑 Karel IV - Otec vlasti, Karlův most, univerzita\n📖 Jan Amos Komenský - Učitel národů\n🎵 Bedřich Smetana - Má vlast, Prodaná nevěsta\n🎵 Antonín Dvořák - Novosvětská symfonie",
+        illustration: "👑 Karel IV. - Otec vlasti, Karlův most, univerzita\n📖 Jan Amos Komenský - Učitel národů\n🎵 Bedřich Smetana - Má vlast, Prodaná nevěsta\n🎵 Antonín Dvořák - Novosvětská symfonie",
       },
     ],
-    funFact: "💡 Karel IV nechal postavit Karlův most v roce 1357 — a most stojí dodnes, už přes 660 let! 🌉🏛️",
+    funFact: "💡 Karel IV. nechal postavit Karlův most v roce 1357 — a most stojí dodnes, už přes 660 let! 🌉🏛️",
   },
 
   // ── VLASTIVĚDA: Státní symboly ČR ────────────────────

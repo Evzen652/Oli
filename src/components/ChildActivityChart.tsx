@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { pad } from "@/lib/czechGrammar";
 import { supabase } from "@/integrations/supabase/client";
 import { useT } from "@/lib/i18n";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
@@ -186,7 +187,7 @@ export function ChildActivityChart({ childId }: Props) {
             </span>
             <span className="font-display font-semibold">Aktivita za 7 dní</span>
             <span className="text-xs text-muted-foreground font-normal">
-              {hasAnyActivity ? `(${data.reduce((s, d) => s + d.total, 0)} úloh)` : "(zatím nic)"}
+              {hasAnyActivity ? `(${pad(data.reduce((s, d) => s + d.total, 0), "ÚLOHA")})` : "(zatím nic)"}
             </span>
           </span>
           <span className="flex items-center gap-1 text-xs text-muted-foreground">
