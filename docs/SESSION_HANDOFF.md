@@ -1,5 +1,20 @@
-# Předání práce — stav k 2026-09-30
+# Předání práce — stav k 2026-10-07 (doplněno), jinak k 2026-09-30
 
+> ## ▶ 7. 10. 2026 — autonomní průchod (nic nepushnuto!)
+>
+> Evžen řekl „pokračuj autonomně"; push do `main` = produkce, ten
+> neschválil. **Lokálně je ~25 commitů navíc proti `origin/main`** —
+> `git log origin/main..main`. Shrnutí v `PROJECT_STATUS.md` §6, sessions
+> 2026-10-07 a 2026-10-07b. Hlavně:
+> - mazání dítěte maže i jeho auth účet → **nasadit `delete-child`**;
+> - text dítěte k modelu už nevede žádná cesta (`semantic-gate` odpojen);
+> - zásady: model jen pro rozbor chyb; podklad pro obchody `STORE_DATA_FORMS.md`;
+> - 9 témat se dalo tipovat (délka, znaménko, „jiný" tvar) → opraveno,
+>   `check:length PO_TYPECH=1`, `check:options` hlídá znaménko;
+> - gramatická revize klíčů, možností i zadání (~150 oprav, zámek u ~55 témat);
+> - vitest na polovině jader (konec `onTaskUpdate` timeoutů).
+> Rozhodnutí pro Evžena: push, `allowBackup`, prázdné dlaždice karet témat.
+>
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
 >

@@ -212,6 +212,11 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   Dva nálezy po ověření zamítnuty, eliptické „plži, protože…" ponechány.
   Zámek: 26 témat, každé odpovídá opravě. 📌 **Automatika gramatiku textu
   nehlídá** (jen shodu s číslovkou) — příští revize stejným postupem.
+- ✅ **Gramatická revize zadání** (`7578bcd`, 36 souborů obsahu) — stejný
+  postup nad 14 109 šablonami otázek. Šablony: „v 4. pádě" → „ve",
+  „v 4:00" → `vCas()`, „OPAČNÝ význam jako" → „než" (20 zadání). Věcná
+  chyba: graf 5. r. „ve všech pěti měsících / za celý týden" i při čtyřech
+  položkách. 4 nálezy zamítnuty po ověření (důvody v commitu).
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).
