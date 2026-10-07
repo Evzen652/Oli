@@ -14,13 +14,13 @@ import { AlertTriangle, Loader2 } from "lucide-react";
 import { PROVOZOVATEL, chybi } from "@/content/legal";
 import { pad } from "@/lib/czechGrammar";
 import type { Child } from "@/hooks/useChildren";
-import { funkceNedostupna } from "@/lib/edgeFunctions";
+import { funkceNedostupna } from "@/lib/edgeFunctionError";
 
 /** Slovo, které musí rodič opsat. Krátké, ale ne omylem napsatelné. */
 const POTVRZENI = "SMAZAT";
 
 // Rozpoznání nenasazené funkce je sdílené s mazáním dítěte (`useChildren`).
-export { funkceNedostupna } from "@/lib/edgeFunctions";
+export { funkceNedostupna } from "@/lib/edgeFunctionError";
 
 interface Props {
   /** Záměrně NE `children`: ten název má v Reactu vlastní význam a tady jde

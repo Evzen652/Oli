@@ -21,7 +21,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { funkceNedostupna } from "@/lib/edgeFunctions";
+import { funkceNedostupna } from "@/lib/edgeFunctionError";
 
 const cti = (p: string) => readFileSync(resolve(__dirname, "../..", p), "utf-8");
 const FUNKCE = cti("supabase/functions/delete-child/index.ts");

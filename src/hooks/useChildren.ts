@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { generatePairingCode } from "@/lib/pairingCode";
-import { funkceNedostupna } from "@/lib/edgeFunctions";
+import { funkceNedostupna } from "@/lib/edgeFunctionError";
 
 export interface Child {
   id: string;

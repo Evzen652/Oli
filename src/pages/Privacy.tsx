@@ -173,10 +173,12 @@ export default function Privacy() {
 
       <LegalSection id="ai" title="Kde se do toho plete umělá inteligence">
         <p>
-          Slovní hodnocení po procvičování a týdenní shrnutí pro rodiče píše jazykový
-          model. Posílá se mu <strong className="text-foreground">téma, úroveň a počet správných odpovědí</strong> —
+          Jazykový model používáme na jedinou věc: rozbor opakujících se chyb, který
+          se rodiči ukáže v přehledu dítěte. Posílá se mu{" "}
+          <strong className="text-foreground">téma, počet pokusů a chyb a technický druh chyby</strong> —
           ne jméno dítěte a ne text jeho odpovědí. Model tedy nedostane nic, podle
-          čeho by šlo poznat, o které dítě jde.
+          čeho by šlo poznat, o které dítě jde. Slovní hodnocení po procvičování
+          i týdenní shrnutí se skládají přímo v aplikaci, bez modelu.
         </p>
         <p>
           Dítě samo s modelem <strong className="text-foreground">nekomunikuje</strong> — v aplikaci není chat

@@ -23,7 +23,7 @@ const corsHeaders = {
  * nebo neexistující dítě dostane stejnou odpověď 403, aby se nedalo
  * zkoušet, které id existuje. Záměrně ne 404: tu vrací Supabase, když
  * funkce není nasazená, a klient podle ní pozná, že má mazat postaru
- * (`funkceNedostupna` v `src/lib/edgeFunctions.ts`). Potvrzovací slovo jako
+ * (`funkceNedostupna` v `src/lib/edgeFunctionError.ts`). Potvrzovací slovo jako
  * u `delete-account`.
  *
  * ── Pořadí ──────────────────────────────────────────────────────────────────

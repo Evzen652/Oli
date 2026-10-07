@@ -99,8 +99,9 @@ export function chybiCokoliv(): boolean {
  *   Supabase   — `src/integrations/supabase/client.ts`, všechny edge funkce
  *   Jazykový   — `supabase/functions/_shared/aiCall.ts` routuje podle toho, který
  *   model        klíč je nastavený: Groq (`api.groq.com`) nebo Google
- *                (`generativelanguage.googleapis.com`). Používá
- *                `session-evaluation`, `weekly-report`, `analyze-misconceptions`.
+ *                (`generativelanguage.googleapis.com`). Z aplikace se volá jen
+ *                `analyze-misconceptions`; `session-evaluation` a `weekly-report`
+ *                jsou nasazené, ale nic je nevolá (ověřeno 7. 10. 2026).
  *                **Lovable AI Gateway se nepoužívá** (rozhodnutí 2026-09-09).
  *   Resend     — `api.resend.com` v `send-parent-invite`
  *   WhatsApp   — `wa.me` v `InviteParentDialog.tsx` (odkaz se skládá v prohlížeči,
@@ -140,10 +141,14 @@ export const PRIJEMCI: Prijemce[] = [
   },
   {
     nazev: "Poskytovatel jazykového modelu (Groq nebo Google)",
+    // Do 7. 10. 2026 tu stálo „slovní hodnocení a týdenní shrnutí". Obojí se
+    // ale skládá v aplikaci bez modelu (`sessionEvaluator.ts`,
+    // `weeklyReportGenerator.ts`); model reálně volá jen rozbor chyb
+    // (`performanceTracker.ts` → `analyze-misconceptions`) — a ten tu chyběl.
     ucel:
-      "Slovní hodnocení po procvičování a týdenní shrnutí pro rodiče. Posílá se téma, " +
-      "úroveň a počet správných odpovědí — ne jméno dítěte ani text jeho odpovědí. " +
-      "Který z těch dvou se použije, závisí na aktuálním nastavení služby.",
+      "Rozbor opakujících se chyb, který se ukáže rodiči v přehledu dítěte. Posílá se " +
+      "téma, počet pokusů a chyb a technický druh chyby — ne jméno dítěte ani text " +
+      "jeho odpovědí. Který z těch dvou se použije, závisí na aktuálním nastavení služby.",
     umisteni: "mimo EU",
   },
   {
