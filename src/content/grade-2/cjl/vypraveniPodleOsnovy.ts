@@ -699,7 +699,7 @@ function nehodiSeTask(p: Pribeh): PracticeTask {
       `Tři věty se dají najít na obrázcích osnovy o ${p.oCem}. Jedna ne.`,
       `Zkus u každé věty ukázat prstem na obrázek, o kterém mluví. U tří to půjde, u jedné v osnově o ${p.oCem} nenajdeš nic — a právě ta se do vyprávění nehodí.`,
     ],
-    `Osnova říká, co se bude vyprávět. ${p.mimoProc} by klidně mohla být pravda, ale na žádném obrázku není — do vyprávění podle téhle osnovy tedy nepatří.`,
+    `Osnova říká, co se bude vyprávět. ${p.mimoProc} — to by klidně mohla být pravda, ale na žádném obrázku to není — do vyprávění podle téhle osnovy tedy nepatří.`,
     pas(p),
     p.emoji,
   );

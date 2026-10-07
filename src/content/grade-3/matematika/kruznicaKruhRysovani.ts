@@ -1,6 +1,6 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { choice, shuffle, type Distractor } from "../_shared";
-import { plural } from "@/lib/czechGrammar";
+import { plural, isAre, zNebo } from "@/lib/czechGrammar";
 
 // Přepsáno 2026-09-11 (inventura obsahu): úrovně měly jen 8/9/12 ručních otázek,
 // většina úloh sdílela jednu dvojici nápověd, chybné možnosti neměly zpětnou vazbu
@@ -221,14 +221,14 @@ const POJMY: PracticeTask[] = [
 function rozevreniOdNuly(n: number): PracticeTask {
   return choice(`Kružítko rozevřeš na pravítku od nuly k číslu ${n}. Jaký poloměr bude mít kružnice?`, `${n} cm`, [
     { value: `${2 * n} cm`, why: `${2 * n} cm by byl průměr — dvojnásobek. Rozevření kružítka je poloměr.` },
-    { value: `${n + 1} cm`, why: `Od nuly k číslu ${n} je přesně ${n} cm. Nula se jako centimetr nepočítá.` },
+    { value: `${n + 1} cm`, why: `Od nuly k číslu ${n} ${isAre(n)} přesně ${n} cm. Nula se jako centimetr nepočítá.` },
     { value: `${n} mm`, why: `Čísla na pravítku značí centimetry. Milimetry jsou jen malé dílky mezi nimi.` },
   ], {
     hints: [
       `Hrot je u nuly, tuha u čísla ${n}. Jak daleko je tuha od hrotu?`,
       `Kružítko drží stále stejné rozevření, takže každý bod kružnice je od středu tak daleko jako tuha od hrotu. Tu vzdálenost přečteš na pravítku: kolik centimetrů je od nuly k číslu ${n}?`,
     ],
-    explanation: `Rozevření kružítka je vzdálenost hrotu od tuhy a to je právě poloměr. Od 0 do ${n} je ${n} cm, proto má kružnice poloměr ${n} cm.`,
+    explanation: `Rozevření kružítka je vzdálenost hrotu od tuhy a to je právě poloměr. Od 0 do ${n} ${isAre(n)} ${n} cm, proto má kružnice poloměr ${n} cm.`,
   });
 }
 
@@ -379,7 +379,7 @@ function prumerNaPravitku([a, b]: [number, number]): PracticeTask {
   return choice(`Průměr kružnice leží na pravítku od čísla ${a} do čísla ${b}. Jak dlouhý je poloměr?`, key, tri(key, [
     { value: `${d} cm`, why: `To je celý průměr. Poloměr je jeho polovina.` },
     { value: `${stred} cm`, why: `U čísla ${stred} leží střed kružnice — to je místo na pravítku, ne délka poloměru.` },
-    ...(b % 2 === 0 ? [{ value: `${b / 2} cm`, why: `Polovina z ${b} by platila, kdyby průměr začínal u nuly. Začíná ale u čísla ${a}.` }] : []),
+    ...(b % 2 === 0 ? [{ value: `${b / 2} cm`, why: `Polovina ${zNebo(b)} ${b} by platila, kdyby průměr začínal u nuly. Začíná ale u čísla ${a}.` }] : []),
     { value: `${b} cm`, why: `${b} je jen číslo u konce průměru, ne délka. Průměr začíná u čísla ${a}.` },
     { value: `${r + 1} cm`, why: `Poloměr je přesná polovina průměru — tahle délka je o centimetr větší.` },
   ]), {

@@ -81,7 +81,7 @@ const L2: PracticeTask[] = [
     { value: "nejdelší slova v celém textu", why: "Délka o důležitosti nerozhoduje." },
     { value: "slova, kterým nerozumíme", why: "Neznámá slova nemusí být důležitá." },
     { value: "první slova každé věty", why: "Na začátku věty nemusí stát to hlavní." },
-  ], { hints: ["Kdybys měl popsat obsah dvěma výrazy, jaké by to byly?", "Nejdůležitější výrazy nesou téma — bez nich by ztratil smysl."], explanation: "Klíčová slova vystihují, o čem text je." }),
+  ], { hints: ["Kdybys měl popsat obsah dvěma výrazy, jaké by to byly?", "Nejdůležitější výrazy nesou téma — bez nich by text ztratil smysl."], explanation: "Klíčová slova vystihují, o čem text je." }),
   choice("K čemu jsou klíčová slova dobrá?", "rychle ukážou, o čem text je", [
     { value: "opravují pravopisné chyby", why: "S pravopisem nesouvisí." },
     { value: "jsou jen v básních", why: "Jsou v každém textu." },

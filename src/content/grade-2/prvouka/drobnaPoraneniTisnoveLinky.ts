@@ -142,7 +142,7 @@ const POOL_L1: PracticeTask[] = [
     emoji: "💧",
     hints: [
       "Ranku je potřeba zbavit nečistot — čím ji opláchneme?",
-      "Do ranky nesmí dostat žádná další špína. Hledej tekutinu, která teče z kohoutku a kterou můžeš bez obav i pít.",
+      "Do ranky se nesmí dostat žádná další špína. Hledej tekutinu, která teče z kohoutku a kterou můžeš bez obav i pít.",
     ],
     solutionSteps: ["Ranku umyjeme čistou vodou — smyjeme nečistoty, aby se dobře hojila."],
     optionFeedback: {
@@ -406,7 +406,7 @@ const POOL_L2: PracticeTask[] = [
     optionFeedback: {
       "Zaklonit mu hlavu úplně dozadu a nechat krev téct do krku": "Zakloněná hlava je častá chyba. Krev by tekla do krku a žaludku.",
       "Nechat ho běhat a skákat": "Pohyb krvácení zhorší. Kamarád má sedět v klidu.",
-      "Položit ho na záda a nechat ležet": "V leže by krev stékala do krku. Lepší je sedět s hlavou mírně dopředu.",
+      "Položit ho na záda a nechat ležet": "Vleže by krev stékala do krku. Lepší je sedět s hlavou mírně dopředu.",
     },
   },
   {
@@ -556,7 +556,7 @@ const POOL_L3: PracticeTask[] = [
     emoji: "🚑",
     hints: [
       "Spoj dvě věci: přivolat pomoc a zastavit krvácení.",
-      "Jde o vážnou věc, takže neodcházíme a neztrácíme čas. Co uděláš pro to, aby přišla pomoc, a co pro to, aby krve tekla méně?",
+      "Jde o vážnou věc, takže neodcházíme a neztrácíme čas. Co uděláš pro to, aby přišla pomoc, a co pro to, aby teklo méně krve?",
     ],
     solutionSteps: ["Při větším krvácení hned přivoláme dospělého a na ránu přitlačíme čistý kapesník, aby se krvácení zpomalilo. Neodcházíme a ránu nešpiníme."],
     optionFeedback: {

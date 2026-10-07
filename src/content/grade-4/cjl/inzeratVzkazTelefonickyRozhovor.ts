@@ -24,7 +24,7 @@ const L1: PracticeTask[] = [
     { value: "datum narození autora", why: "Věk autora zájemce nepotřebuje." },
     { value: "pozdrav na rozloučenou", why: "Rozloučení patří do dopisu, ne do inzerátu." },
   ], {
-    hints: ["Když někoho inzerát zaujme, jak se ti ozve?", "Bez telefonu nebo e-mailu by se zájemce neměl jak ozvat, a inzerát by byl k ničemu."],
+    hints: ["Když někoho inzerát zaujme, jak se ti ozve?", "Bez telefonu nebo e-mailu by se zájemce neměl jak ozvat a inzerát by byl k ničemu."],
     explanation: "Inzerát musí mít kontakt (telefon nebo e-mail), jinak se zájemce nemá jak ozvat.",
   }),
   choice("Který inzerát je nabídka?", "Prodám kolo, červené, 24 palců. Tel. 777 123 456", [
@@ -132,7 +132,7 @@ const L2: PracticeTask[] = [
     { value: "jen dnešní datum", why: "Datum ve vzkazu nutné není, chybí jiné věci." },
   ], {
     hints: ["Kolik ze čtyř údajů (komu, co, kdy, kdo) ve vzkazu najdeš?", "Vzkaz říká jen, co pisatel dělá. Neví se, pro koho je, kdy se pisatel vrátí ani kdo ho napsal."],
-    explanation: "Vzkaz říká jen „co“. Chybí komu je určen, kdy se pisatel vrátí a kdo ho napsal.",
+    explanation: "Vzkaz říká jen „co“. Chybí, komu je určen, kdy se pisatel vrátí a kdo ho napsal.",
   }),
   choice("Inzerát: „Ztratil se pes, hnědý jezevčík, odměna.“ Co musí přibýt?", "kontakt", [
     { value: "jméno souseda", why: "Soused s inzerátem nesouvisí." },
@@ -191,7 +191,7 @@ const L2: PracticeTask[] = [
     explanation: "Zdvořile odpovíme, že tatínek teď nemůže, a nabídneme vzkaz. Nic dalšího cizím neprozrazujeme.",
   }),
   choice("Jaké je správné pořadí telefonátu?", "pozdrav, představení, důvod volání, rozloučení", [
-    { value: "důvod volání, pozdrav, rozloučení, představení", why: "Důvod voláme až po pozdravu a představení." },
+    { value: "důvod volání, pozdrav, rozloučení, představení", why: "Důvod volání říkáme až po pozdravu a představení." },
     { value: "představení, rozloučení, pozdrav, důvod volání", why: "Rozloučení patří až na konec." },
     { value: "pozdrav, rozloučení, představení, důvod volání", why: "Rozloučením hovor končí, ne začíná." },
   ], {
@@ -247,7 +247,7 @@ const L3: PracticeTask[] = [
     { value: "Eva — jsem u Kláry v čísle 12.", why: "Chybí, komu je vzkaz a kdy se vrátíš." },
   ], {
     hints: ["Odškrtej u každého vzkazu: komu, kde, kdy, kdo.", "Maminka má vědět, kde tě najde, kdy se vrátíš a že vzkaz je od tebe."],
-    explanation: "Úplný vzkaz říká komu, kde jsi, kdy přijdeš a kdo píše.",
+    explanation: "Úplný vzkaz říká, komu je určen, kde jsi, kdy přijdeš a kdo píše.",
   }),
   choice("Voláš do knihovny. Jak začneš?", "Dobrý den, tady Tomáš Novák. Chtěl bych se zeptat na otevírací dobu.", [
     { value: "Ahoj, kdy máte dneska otevřeno v knihovně?", why: "„Ahoj“ se do knihovny nehodí a chybí představení." },

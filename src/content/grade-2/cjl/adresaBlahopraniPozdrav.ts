@@ -155,6 +155,10 @@ const celaAdresa = (a: Adresa) => `${a.jmeno}, ${a.ulice}, ${radekMesta(a)}`;
 
 type Cast = "jmeno" | "ulice" | "psc" | "mesto";
 
+/** Popisek jako podmět před „je": vloženou vedlejší větu uzavři čárkou. */
+const jakoPodmet = (s: string): string => (s.includes(", ") ? `${s},` : s);
+/** Popisek ve 4. pádě („Vyřaď i ulici…"). */
+const ve4pade = (s: string): string => s.replace(/^ulice /, "ulici ");
 const NALEPKA: Record<Cast, string> = {
   jmeno: "jméno toho, komu píšeš",
   ulice: "ulice a číslo domu",
@@ -190,8 +194,8 @@ function udajTask(a: Adresa, cast: Cast): PracticeTask {
       `To je v téhle adrese „${HODNOTA[c](a)}“. Část „${datum}“ je něco jiného.`,
     ]) as [string, string][],
     [
-      `Jednu možnost vyřadíš hned: ${NALEPKA[jine[0]]} je v téhle adrese „${HODNOTA[jine[0]](a)}“.`,
-      `Vyřaď i ${NALEPKA[jine[1]]} („${HODNOTA[jine[1]](a)}“) a ${NALEPKA[jine[2]]} („${HODNOTA[jine[2]](a)}“). ${PRAVIDLO[cast]}`,
+      `Jednu možnost vyřadíš hned: ${jakoPodmet(NALEPKA[jine[0]])} je v téhle adrese „${HODNOTA[jine[0]](a)}“.`,
+      `Vyřaď i ${ve4pade(NALEPKA[jine[1]])} („${HODNOTA[jine[1]](a)}“) a ${ve4pade(NALEPKA[jine[2]])} („${HODNOTA[jine[2]](a)}“). ${PRAVIDLO[cast]}`,
     ],
     `Adresa má tři řádky: nahoře jméno člověka, pod ním ulice s číslem domu a dole směrovací číslo pošty se jménem města. Část „${datum}“ je ${NALEPKA[cast]}.`,
     a.emoji,
@@ -327,9 +331,9 @@ function radekTask(a: Adresa, radek: Radek): PracticeTask {
       ],
       [
         `Vyřaď „${a.ulice}“ a „${mesto}“ — to nejsou jména lidí, a nahoru na obálku patří člověk.`,
-        `Zbyla dvě jména a rozhoduje, komu dopis jde. ${a.odesilatel} ho posílá, takže jeho jméno patří dozadu na obálku, ne nahoru dopředu.`,
+        `Zbyla dvě jména a rozhoduje, komu dopis jde. ${a.odesilatel} ho posílá, takže ${/á$/.test(a.odesilatel) ? "její" : "jeho"} jméno patří dozadu na obálku, ne nahoru dopředu.`,
       ],
-      `Nahoru na obálku patří jméno toho, komu dopis jde. ${a.odesilatel} je odesílatel, takže jeho jméno se píše dozadu.`,
+      `Nahoru na obálku patří jméno toho, komu dopis jde. ${a.odesilatel} je ${/á$/.test(a.odesilatel) ? "odesílatelka, takže její" : "odesílatel, takže jeho"} jméno se píše dozadu.`,
       a.emoji,
     );
   }

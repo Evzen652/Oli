@@ -397,7 +397,7 @@ const CTIVA: Ctivo[] = [
         ["Z čeho byla budka.", "To text říká — ze dřeva."],
       ],
       stopa: "Počet ptáků v textu nikde nestojí.",
-      e: "Text mluví o sýkorkách, ale nikde neříká kolik jich bylo. Číslo, které v textu není, se nedá vyčíst.",
+      e: "Text mluví o sýkorkách, ale nikde neříká, kolik jich bylo. Číslo, které v textu není, se nedá vyčíst.",
     },
     vyvod: {
       q: "Proč sýkorky Tomáš nerušil?",

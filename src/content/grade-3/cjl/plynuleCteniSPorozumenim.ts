@@ -50,7 +50,7 @@ const L1: Ctení[] = [
         ],
         h0: "Druhá věta textu popisuje, jaký Bobík je. Přečti si ji ještě jednou.",
         h1: "Ve větě „Jmenuje se Bobík a je to velký hnědý ovčák.“ jsou o psovi tři údaje: jak se jmenuje, jak je velký a jaký má kožich. Otázka se ptá jen na ten poslední z nich, ostatní dva můžeš pustit z hlavy.",
-        e: "Text říká, že Bobík je „velký hnědý ovčák“. Slovo „hnědý“ popisuje barvu jeho srsti, a na barvu se otázka ptá.",
+        e: "Text říká, že Bobík je „velký hnědý ovčák“. Slovo „hnědý“ popisuje barvu jeho srsti a na barvu se otázka ptá.",
       },
       {
         q: "Kam chodí Máša s Bobíkem na procházku?",
@@ -122,7 +122,7 @@ const L1: Ctení[] = [
         q: "Kdo lišce pomohl?",
         a: "Zahradník",
         d: [
-          ["Sousedka", "Žádná žena se v textu neobjevuje. Pomohl lišce muž, a text říká, čím se v zahradě zabýval."],
+          ["Sousedka", "Žádná žena se v textu neobjevuje. Pomohl lišce muž a text říká, čím se v zahradě zabýval."],
           ["Myslivec", "Myslivec se stará o les a zvěř, ale text popisuje člověka, který pečoval o stromy na zahradě."],
           ["Školník", "Školník pracuje ve škole. Příběh se ale celý odehrává na zahradě u stromů."],
         ],

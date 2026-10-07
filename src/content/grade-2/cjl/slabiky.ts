@@ -35,13 +35,14 @@ function spocitej([w, deleni]: [string, string]): PracticeTask {
   const sam = samohlasky(w);
   if (sam.length !== n) throw new Error(`L1 slovo ${w}: počet samohlásek ≠ počet slabik`);
   const pismena = [...w].join(" · ");
-  const samText = n === 1 ? `jen jedna samohláska ${sam[0]}` : `samohlásky ${sam.join(", ")}`;
+  // „je jedna samohláska" × „jsou samohlásky" (do 2026-10-07 vždy „je").
+  const samText = n === 1 ? `je jen jedna samohláska ${sam[0]}` : `jsou samohlásky ${sam.join(", ")}`;
   const why = (k: number): string => {
     if (k === n - 1) return `O slabiku méně – dvě slabiky ti splynuly v jednu. Ve slově „${w}“ jsou samohlásky ${sam.join(", ")} a každá patří do jiné slabiky.`;
     if (k < n) return `Slabik je víc. Ve slově „${w}“ najdeš samohlásky ${sam.join(", ")} – každá je srdcem jedné slabiky.`;
-    if (k === w.length) return `Tolik má slovo „${w}“ písmen, ne slabik. Slabiky se počítají podle samohlásek a ve slově je ${samText}.`;
-    if (k === n + 1) return `O slabiku víc. Nepočítej souhlásky – ve slově „${w}“ je ${samText}.`;
-    return `O hodně víc, než kolik slabik slovo „${w}“ má. Tleskni ho pomalu a počítej jen samohlásky – ve slově je ${samText}.`;
+    if (k === w.length) return `Tolik má slovo „${w}“ písmen, ne slabik. Slabiky se počítají podle samohlásek a ve slově ${samText}.`;
+    if (k === n + 1) return `O slabiku víc. Nepočítej souhlásky – ve slově „${w}“ ${samText}.`;
+    return `O hodně víc, než kolik slabik slovo „${w}“ má. Tleskni ho pomalu a počítej jen samohlásky – ve slově ${samText}.`;
   };
   const moznosti = pocetMoznosti(n);
   return {

@@ -140,7 +140,7 @@ const POOL_L2: PracticeTask[] = [
       "Karlův most – zahájena stavba (1357)",
     ],
     hints: ["Nejdřív král (1347), pak císař (1355).", "Karlův most (1357) je z těchto čtyř nejpozdější."],
-    explanation: "Karel IV. byl král (1347), pak císař (1355). Jako císař vydal Zlatou bulu (1356) a roku 1357 zahájil stavbu Karlova mostu — dodnes stojící spojnice Starého a Malé Strany.",
+    explanation: "Karel IV. byl král (1347), pak císař (1355). Jako císař vydal Zlatou bulu (1356) a roku 1357 zahájil stavbu Karlova mostu — dodnes stojící spojnice Starého Města a Malé Strany.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -292,7 +292,7 @@ const POOL_L3: PracticeTask[] = [
       "Karlův most (1357)",
       "Karel IV. zemřel (1378)",
     ],
-    hints: ["Král (1347) → Nové Město (1348) je hned po sobě.", "Karlův most (1357) je před smrtí Karla (1378)."],
+    hints: ["Král (1347) → Nové Město (1348) jdou hned po sobě.", "Karlův most (1357) je před smrtí Karla (1378)."],
     explanation: "Karel IV. jako král (1347) založil Nové Město pražské (1348), stal se císařem (1355), zahájil Karlův most (1357) a zemřel 1378. Rozestupy jsou nepravidelné — dvě události hned po sobě, pak větší mezery.",
   },
   {

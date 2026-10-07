@@ -185,7 +185,7 @@ const POOL_L2: PracticeTask[] = [
     { value: "Jablka", why: "Většina jablek dozrává koncem léta a na podzim." },
     { value: "Vlašské ořechy", why: "Vlašské ořechy se sklízejí až na podzim." },
   ], {
-    hints: ["Která z nich jíš na začátku letních prázdnin?", "Nízká rostlinka na záhoně, červené plody se semínky na povrchu. Dozrává, když končí škola."],
+    hints: ["Kterou z nich jíš na začátku letních prázdnin?", "Nízká rostlinka na záhoně, červené plody se semínky na povrchu. Dozrává, když končí škola."],
     explanation: "Jahody dozrávají už v červnu, mezi prvním ovocem v roce. Švestky, jablka a ořechy dozrávají až koncem léta a na podzim.",
   }),
   choice("Brambory se na jaře sázejí. Co se zasadí do země?", "Celé hlízy nebo jejich kousky", [

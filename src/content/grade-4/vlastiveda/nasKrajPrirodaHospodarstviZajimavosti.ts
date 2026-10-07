@@ -314,7 +314,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Jak se můžeš dozvědět o historii své obce?", "V muzeu, v kronice obce a od starších lidí", [
     { value: "Jen z reklam v televizi", why: "Reklamy o historii obce neinformují." },
-    { value: "Historie obcí se nikde nezapisuje a nedochovala se", why: "Zapisuje — do obecní kroniky, a leccos vědí i pamětníci." },
+    { value: "Historie obcí se nikde nezapisuje a nedochovala se", why: "Zapisuje se do obecní kroniky a leccos vědí i pamětníci." },
     { value: "Jen od kamarádů ze třídy", why: "Kamarádi toho vědí málo. Víc prozradí kronika a starší lidé." },
   ], {
     hints: ["Kdo si pamatuje, jak obec vypadala před padesáti lety?", "Každá obec má kroniku, kam se zapisují události. A dědeček nebo babička ti řeknou, co zažili."],

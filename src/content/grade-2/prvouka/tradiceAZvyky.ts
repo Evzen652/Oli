@@ -598,7 +598,7 @@ const POOL_L3: PracticeTask[] = [
       "Mikuláš přichází 5. prosince a Vánoce jsou 24. prosince. Oba jsou tedy ve stejném měsíci — do kterého ročního období prosinec patří?",
     ],
     optionFeedback: {
-      "Při obou svátcích chodí zajíc": "Zajíc patří k Velikonocům, ani k jednomu z těchto svátků.",
+      "Při obou svátcích chodí zajíc": "Zajíc patří k Velikonocům, nepatří ani k jednomu z těchto svátků.",
       "Oba svátky se slaví na jaře": "Prosinec není jarní měsíc, jaro začíná až v březnu.",
       "Při obou svátcích malujeme vajíčka": "Vajíčka se malují jen o Velikonocích.",
     },

@@ -166,8 +166,8 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Česko leží uprostřed Evropy. Přes jeho území odedávna vedly obchodní cesty a dnes tudy jezdí auta i vlaky mezi západem a východem, severem a jihem.",
   }),
   choice("Jak se jmenoval společný stát Čechů a Slováků?", "Československo", [
-    { value: "Rakousko-Uhersko", why: "Rakousko-Uhersko byla monarchie, ze které Československo roku 1918 vzniklo." },
-    { value: "Velká Morava", why: "Velká Morava byl slovanský stát v 9. století, dávno před Československem." },
+    { value: "Rakousko-Uhersko", why: "Rakousko-Uhersko bylo monarchií, ze které Československo roku 1918 vzniklo." },
+    { value: "Velká Morava", why: "Velká Morava byla slovanským státem v 9. století, dávno před Československem." },
     { value: "Svatá říše římská", why: "Svatá říše římská byla středověká říše, ne stát Čechů a Slováků." },
   ], {
     hints: ["Název spojuje jména obou národů.", "Stát vznikl 28. října 1918 a zanikl, když se na konci roku 1992 rozdělil na dvě země."],

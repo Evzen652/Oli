@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { plural } from "@/lib/czechGrammar";
+import { plural, zNebo, pad } from "@/lib/czechGrammar";
 import { fmt, rnd, shuffle } from "./_mat";
 
 // Slovní úlohy s písemnými operacemi — 4. ročník (2026-09-30).
@@ -231,7 +231,7 @@ function kniha(): Uloha {
   return {
     q: `Kniha má ${n} stran. Petra přečte každý den ${d} stran. Za kolik dní knihu dočte?`,
     a: dny,
-    h0: `Každý den ubude ${d} stran. Kolikrát se ${d} vejde do ${n}?`,
+    h0: `Každý den ${d >= 2 && d <= 4 ? "ubudou" : "ubude"} ${pad(d, "STRANA")}. Kolikrát se ${d} vejde do ${n}?`,
     h1: `Kolikrát se číslo vejde do jiného, zjistíš dělením: ${n} : ${d}. Výsledek ověř násobením.`,
     steps: [`Kolikrát se ${d} vejde do ${n} → dělím.`, `${n} : ${d} = ${dny}`, `Zkouška: ${dny} · ${d} = ${n}`],
     e: `Hledáme, kolikrát se ${d} stran vejde do ${n} stran: ${n} : ${d} = ${dny} dní. Zkouška: ${dny} · ${d} = ${n}.`,
@@ -296,9 +296,9 @@ function lampy(): Uloha {
     h0: "Vrátí se rozdíl mezi zaplacenou částkou a cenou nákupu. Znáš už cenu celého nákupu?",
     h1: `Nejdřív spočítej, kolik stojí všechny lampy: ${c} · ${k}. Pak tuto cenu odečti od ${fmt(platba)} Kč.`,
     steps: [`Cena nákupu: ${c} · ${k} = ${fmt(cena)}`, `Vráceno: ${fmt(platba)} − ${fmt(cena)} = ${fmt(x)}`],
-    e: `${k} ${plural(k, "lampa", "lampy", "lamp")} po ${c} Kč stojí ${c} · ${k} = ${fmt(cena)} Kč. Z ${fmt(platba)} Kč se vrací ${fmt(platba)} − ${fmt(cena)} = ${fmt(x)} Kč.`,
+    e: `${k} ${plural(k, "lampa", "lampy", "lamp")} po ${c} Kč stojí ${c} · ${k} = ${fmt(cena)} Kč. ${zNebo(platba) === "ze" ? "Ze" : "Z"} ${fmt(platba)} Kč se vrací ${fmt(platba)} − ${fmt(cena)} = ${fmt(x)} Kč.`,
     d: [
-      { v: cena, why: `${fmt(cena)} Kč je cena nákupu. Otázka se ptá, kolik se vrátilo z ${fmt(platba)} Kč.` },
+      { v: cena, why: `${fmt(cena)} Kč je cena nákupu. Otázka se ptá, kolik se vrátilo ${zNebo(platba)} ${fmt(platba)} Kč.` },
       { v: platba - c, why: "Odečetla se cena jen jedné lampy. Tatínek jich koupil víc." },
       { v: mensiOdVetsi(platba, cena), why: VYPUJCKA },
     ],

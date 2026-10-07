@@ -483,7 +483,7 @@ const POOL_L3: PracticeTask[] = [
       "Listy stromu neustále vypařují vodu. Když půda zamrzne, kořeny žádnou novou vodu nenasají. Co by se stalo se stromem, kdyby listy nechal?",
     ],
     explanation:
-      "Strom shodí listí, protože by přes ně v zimě ztrácel vodu, kterou z promrzlé půdy nedokáže nabrat. Bez listů zimu lépe přečká a na jaře mu narašou nové.",
+      "Strom shodí listí, protože by přes ně v zimě ztrácel vodu, kterou z promrzlé půdy nedokáže nabrat. Bez listů zimu lépe přečká a na jaře mu naraší nové.",
     optionFeedback: {
       "Protože je listí v zimě obtěžuje při kvetení": "Stromy v zimě nekvetou, kvetou až na jaře.",
       "Protože jim listí na jaře už znovu nenaraší": "Listí na jaře naopak znovu naraší z pupenů.",

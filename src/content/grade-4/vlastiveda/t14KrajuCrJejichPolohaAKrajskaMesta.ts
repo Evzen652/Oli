@@ -109,7 +109,7 @@ function buildTasks(groups: number[][], question: string): PracticeTask[] {
 
     const h0 = hard.length === 0
       ? `Všechny kraje v této úloze prozradí své krajské město jménem: ${easy.join(", ")}.`
-      : `${easy.length ? `Začni kraji ${easy.join(", ")} — jejich jméno prozradí město. ` : ""}U krajů ${hard.map((i) => KRAJE[i].kraj).join(", ")} se město jmenuje jinak než kraj.`;
+      : `${easy.length ? (easy.length === 1 ? `Začni krajem ${easy[0]} — jeho jméno prozradí město. ` : `Začni kraji ${easy.join(", ")} — jejich jména prozradí města. `) : ""}U krajů ${hard.map((i) => KRAJE[i].kraj).join(", ")} se město jmenuje jinak než kraj.`;
     // Příklad bereme z krajů, které v úloze NEJSOU — jinak by nápověda
     // prozradila pár.
     const [e1, e2] = [...ODVODITELNE].filter((i) => i !== 0 && !idxs.includes(i));

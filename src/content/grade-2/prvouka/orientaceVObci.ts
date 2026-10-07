@@ -136,7 +136,7 @@ const POOL_L1: PracticeTask[] = [
     emoji: "🚒",
     hints: [
       "Přemýšlej, odkud vyjíždí auto s hadicí, když někde hoří.",
-      "V garáži stojí červená auta s žebříky a hadicemi. Když zazvoní poplach, muži si rychle obléknou zásahové obleky a vyjedou.",
+      "V garáži stojí červená auta se žebříky a hadicemi. Když zazvoní poplach, muži si rychle obléknou zásahové obleky a vyjedou.",
     ],
     optionFeedback: {
       "Pracují tam policisté, kteří chrání pořádek": "Policisté pracují na policejní stanici.",
@@ -236,7 +236,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Půjčují se tam knihy", "Nakupuje se tam jídlo a zboží", "Prohlížejí se tam staré a vzácné věci", "Promítají se tam filmy"],
     emoji: "🏺",
     hints: [
-      "Přemýšlej, kam jdete na výlet podívat se na kostry dinosaurů nebo staré brnění.",
+      "Přemýšlej, kam se jdete na výlet podívat na kostry dinosaurů nebo staré brnění.",
       "Věci tam leží ve vitrínách a na cedulkách je napsané, kolik je jim let. Nesmíš na ně sahat ani si je odnést domů — můžeš se jen dívat.",
     ],
     optionFeedback: {
@@ -675,7 +675,7 @@ const POOL_L3: PracticeTask[] = [
       "Hledej obchod, kde jsou v regálech nové knihy s cenovkou a u pokladny za ně zaplatíš. Jmenuje se podle toho, co prodává.",
     ],
     optionFeedback: {
-      Knihovna: "V knihovně je kniha zrovna půjčená, a koupit se tam nedá.",
+      Knihovna: "V knihovně je kniha zrovna půjčená a koupit se tam nedá.",
       Radnice: "Na radnici se knihy neprodávají.",
       Lékárna: "V lékárně jsou léky, ne knihy.",
     },

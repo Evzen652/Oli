@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { phrase, pad } from "@/lib/czechGrammar";
+import { phrase, pad, isAre, zNebo } from "@/lib/czechGrammar";
 import { ciselnaUloha, rnd } from "./_mat";
 
 // Přepsáno 2026-09-11 (audit 4. ročníku). Nápovědy byly u všech úloh stejné,
@@ -45,7 +45,7 @@ function porovnani(): PracticeTask {
   while (b === a) b = rnd(1, j - 1);
   const [vetsi, mensi] = a > b ? [a, b] : [b, a];
   const key = a > b ? ">" : "<";
-  const proc = `${z(vetsi, j)} je víc: ${pad(vetsi, "DÍL")} je víc než ${pad(mensi, "DÍL")} a díly jsou stejně velké.`;
+  const proc = `${z(vetsi, j)} je víc: ${pad(vetsi, "DÍL")} ${isAre(vetsi)} víc než ${pad(mensi, "DÍL")} a díly jsou stejně velké.`;
   return ciselnaUloha(`Porovnej zlomky: ${z(a, j)} ○ ${z(b, j)}`, key, [
     { value: key === ">" ? "<" : ">", why: proc },
     { value: "=", why: `Zlomky se rovnají, jen když mají i stejný čitatel. Tady je čitatel jiný. ${proc}` },
@@ -129,7 +129,7 @@ function jednotkove(): PracticeTask {
     `Jak velký je jeden díl u ${z(1, a)} a jak velký u ${z(1, b)}? Představ si dva koláče téže velikosti.`,
     "Čím víc dílů z koláče nakrájíš, tím menší je každý díl. Jmenovatel říká, na kolik dílů se krájí — vyhrává zlomek s menším počtem dílů.",
   ], [
-    `${z(1, a)} = jeden díl z ${a}, ${z(1, b)} = jeden díl z ${b}.`,
+    `${z(1, a)} = jeden díl ${zNebo(a)} ${a}, ${z(1, b)} = jeden díl ${zNebo(b)} ${b}.`,
     `Víc dílů znamená menší díly, proto ${z(1, a)} ${key} ${z(1, b)}.`,
   ]);
 }

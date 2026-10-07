@@ -11,6 +11,9 @@ import { choice } from "../_shared";
 // Dvojice se stejným indexem nesdílejí slovo („písmeno“, „trojúhelník“,
 // „číslice“): nápověda jmenuje útvar z protější řady a nesmí napovědět
 // slovem z klíče.
+/** „osově souměrný/á/é" podle rodu útvaru (do 2026-10-07 vždy „-ý": „Srdce osově souměrný je"). */
+const souměrný = (o: string): string =>
+  /^(písmeno|srdce)/.test(o) ? "osově souměrné" : /^(číslice|pěticípá hvězda)/.test(o) ? "osově souměrná" : "osově souměrný";
 const SOUMERNE = ["čtverec", "obdélník", "kruh", "rovnostranný trojúhelník", "rovnoramenný trojúhelník", "srdce", "motýl", "pěticípá hvězda", "domeček se stříškou", "písmeno A", "písmeno M", "písmeno T", "písmeno H", "písmeno V", "písmeno U", "písmeno W"];
 const NESOUMERNE = ["písmeno F", "písmeno G", "písmeno J", "písmeno L", "písmeno P", "písmeno R", "písmeno S", "písmeno Z", "písmeno N", "různostranný trojúhelník", "kosodélník", "číslice 7", "číslice 4", "číslice 2", "číslice 6", "otazník"];
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
@@ -32,14 +35,14 @@ function vyber(k: number, soumerny: boolean): PracticeTask {
     if (!prilisDlouhy && !vycnivaTvarem) break;
   }
   return choice(soumerny ? "Který útvar je osově souměrný?" : "Který útvar NENÍ osově souměrný?", klic,
-    ostatni.map((o) => ({ value: o, why: soumerny ? `${cap(o)} nejde přeložit tak, aby se obě poloviny překryly.` : `${cap(o)} osově souměrný je — dá se přeložit tak, že se poloviny překryjí.` })) as never, {
+    ostatni.map((o) => ({ value: o, why: soumerny ? `${cap(o)} nejde přeložit tak, aby se obě poloviny překryly.` : `${cap(o)} ${souměrný(o)} je — dá se přeložit tak, že se poloviny překryjí.` })) as never, {
       hints: [
         `Začni třeba u možnosti „${jmenovany}“. Dá se přeložit tak, aby se obě půlky přesně překryly?`,
         `Osově souměrný útvar má čáru (osu), podél které ho přeložíš a obě části se přesně kryjí. ${soumerny ? "Hledej jedinou možnost, u které to jde" : "Hledej jedinou možnost, u které to nejde"} — zkus svislý, vodorovný i šikmý přehyb.`,
       ],
       explanation: soumerny
-        ? `${cap(klic)} se dá přeložit podél osy tak, že se obě poloviny překryjí — je osově souměrný.`
-        : `${cap(klic)} nejde přeložit tak, aby se poloviny překryly — osově souměrný není.`,
+        ? `${cap(klic)} se dá přeložit podél osy tak, že se obě poloviny překryjí — je ${souměrný(klic)}.`
+        : `${cap(klic)} nejde přeložit tak, aby se poloviny překryly — ${souměrný(klic)} není.`,
     });
 }
 

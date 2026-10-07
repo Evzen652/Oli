@@ -484,7 +484,7 @@ const POOL_L3: PracticeTask[] = [
     "čerstvý vzduch oheň rozdmýchá a plameny zesílí",
     [
       { o: "kouř je těžší než vzduch, takže by oknem stejně neodešel", why: "Kouř je naopak horký a lehký a stoupá vzhůru. Rozhoduje ale přívod vzduchu k ohni." },
-      { o: "sklo by od horka prasklo a mohlo by tě pořezat", why: "Prasklé sklo je až následek. Hlavní riziko je, že otevřeným oknem se k ohni dostane vzduch." },
+      { o: "sklo by od horka prasklo a mohlo by tě pořezat", why: "Prasklé sklo je až následek. Hlavní riziko je, že se otevřeným oknem k ohni dostane vzduch." },
       { o: "otevřít okno je při požáru vždy správné", why: "Naopak: okna i dveře do hořící místnosti se zavírají." },
     ],
     [

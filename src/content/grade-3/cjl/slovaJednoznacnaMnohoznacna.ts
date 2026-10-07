@@ -30,6 +30,9 @@ interface KontextItem {
   chybne: [Distractor, Distractor, Distractor];
 }
 
+/** Význam s vloženou vedlejší větou („věc, kterou se odemyká") uzavři čárkou před „i". */
+const uzavri = (v: string): string => (v.includes(", ") ? `${v},` : v);
+
 const KONTEXT: KontextItem[] = [
   {
     slovo: "koruna",
@@ -307,10 +310,10 @@ function hledejMnoho([m, d1, d2, d3]: [MnohoSlovo, JednoSlovo, JednoSlovo, Jedno
     ],
     {
       hints: [
-        `U slov „${d1.slovo}“ a „${d2.slovo}“ druhý význam nevymyslíš. Jedna možnost je ale jiná — u které ti napadnou dva?`,
+        `U slov „${d1.slovo}“ a „${d2.slovo}“ druhý význam nevymyslíš. Jedna možnost je ale jiná — u které tě napadnou dva?`,
         `Mnohoznačné slovo se dá použít ve dvou úplně jiných větách a pokaždé znamená něco jiného. Slovo jako „${d3.slovo}“ pojmenovává vždycky jen jednu věc, takže druhou větu s jiným významem s ním nesložíš.`,
       ],
-      explanation: `Toto slovo může znamenat ${m.v1} i ${m.v2} — má tedy víc různých významů, a proto je mnohoznačné. Zbylé tři možnosti pojmenovávají pokaždé jen jednu jedinou věc.`,
+      explanation: `Toto slovo může znamenat ${uzavri(m.v1)} i ${m.v2} — má tedy víc různých významů, a proto je mnohoznačné. Zbylé tři možnosti pojmenovávají pokaždé jen jednu jedinou věc.`,
     },
   );
 }
@@ -320,9 +323,9 @@ function hledejJedno([j, d1, d2, d3]: [JednoSlovo, MnohoSlovo, MnohoSlovo, Mnoho
     "Které z těchto slov je jednoznačné (má jen jeden význam)?",
     j.slovo,
     [
-      { value: d1.slovo, why: `„${cap(d1.slovo)}“ má víc významů: ${d1.v1} i ${d1.v2}.` },
-      { value: d2.slovo, why: `„${cap(d2.slovo)}“ má víc významů: ${d2.v1} i ${d2.v2}.` },
-      { value: d3.slovo, why: `„${cap(d3.slovo)}“ má víc významů: ${d3.v1} i ${d3.v2}.` },
+      { value: d1.slovo, why: `„${cap(d1.slovo)}“ má víc významů: ${uzavri(d1.v1)} i ${d1.v2}.` },
+      { value: d2.slovo, why: `„${cap(d2.slovo)}“ má víc významů: ${uzavri(d2.v1)} i ${d2.v2}.` },
+      { value: d3.slovo, why: `„${cap(d3.slovo)}“ má víc významů: ${uzavri(d3.v1)} i ${d3.v2}.` },
     ],
     {
       hints: [
@@ -366,7 +369,7 @@ const IDIOMY: IdiomItem[] = [
     chybne: [
       { value: "stát na vysoké hoře", why: "Kde člověk stojí, to spojení neřeší — mluví o pozornosti." },
       { value: "být hodně vysoký", why: "Výška s tím nemá nic společného; jde o to, kam se toulají myšlenky." },
-      { value: "mít spoustu dobrých nápadů", why: "Nápady jsou něco jiného než nepozornost, a tohle spojení chválou není." },
+      { value: "mít spoustu dobrých nápadů", why: "Nápady jsou něco jiného než nepozornost a tohle spojení chválou není." },
     ],
   },
   {
@@ -405,7 +408,7 @@ const IDIOMY: IdiomItem[] = [
   {
     fraze: "cítit se jako ryba ve vodě",
     naco: "co se říká o někom, komu je někde moc dobře",
-    doslova: "opravdová voda",
+    doslova: "opravdovou vodu",
     spravne: "být někde úplně spokojený",
     chybne: [
       { value: "umět výborně plavat", why: "Plavání je jen obrázek, ze kterého spojení vzniklo; říká se i o někom na suchu." },

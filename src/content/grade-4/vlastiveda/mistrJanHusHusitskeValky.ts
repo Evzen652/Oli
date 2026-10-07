@@ -279,7 +279,7 @@ const POOL_L3: PracticeTask[] = [
       "Bitva u Sudoměře – první vítězství Žižky (1420)",
       "Jan Žižka zemřel (1424)",
     ],
-    hints: ["Sudoměř (1420) bylo Žižkovo první velké vítězství.", "Žižka zemřel roku 1424 — sleduj celou řadu."],
+    hints: ["Bitva u Sudoměře (1420) byla Žižkovým prvním velkým vítězstvím.", "Žižka zemřel roku 1424 — sleduj celou řadu."],
     explanation: "Hus kritizoval církev, roku 1415 byl upálen. Roku 1419 defenestrace, roku 1420 Žižkovo vítězství u Sudoměře. Jan Žižka zemřel roku 1424.",
   },
   {

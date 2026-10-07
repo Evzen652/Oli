@@ -128,7 +128,7 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   choice("Jak se liší národní park od chráněné krajinné oblasti?", "V národním parku je příroda chráněná přísněji", [
     { value: "V CHKO je ochrana přísnější", why: "Je to naopak. Nejpřísněji je příroda chráněná v národních parcích." },
-    { value: "Jsou úplně stejné", why: "Liší se tím, jak přísně se přírodu chrání a co tam lidé smějí." },
+    { value: "Jsou úplně stejné", why: "Liší se tím, jak přísně se příroda chrání a co tam lidé smějí." },
     { value: "V národním parku se smí normálně stavět", why: "V národním parku se stavět skoro nesmí. Příroda má přednost." },
   ], {
     hints: ["Který z těch dvou druhů území je vzácnější?", "V CHKO lidé žijí, hospodaří a pěstují. Ve druhém typu území jsou místa, kam se skoro nesmí ani na procházku. Kde je tedy ochrana přísnější?"],
@@ -147,7 +147,7 @@ const POOL_L2: PracticeTask[] = [
     { value: "V řekách je až příliš čistá voda", why: "Naopak — rak potřebuje čistou vodu a ta ubývá." },
     { value: "V zimě nemá co jíst", why: "Rak zimu přečkává v úkrytu. Ohrožuje ho nemoc a znečištění." },
   ], {
-    hints: ["Do našich řek se dostali raci z Ameriky. Co s sebou přinesli?", "Cizí raci přenášejí nemoc, která je jim neublíží, ale naše raky zabije. A co ještě rakovi vadí v řece?"],
+    hints: ["Do našich řek se dostali raci z Ameriky. Co s sebou přinesli?", "Cizí raci přenášejí nemoc, která jim neublíží, ale naše raky zabije. A co ještě rakovi vadí v řece?"],
     explanation: "Náš rak říční potřebuje čistou vodu. Ohrožuje ho znečištění a nemoc — račí mor — kterou přenášejí raci přivezení z Ameriky.",
   }),
   choice("Proč se nesmí trhat koniklece a bledule, i když jich někde roste hodně?", "Utržená květina nevytvoří semena", [
@@ -187,7 +187,7 @@ const POOL_L2: PracticeTask[] = [
     { value: "Aby se nikdo neztratil", why: "To je výhoda navíc, ale hlavně jde o přírodu." },
     { value: "Aby turisté prošli parkem rychleji", why: "Rychlost není důvod. Mimo cestu by se šlapalo po rostlinách a rušila zvířata." },
   ], {
-    hints: ["Co roste kolem cesty a kdo se tam schovává?", "Kdyby každý turista šel kudy chce, sešlapal by vzácné rostliny a vyrušil hnízdící ptáky. Proto jsou cesty vyznačené."],
+    hints: ["Co roste kolem cesty a kdo se tam schovává?", "Kdyby každý turista šel, kudy chce, sešlapal by vzácné rostliny a vyrušil hnízdící ptáky. Proto jsou cesty vyznačené."],
     explanation: "Mimo cesty rostou vzácné rostliny a hnízdí zvířata. Když chodíme jen po cestách, nesešlapeme je a zvířata nerušíme.",
   }),
   choice("Proč je vlk v přírodě užitečný?", "Loví hlavně slabé a nemocné kusy zvěře", [
@@ -239,7 +239,7 @@ const POOL_L3: PracticeTask[] = [
     { value: "Srnci začnou lovit menší zvířata", why: "Srnci jsou býložravci, lovit nezačnou." },
   ], {
     hints: ["Kdo srnce v přírodě loví?", "Když srnce nikdo neloví, rychle jich přibývá. A čím se živí? Co se stane s mladými stromky v lese?"],
-    explanation: "Vlci a rysové loví srnce a drží jejich počet v rovnováze. Bez nich se srnci přemnoží a okousávají mladé stromky, takže les se hůř obnovuje.",
+    explanation: "Vlci a rysové loví srnce a drží jejich počet v rovnováze. Bez nich se srnci přemnoží a okousávají mladé stromky, takže se les hůř obnovuje.",
   }),
   choice("Proč nestačí chránit jen samotné zvíře, ale i místo, kde žije?", "Bez prostředí nemá potravu ani úkryt", [
     { value: "Zvíře potřebuje hlavně zákon", why: "Zákon pomůže, ale bez domova zvíře nepřežije." },
@@ -327,7 +327,7 @@ const POOL_L3: PracticeTask[] = [
     { value: "Aby lidé nepřibrali", why: "O lidi nejde. Jde o zvířata a rostliny." },
   ], {
     hints: ["Kdo v lese kromě lidí borůvky a houby jí?", "Borůvky zobou tetřevi a jedí je medvědi a myši. Co by jim zbylo, kdyby vše sesbírali lidé?"],
-    explanation: "Borůvky a houby jsou potravou pro zvířata, třeba pro vzácné tetřevy. Při velkém sběru by jim nezbylo a lidé by navíc sešlapali vzácné rostliny.",
+    explanation: "Borůvky a houby jsou potravou pro zvířata, třeba pro vzácné tetřevy. Při velkém sběru by jim nic nezbylo a lidé by navíc sešlapali vzácné rostliny.",
   }),
   choice("Proč chráníme i obyčejné louky a meze, nejen vzácné hory?", "Žije tam spousta druhů, které jinde nemají místo", [
     { value: "Louky se hodí na fotky", why: "O fotky nejde. Louky a meze jsou domovem mnoha druhů." },

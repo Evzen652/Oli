@@ -123,7 +123,7 @@ function velkeUloha(it: VelkeItem): PracticeTask {
         `Rozhodni, jestli „${it.slovo}“ pojmenovává ${it.jednu}, nebo ${it.kazdou}.`,
         `Vlastní jméno patří jen jedné osobě, jednomu městu, jedné řece či hoře — a začíná velkým písmenem. Obecné slovo (třeba „${it.obecne}“ ve stejné větě) platí pro celý druh, a proto zůstává malé. Zeptej se tedy, do které z těch dvou skupin „${it.slovo}“ patří.`,
       ],
-      explanation: `Slovo „${it.slovo}“ pojmenovává ${it.jednu} — je to vlastní jméno, a ta se vždy píšou s velkým počátečním písmenem. Zbytek věty (třeba „${it.obecne}“) platí pro celý druh, a proto zůstává malý.`,
+      explanation: `Slovo „${it.slovo}“ pojmenovává ${it.jednu} — je to vlastní jméno a ta se vždy píšou s velkým počátečním písmenem. Zbytek věty (třeba „${it.obecne}“) platí pro celý druh, a proto zůstává malý.`,
     },
   );
 }
@@ -269,7 +269,7 @@ function najdiVelke([v, d1, d2, d3]: [Vlastni, Obecne, Obecne, Obecne]): Practic
         `Slova „${d1.slovo}“ i „${d2.slovo}“ platí pro celý druh. Najdi to jediné, které patří jen jednomu.`,
         `Velké počáteční písmeno dostane jen pojmenování, které patří jedné osobě, jednomu městu, jedné řece či hoře. Slovo, kterým se dá pojmenovat spousta různých věcí (jako „${d3.slovo}“), zůstává malé — a taková jsou tady tři.`,
       ],
-      explanation: `Tohle slovo je ${v.co} — je to vlastní jméno, a to se vždy píše s velkým počátečním písmenem. Zbylé tři možnosti pojmenovávají celý druh, takže zůstávají malé.`,
+      explanation: `Tohle slovo je ${v.co} — je to vlastní jméno a to se vždy píše s velkým počátečním písmenem. Zbylé tři možnosti pojmenovávají celý druh, takže zůstávají malé.`,
     },
   );
 }
@@ -288,7 +288,7 @@ function najdiMale([o, d1, d2, d3]: [Obecne, Vlastni, Vlastni, Vlastni]): Practi
         `Pojmenování „${d1.slovo}“ i „${d2.slovo}“ patří vždycky jen jednomu. Najdi to jediné slovo, které platí pro celý druh.`,
         `Zkus u každé možnosti říct, kolik různých věcí nebo bytostí se tak dá pojmenovat. Když je jich mnoho, zůstává počáteční písmeno malé; pojmenování jako „${d3.slovo}“ patří jen jednomu, a proto začíná velkým.`,
       ],
-      explanation: `Tohle slovo ${o.co} — je to obecné jméno, a ta se píšou s malým počátečním písmenem. Zbylé tři možnosti jsou vlastní jména jednoho určitého místa nebo člověka, takže velké písmeno mají.`,
+      explanation: `Tohle slovo ${o.co} — je to obecné jméno a ta se píšou s malým počátečním písmenem. Zbylé tři možnosti jsou vlastní jména jednoho určitého místa nebo člověka, takže velké písmeno mají.`,
     },
   );
 }
@@ -326,7 +326,7 @@ function pocetUloha(it: PocetItem): PracticeTask {
     value: pocetSlov(d),
     why: d < n
       ? `Je jich víc — velké písmeno tu potřebují ${seznam}.`
-      : `Je jich méně — velké písmeno tu potřebují jen ${seznam}.`,
+      : `Je jich méně — velké písmeno tu ${n === 1 ? "potřebuje" : "potřebují"} jen ${seznam}.`,
   })) as [Distractor, Distractor, Distractor];
   return choice(
     `Věta je schválně napsaná bez velkých písmen: „${it.veta}“. Kolik slov v ní musí začínat velkým písmenem?`,
@@ -337,7 +337,7 @@ function pocetUloha(it: PocetItem): PracticeTask {
         `Projdi větu „${it.veta}“ slovo po slovu a nezapomeň na to úplně první.`,
         `Velké písmeno dostane první slovo věty a pak každé jméno, které patří jen jedné osobě, jednomu městu, jedné řece či hoře. Slova jako „${it.obecne}“ platí pro celý druh a zůstávají malá — a stejně tak názvy dnů a měsíců.`,
       ],
-      explanation: `Velkým písmenem začíná první slovo věty a každé vlastní jméno. Tady jsou to ${seznam}, dohromady tedy ${pocetSlov(n)}. Slovo „${it.obecne}“ platí pro celý druh, a proto zůstává malé.`,
+      explanation: `Velkým písmenem začíná první slovo věty a každé vlastní jméno. Tady ${n === 1 ? "je" : "jsou"} to ${seznam}, dohromady tedy ${pocetSlov(n)}. Slovo „${it.obecne}“ platí pro celý druh, a proto zůstává malé.`,
     },
   );
 }
@@ -406,7 +406,7 @@ const NAZVY: NazevItem[] = [
       { value: OBE, why: "První slovo jen pojmenovává druh místa; odlišující je až to druhé." },
       { value: ZADNE, why: "Je to název jednoho určitého náměstí, takže jedno velké písmeno tam být musí." },
     ],
-    vodítko: "které z obou slov by ses zeptal, když chceš vědět, KTERÉ náměstí to je",
+    vodítko: "na které z obou slov by ses zeptal, když chceš vědět, KTERÉ náměstí to je",
     proc: "obecné slovo „náměstí“ zůstává malé a odlišující část názvu se píše velkým písmenem",
     dvojice: "„NÁMĚSTÍ“ a „MÍRU“",
   },

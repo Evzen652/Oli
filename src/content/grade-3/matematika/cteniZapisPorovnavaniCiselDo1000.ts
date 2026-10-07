@@ -171,12 +171,12 @@ function zapisSNulou(): PracticeTask {
   const d: Distractor[] = chybiDesitky
     ? [
       { value: `${s}${x}`, why: `Chybí nula na místě desítek. Bez ní je ${s}${x} jen dvojmístné číslo.` },
-      { value: String(cislo(s, x, 0)), why: `${x} je počet jednotek, a ty patří na poslední místo, ne doprostřed.` },
+      { value: String(cislo(s, x, 0)), why: `${x} je počet jednotek a ty patří na poslední místo, ne doprostřed.` },
       { value: String(cislo(x, 0, s)), why: `Stovky a jednotky jsou prohozené. Na první místo zleva patří počet stovek, tedy ${s}.` },
     ]
     : [
       { value: `${s}${x}`, why: `Chybí nula na místě jednotek. Bez ní je ${s}${x} jen dvojmístné číslo.` },
-      { value: String(cislo(s, 0, x)), why: `${x} je počet desítek, a ty patří doprostřed, ne na poslední místo.` },
+      { value: String(cislo(s, 0, x)), why: `${x} je počet desítek a ty patří doprostřed, ne na poslední místo.` },
       { value: String(cislo(x, s, 0)), why: `Stovky a desítky jsou prohozené. Na první místo zleva patří počet stovek, tedy ${s}.` },
     ];
   return choice(`Zapiš číslem: ${zadani}.`, String(n), tri(String(n), d), {

@@ -70,7 +70,7 @@ const L3: Polozka[] = [
   iy("M_ jsme o tom vůbec nevěděli.", "My", "y", "„my“ je vyjmenované slovo po M", "„My“ je zájmeno z řady vyjmenovaných slov po M — píše se y."),
   iy("Včely přenášejí p_l z květu na květ.", "pyl", "y", VYJM("P", "pyl"), "„Pyl“ je vyjmenované slovo po P — prášek z květů."),
   iy("Dědeček p_l čaj z hrnku.", "pil", "i", "„pil“ je od slovesa pít a mezi vyjmenovaná slova nepatří", "„Pil“ je od slovesa „pít“ — vyjmenované slovo to není, píše se i."),
-  iy("Sedlák na jaře v_sel obilí.", "vysel", "y", "je to předpona vy-, a ta se vždycky píše s y", "„Vysel“ je sloveso „sít“ s předponou vy-. Vyjmenované slovo to není — y je tu kvůli předponě."),
+  iy("Sedlák na jaře v_sel obilí.", "vysel", "y", "je to předpona vy- a ta se vždycky píše s y", "„Vysel“ je sloveso „sít“ s předponou vy-. Vyjmenované slovo to není — y je tu kvůli předponě."),
   iy("Kabát v_sel na věšáku.", "visel", "i", "„visel“ je od slovesa viset a mezi vyjmenovaná slova nepatří", "„Visel“ je od slovesa „viset“ — vyjmenované slovo to není, píše se i."),
   iy("Musím nab_t vybitý mobil.", "nabít", "í", "„nabít“ je od slovesa bít a mezi vyjmenovaná slova nepatří", "„Nabít“ je od „bít“ (tlouct, plnit energií) — píše se i."),
   iy("Chtěl bych nab_t nové zkušenosti.", "nabýt", "ý", VYJM("B", "nabýt"), "„Nabýt“ je od vyjmenovaného „být“ (získat) — píše se y."),

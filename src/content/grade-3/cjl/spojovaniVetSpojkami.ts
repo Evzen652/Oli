@@ -361,14 +361,14 @@ const JINAK: JinakItem[] = [
     veta: "Bolelo mě v krku, a proto jsem zůstal doma.", spravne: "Zůstal jsem doma, protože mě bolelo v krku.",
     pricina: "bolest v krku",
     chybne: [
-      { value: "Bolelo mě v krku, protože jsem zůstal doma.", why: "Doma nikdo v krku nerozbolí — příčina a následek jsou prohozené." },
+      { value: "Bolelo mě v krku, protože jsem zůstal doma.", why: "Doma nikoho v krku nerozbolí — příčina a následek jsou prohozené." },
       { value: "Zůstal jsem doma, když mě bolelo v krku.", why: "Věta říká, kdy jsem doma zůstal, ale důvod nevysvětluje." },
       { value: "Zůstal jsem doma, ale bolelo mě v krku.", why: "Z původní věty žádný protiklad nevyplývá; jedno vede k druhému." },
     ],
   },
   {
     veta: "Protože svítilo slunce, šli jsme na výlet.", spravne: "Svítilo slunce, a proto jsme šli na výlet.",
-    pricina: "sluneční počasí",
+    pricina: "slunečné počasí",
     chybne: [
       { value: "Šli jsme na výlet, a proto svítilo slunce.", why: "Prohozené role: slunce nezačalo svítit kvůli našemu výletu." },
       { value: "Svítilo slunce, ale šli jsme na výlet.", why: "„Ale“ by naznačovalo, že výlet je navzdory počasí — jenže počasí bylo právě tím důvodem." },

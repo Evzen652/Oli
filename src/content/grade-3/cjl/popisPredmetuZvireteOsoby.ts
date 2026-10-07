@@ -130,7 +130,7 @@ const L2: PracticeTask[] = [
     { value: "Lucie je zvídavá.", why: "Zvídavost je povaha." },
     { value: "Lucie je trpělivá.", why: "Trpělivost je povaha." },
     { value: "Lucie ráda pomáhá.", why: "To je povaha." },
-  ], { hints: ["Co by sis mohl všimnout na fotce?", "Vzhled je to, co vidíme očima: postava, vlasy, oči, oblečení."], explanation: "Dlouhé světlé vlasy jsou vzhled." }),
+  ], { hints: ["Čeho by sis mohl všimnout na fotce?", "Vzhled je to, co vidíme očima: postava, vlasy, oči, oblečení."], explanation: "Dlouhé světlé vlasy jsou vzhled." }),
   choice("Který smysl používáš ve větě „Chleba voní po kmínu.“?", "čich", [
     { value: "zrak", why: "Vůni očima nevidíš." },
     { value: "sluch", why: "Vůni neuslyšíš." },

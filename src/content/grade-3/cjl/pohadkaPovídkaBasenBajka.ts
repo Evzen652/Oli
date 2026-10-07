@@ -328,7 +328,7 @@ const POOL_L2: Uloha[] = [
       "Ukázka má dva krátké řádky a na jejich koncích slova „les“ a „pes“, která znějí skoro stejně.",
       "Nedívej se na to, o čem text vypráví, ale jak je napsaný. Řádky nepokračují až k okraji stránky a jejich konce si zvukově odpovídají, takže jde o verše. Který ze čtyř útvarů se do veršů zapisuje?",
     ],
-    e: "Dva krátké řádky s rýmem na koncích jsou verše, a text zapsaný ve verších je báseň. Nerozhoduje tu obsah, ale způsob zápisu.",
+    e: "Dva krátké řádky s rýmem na koncích jsou verše a text zapsaný ve verších je báseň. Nerozhoduje tu obsah, ale způsob zápisu.",
   },
   {
     q: "Urči druh textu: „Sedm bratrů zaklela macecha do podoby havranů. Sestra je vysvobodila, až když sedm let nepromluvila.“",
@@ -384,7 +384,7 @@ const POOL_L2: Uloha[] = [
       "Ukázka je rozdělená na dva krátké řádky a jejich konce, „bez“ a „les“, znějí skoro stejně.",
       "Tady nerozhoduje, o čem se píše, ale jak je text zapsaný. Kdyby to byla próza, věty by pokračovaly až k pravému okraji stránky. Místo toho jsou tu dva samostatné krátké řádky se souznějícími konci, tedy verše.",
     ],
-    e: "Dva krátké řádky se souznějícími konci jsou verše, a text ve verších je báseň. Obsah o keři a lese na tom nic nemění.",
+    e: "Dva krátké řádky se souznějícími konci jsou verše a text ve verších je báseň. Obsah o keři a lese na tom nic nemění.",
   },
   {
     q: "Urči druh textu: „Dědeček učil Marii jezdit na kole. Spadla třikrát, ale počtvrté objela celé hřiště sama.“",
@@ -486,7 +486,7 @@ const POOL_L3: Uloha[] = [
       "Hledáš útvar, kterému mluvící zvíře stačí a poučení po něm nikdo nevyžaduje.",
       "U bajky je rada pro čtenáře povinná, takže ta odpadá. Povídka mluvící zvíře vůbec nepřipustí, protože se drží skutečného světa. Báseň se pozná podle veršů, ne podle postav. Zbývá útvar, ve kterém mluvící zvířata běžně vystupují, ale nic se z nich vyvozovat nemusí.",
     ],
-    e: "Mluvící zvíře je nadpřirozený prvek, a ten patří do pohádky. Na rozdíl od bajky po ní nikdo nechce, aby na konci radila čtenáři, jak se má chovat.",
+    e: "Mluvící zvíře je nadpřirozený prvek a ten patří do pohádky. Na rozdíl od bajky po ní nikdo nechce, aby na konci radila čtenáři, jak se má chovat.",
   },
   {
     q: "V textu vystupují jen lidé, děj je docela obyčejný, ale text je zapsaný do čtyř krátkých řádků se souznějícími konci. Jaký útvar to je?",

@@ -60,7 +60,7 @@ const POOL_L1: Opak[] = [
     d: [["horký", "„Horký“ je ještě víc než teplý — míří stejným směrem, ne opačně."],
       ["mokrý", "„Mokrý“ říká, že je na něčem voda. S teplotou to nesouvisí."],
       ["sladký", "„Sladký“ říká, jakou má něco chuť, ne teplotu."]] },
-  { w: "plný", a: "prázdný", e: "🥛", clue: "Hrnek je mlékem až po okraj. Jaký bude, když všechno vypiješ?", o: "kolik je v něčem uvnitř",
+  { w: "plný", a: "prázdný", e: "🥛", clue: "V hrnku je mléko až po okraj. Jaký bude, když všechno vypiješ?", o: "kolik je v něčem uvnitř",
     proc: "V plném hrnku je všechno, v prázdném nic — plný a prázdný jsou protikladná slova.",
     d: [["naplněný", "„Naplněný“ znamená skoro totéž co „plný“ — to je podobné slovo, ne opak."],
       ["čistý", "Vypitý hrnek může být čistý i špinavý. „Čistý“ neříká, kolik je v hrnku."],

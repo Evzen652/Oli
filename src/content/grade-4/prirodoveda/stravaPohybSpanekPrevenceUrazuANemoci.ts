@@ -62,7 +62,7 @@ const POOL_L1: PracticeTask[] = [
     { value: "Jen když jsou vidět špinavé", why: "Bacily nejsou vidět. Ruce myjeme i tehdy, když vypadají čisté." },
     { value: "Po záchodě a po příchodu domů, před jídlem ne", why: "Před jídlem je mytí nejdůležitější — bacily z rukou by šly rovnou do pusy." },
   ], {
-    hints: ["Kdy by se bacily z rukou mohly dostat do pusy?", "Jednou je to předtím, než sáhneš na chleba, a podruhé když odejdeš z místa, kde se splachuje."],
+    hints: ["Kdy by se bacily z rukou mohly dostat do pusy?", "Jednou je to předtím, než sáhneš na chleba, a podruhé, když odejdeš z místa, kde se splachuje."],
     explanation: "Ruce myjeme hlavně před jídlem a po použití záchodu, také po příchodu zvenku. Bacily nejsou vidět, a mýdlo je z rukou smyje.",
   }),
   choice("Jak často si čistíme zuby?", "Ráno a večer", [
@@ -129,7 +129,7 @@ const POOL_L2: PracticeTask[] = [
     { value: "Jsou pro tělo hlavní zdroj tuku", why: "Ovoce a zelenina tuku skoro nemají." },
     { value: "Nahradí pití vody", why: "Obsahují vodu, ale pití nenahradí." },
   ], {
-    hints: ["Co dává tělu síla k boji s nemocemi a pomáhá trávení?", "Vitamín C v paprice a jablku a vláknina ve slupkách a listech — kde se toho najde nejvíc?"],
+    hints: ["Co dává tělu sílu k boji s nemocemi a pomáhá trávení?", "Vitamín C v paprice a jablku a vláknina ve slupkách a listech — kde se toho najde nejvíc?"],
     explanation: "Ovoce a zelenina dodávají vitamíny, které pomáhají chránit před nemocemi, a vlákninu, která pomáhá trávení. Proto by měly být v každém jídle.",
   }),
   choice("Proč nejsou sladkosti vhodná svačina?", "Brzy máš zase hlad a kazí zuby", [
@@ -201,7 +201,7 @@ const POOL_L2: PracticeTask[] = [
     { value: "Aby kolo jelo rychleji", why: "Světla rychlost nemění." },
     { value: "Aby na tebe svítilo slunce", why: "Světla na kole svítí v šeru a ve tmě, se sluncem nesouvisí." },
   ], {
-    hints: ["Kdy tě řidič auta nejhůř uvidí?", "Za šera a v noci je cyklista skoro neviditelný. Co ho udělá vidět ze zepředu i zezadu?"],
+    hints: ["Kdy tě řidič auta nejhůř uvidí?", "Za šera a v noci je cyklista skoro neviditelný. Díky čemu je vidět zepředu i zezadu?"],
     explanation: "Za šera a ve tmě je cyklista špatně vidět. Světla a odrazky ho zviditelní, aby ho řidiči včas zahlédli a nesrazili.",
   }),
   choice("Proč nechodit do školy s horečkou?", "Nakazily by se další děti a nemoc by trvala déle", [
@@ -252,7 +252,7 @@ const POOL_L3: PracticeTask[] = [
     { value: "Stačí to jen na dálnici", why: "Nehoda se stane i ve městě a na krátké cestě." },
     { value: "Autosedačka je jen kvůli pohodlí dítěte", why: "Autosedačka dítě chrání. Pás pro dospělé je dítěti vysoko." },
   ], {
-    hints: ["Co se stane s nepřipoutanou taškou na sedadle, když auto prudce zabrzdí?", "Auto zastaví, ale všechno uvnitř letí dál dopředu. Co tělo zadrží? A proč musí být dítě ve sedačce?"],
+    hints: ["Co se stane s nepřipoutanou taškou na sedadle, když auto prudce zabrzdí?", "Auto zastaví, ale všechno uvnitř letí dál dopředu. Co tělo zadrží? A proč musí být dítě v sedačce?"],
     explanation: "Při prudkém brzdění nebo nárazu letí vše v autě dál dopředu. Pás a autosedačka tělo zadrží. Autosedačka zajistí, aby pás vedl přes správná místa dětského těla.",
   }),
   choice("Proč si ruce musíme mýt mýdlem, a ne jen vodou?", "Mýdlo smyje i mastnotu, na které drží bacily", [

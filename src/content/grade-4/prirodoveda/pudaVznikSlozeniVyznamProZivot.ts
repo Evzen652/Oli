@@ -26,7 +26,7 @@ const POOL_L1: PracticeTask[] = [
   }),
   choice("Jak se jmenuje tmavá část půdy, která vzniká z odumřelých rostlin a živočichů?", "Humus", [
     { value: "Jíl", why: "Jíl je minerální část půdy z rozpadlých hornin, ne ze zbytků organismů." },
-    { value: "Písek", why: "Písek jsou drobné zrnka hornin. Z odumřelých organismů nevzniká." },
+    { value: "Písek", why: "Písek jsou drobná zrnka hornin. Z odumřelých organismů nevzniká." },
     { value: "Štěrk", why: "Štěrk jsou kamínky z hornin." },
   ], {
     hints: ["Hledej jediné slovo, které nepopisuje kousky kamene.", "Tahle tmavá vrstva vzniká z tlejícího listí a dělá půdu úrodnou. Jak se jmenuje?"],
@@ -249,7 +249,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč voda ve městě s mnoha betonovými plochami po bouřce častěji zaplaví ulice?", "Voda se nevsákne do země a hned odtéká", [
     { value: "Beton vodu přitahuje", why: "Beton vodu nepřitahuje, jen ji nepropustí." },
     { value: "Ve městě prší víc", why: "Ve městě neprší víc. Rozdíl je v tom, kam voda zmizí." },
-    { value: "Kanály bývají vždycky ucpané", why: "Kanály to často nestihnou odvést, protože voda se nemá kde vsáknout." },
+    { value: "Kanály bývají vždycky ucpané", why: "Kanály to často nestihnou odvést, protože se voda nemá kde vsáknout." },
   ], {
     hints: ["Co se stane s deštěm na louce a co na parkovišti?", "Na louce voda zmizí v půdě jako v houbě. Beton je nepropustný. Kam tedy všechna voda z parkoviště musí?"],
     explanation: "Půda déšť nasává jako houba. Beton a asfalt vodu nepropustí, takže všechna voda steče najednou do ulic a kanálů a ty ji nestíhají odvést.",
@@ -268,7 +268,7 @@ const POOL_L3: PracticeTask[] = [
     { value: "Za rok se změní v písek", why: "Tak rychle se to nestane. Úroda ale bude rok od roku menší." },
   ], {
     hints: ["Kam zmizí živiny, které rostlina nasála z půdy?", "V lese listí zůstane a zetlí. Z pole ale obilí odvezeme. Co se tak s živinami v půdě rok od roku děje?"],
-    explanation: "Rostliny berou z půdy živiny a sklizeň je odveze z pole. Když se živiny nevracejí hnojem nebo kompostem, půdy jich ubývá a úroda klesá.",
+    explanation: "Rostliny berou z půdy živiny a sklizeň je odveze z pole. Když se živiny nevracejí hnojem nebo kompostem, v půdě jich ubývá a úroda klesá.",
   }),
   choice("Žížaly jedí spadané listí. Jak tím pomáhají rostlinám?", "Z listí je humus a chodbičky pustí do půdy vzduch", [
     { value: "Žerou živé kořeny, a tak je prořeďují", why: "Žížaly živé kořeny nežerou. Jedí odumřelé zbytky." },

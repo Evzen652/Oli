@@ -182,10 +182,10 @@ const POOL_L1: TrueFalseItem[] = [
     question: "V obci bývá škola. Je to pravda?",
     correct: true,
     emoji: "🏫",
-    hint: "Ve většině obcí najdeme budovu, kam chodí děti se učit.",
+    hint: "Ve většině obcí najdeme budovu, kam se děti chodí učit.",
     hint2: "Kam chodíš každé ráno s aktovkou? Taková budova bývá ve městech i v mnoha vesnicích, aby to děti neměly daleko.",
     wrong: "V obci bývá škola — chodí do ní děti z okolí.",
-    solution: "V obci bývá škola — děti tam chodí se vzdělávat.",
+    solution: "V obci bývá škola — děti se tam chodí vzdělávat.",
   },
 ];
 

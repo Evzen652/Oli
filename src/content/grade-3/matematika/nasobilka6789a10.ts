@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { pad, isAre } from "@/lib/czechGrammar";
+import { pad, isAre, zNebo } from "@/lib/czechGrammar";
 import { choice, shuffle, type Distractor } from "../_shared";
 import { napisCisla } from "@/content/_zapisCisla";
 
@@ -57,9 +57,9 @@ function postup(t: number, n: number): { h0: string; h1: string; expl: string } 
   }
   if (n === 5) {
     return {
-      h0: `${t} × 5 je polovina z ${t} × 10.`,
+      h0: `${t} × 5 je polovina ${zNebo(t)} ${t} × 10.`,
       h1: `Nejdřív spočítej ${t} × 10 (připiš k číslu ${t} nulu) a pak to číslo rozděl na dvě stejné poloviny.`,
-      expl: `${t} × 10 = ${t * 10} a polovina z ${t * 10} je ${x}, proto ${t} × 5 = ${x}.`,
+      expl: `${t} × 10 = ${t * 10} a polovina ${zNebo(t * 10)} ${t * 10} je ${x}, proto ${t} × 5 = ${x}.`,
     };
   }
   const soucet = Array.from({ length: n }, () => t).join(" + ");

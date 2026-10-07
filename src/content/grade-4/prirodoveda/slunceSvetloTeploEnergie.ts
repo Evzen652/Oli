@@ -186,7 +186,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Proč rostliny ve tmavém sklepě blednou a hynou?", "Bez světla si nevyrobí potravu", [
     { value: "Ve sklepě je příliš teplo", why: "Sklep bývá spíš chladný. Rostlinám chybí světlo." },
-    { value: "Sklep je moc tichý", why: "Rostliny ticho nevadí. Potřebují světlo." },
+    { value: "Sklep je moc tichý", why: "Rostlinám ticho nevadí. Potřebují světlo." },
     { value: "Ve sklepě nejsou žížaly", why: "Žížaly pomáhají půdě, ale bez světla rostlina nepřežije ani s nimi." },
   ], {
     hints: ["Z čeho si zelená rostlina vyrábí potravu?", "Zelené listy pracují jen na světle. Co se stane s rostlinou, která si nemá z čeho udělat jídlo?"],

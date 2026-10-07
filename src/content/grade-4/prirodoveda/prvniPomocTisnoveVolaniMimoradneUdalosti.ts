@@ -131,7 +131,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Jak dlouho chladíš popálené místo?", "Deset až dvacet minut", [
     { value: "Zhruba deset vteřin", why: "Deset vteřin je málo, kůže zůstane horká a pálí dál." },
-    { value: "Celou hodinu bez přestávky", why: "Hodina je zbytečně dlouho, zvlášť u malého dítěte by mohlo prochladnout." },
+    { value: "Celou hodinu bez přestávky", why: "Hodina je zbytečně dlouho, zvlášť malé dítě by mohlo prochladnout." },
     { value: "Chladit se nemá vůbec", why: "Chlazení je u popáleniny to nejdůležitější." },
   ], {
     hints: ["Kůže je horká i uvnitř, teplo z ní musí odejít.", "Je to déle než přestávka mezi hodinami, ale kratší než celá vyučovací hodina."],
@@ -223,7 +223,7 @@ const POOL_L2: PracticeTask[] = [
     { value: "Zavřeš okna, ať plyn neuteče ven", why: "Plyn musí ven. Zavřenými okny by se ho nahromadilo víc." },
   ], {
     hints: ["Unikající plyn může vybuchnout od jiskry.", "Plyn potřebuje ven z bytu a nesmí se k němu dostat žádná jiskra ani plamen. Co z nabídky to splní?"],
-    explanation: "Plyn může vybuchnout od jiskry nebo plamene. Otevřeme okna, nezapínáme světlo ani spotřebiče, odejdeme z bytu a zavoláme dospělého nebo hasiče z venku.",
+    explanation: "Plyn může vybuchnout od jiskry nebo plamene. Otevřeme okna, nezapínáme světlo ani spotřebiče, odejdeme z bytu a zavoláme dospělého nebo hasiče zvenku.",
   }),
 ];
 
@@ -247,11 +247,11 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Proč se popálenina nechladí ledem?", "Led kůži poškodí mrazem", [
     { value: "Led nechladí dostatečně silně", why: "Led chladí až moc silně, a právě to kůži škodí." },
-    { value: "Led by ránu jenom znečistil", why: "Nejde o špínu. Led kůži omrzne." },
+    { value: "Led by ránu jenom znečistil", why: "Nejde o špínu. Kůže od ledu omrzne." },
     { value: "Led by se moc rychle rozpustil", why: "Rychlost tání není důvod. Led je na popálenou kůži příliš studený." },
   ], {
     hints: ["Co udělá mráz se zdravou kůží?", "Popálená kůže je citlivá. Když na ni přiložíš něco hodně studeného, přidáš k popálení další poranění. Jaké?"],
-    explanation: "Led je tak studený, že může popálenou kůži ještě omrznout. Proto chladíme studenou tekoucí vodou, která odvede teplo šetrně.",
+    explanation: "Led je tak studený, že popálená kůže může ještě omrznout. Proto chladíme studenou tekoucí vodou, která odvede teplo šetrně.",
   }),
   choice("Proč se člověku v bezvědomí nesmí nic dát do úst?", "Mohl by se tekutinou zadusit", [
     { value: "Mohlo by mu být špatně od žaludku", why: "Hlavní nebezpečí je jinde — neumí polykat a zadusil by se." },

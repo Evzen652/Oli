@@ -194,7 +194,7 @@ const L3: PracticeTask[] = [
     { value: "řeknu: Je mi zima.", why: "V pantomimě se nemluví." },
     { value: "zazpívám o zimě", why: "V pantomimě se nezpívá." },
     { value: "napíšu to na tabuli", why: "V pantomimě se nepíše." },
-  ], { hints: ["Co dělá tvoje tělo, když mrzneš?", "V pantomimě musí všechno říct pohyb a výraz obličeje."], explanation: "Zimu ukážeme tělem: třesem se a třeme si ruce." }),
+  ], { hints: ["Co dělá tvoje tělo, když mrzneš?", "V pantomimě musí všechno říct pohyb a výraz obličeje."], explanation: "Zimu ukážeme tělem: třeseme se a třeme si ruce." }),
   choice("Jak v pantomimě ukážeš, že jíš něco kyselého?", "zašklebím se a přimhouřím oči", [
     { value: "řeknu: To je kyselé.", why: "V pantomimě se nemluví." },
     { value: "nakreslím citron", why: "V pantomimě se nekreslí." },

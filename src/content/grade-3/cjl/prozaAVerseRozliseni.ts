@@ -133,7 +133,7 @@ const POOL_L1: Uloha[] = [
       "Rozhoduje zápis: text nepokračuje k pravému okraji stránky, ale láme se do krátkých řádků pod sebou.",
       "Kdyby šlo o prózu, věty by plynuly za sebou a shlukovaly by se do odstavců. Kdyby šlo o divadelní hru, stálo by před každou promluvou jméno postavy. Zbývá způsob zápisu, ve kterém je každý krátký řádek samostatnou částí textu.",
     ],
-    e: "Krátké řádky pod sebou jsou verše, a text takhle zapsaný čteme ve verších. Říkanka je proto zapsaná stejně jako báseň.",
+    e: "Krátké řádky pod sebou jsou verše a text takhle zapsaný čteme ve verších. Říkanka je proto zapsaná stejně jako báseň.",
   },
   {
     q: "Co v próze zastává stejnou úlohu, jakou má v básni strofa?",
@@ -159,7 +159,7 @@ const POOL_L1: Uloha[] = [
     ],
     h: [
       "Přečti si dvojici slov nahlas a poslouchej, jestli si odpovídá jejich začátek, konec, nebo význam.",
-      "Zkoušej si to na příkladech: „pes“ a „dům“ jsou stejně dlouhá, „pes“ a „pole“ začínají stejně, „auto“ a „vůz“ znamenají totéž — a přesto ani jedna z těch dvojic nerýmuje. Podmínka bude tedy někde jinde než v délce, začátku nebo významu.",
+      "Zkoušej si to na příkladech: „pes“ a „dům“ jsou stejně dlouhá, „pes“ a „pole“ začínají stejně, „auto“ a „vůz“ znamenají totéž — a přesto ani jedna z těch dvojic se nerýmuje. Podmínka bude tedy někde jinde než v délce, začátku nebo významu.",
     ],
     e: "Rým vzniká shodou zvuku na konci slov. Ani stejná délka, ani stejné první písmeno, ani stejný význam rým neudělají.",
   },

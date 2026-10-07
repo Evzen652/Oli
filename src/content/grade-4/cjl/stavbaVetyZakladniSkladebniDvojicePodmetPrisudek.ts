@@ -145,7 +145,7 @@ const L3: PracticeTask[] = [
   najdiPodmet("Na stromě sedí malý ptáček.", "ptáček", "sedí", [["stromě", "misto"], ["sedí", "pris"], ["malý", "pri"]]),
   choice("Jaký podmět má věta „Prší.“?", "věta podmět nemá", [
     { value: "nevyjádřený (ono)", why: "Nevyjádřený podmět jde doplnit (jdeme → my). K „prší“ nikoho doplnit nejde." },
-    { value: "déšť", why: "Slovo „déšť“ ve větě není. Věta tvoří jen jedno sloveso." },
+    { value: "déšť", why: "Slovo „déšť“ ve větě není. Větu tvoří jen jedno sloveso." },
     { value: "Prší", why: "„Prší“ je přísudek — říká, co se děje." },
   ], {
     hints: ["Kdo nebo co prší? Dá se na to vůbec odpovědět?", "U vět o počasí (prší, sněží, svítá) nikdo děj nekoná a nikoho nejde doplnit. Takové věty jsou jen z jednoho slovesa."],

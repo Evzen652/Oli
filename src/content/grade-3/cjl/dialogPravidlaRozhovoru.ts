@@ -201,7 +201,7 @@ const L3: PracticeTask[] = [
     { value: "odpověděl", why: "Nikdo se Honzy neptal." },
   ], { hints: ["Jak zní „Pomoc!“ — potichu, nebo nahlas?", "Uvozovací sloveso má sedět k tomu, jak postava mluví: šeptá, ptá se, křičí…"], explanation: "Volání o pomoc je křik — hodí se „vykřikl“." }),
   choice("Které sloveso se hodí do věty: „Jdeš se mnou?“ ___ Lucka.", "zeptala se", [
-    { value: "vykřikla", why: "Otázka se obvykle nekřičí; tady Lucka se ptá." },
+    { value: "vykřikla", why: "Otázka se obvykle nekřičí; tady se Lucka ptá." },
     { value: "slíbila", why: "Lucka nic neslibuje, ptá se." },
     { value: "poděkovala", why: "Za nic neděkuje." },
   ], { hints: ["Jakým znaménkem končí Luckina slova?", "Když přímá řeč končí otazníkem, postava se ptá — tomu má odpovídat i uvozovací sloveso."], explanation: "Lucka se ptá, proto „zeptala se“." }),

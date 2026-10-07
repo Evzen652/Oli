@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { zNebo } from "@/lib/czechGrammar";
 import { ciselnaUloha, rnd, shuffle, type Chyba } from "./_mat";
 import { napisCisla } from "@/content/_zapisCisla";
 
@@ -86,8 +87,8 @@ function chybiUvnitr(): PracticeTask {
   const shown = t.map((v, i) => (i === idx ? "?" : String(v))).join(", ");
   const zn = klesa ? "−" : "+";
   return ciselnaUloha(`Číselná řada: ${shown}. Jaké číslo patří místo otazníku?`, hledane, [
-    { value: hledane + 1, why: `Zkouška: z ${t[idx - 1]} na ${hledane + 1} je krok ${Math.abs(hledane + 1 - t[idx - 1])}, ale ostatní sousedé se liší o ${velikost}.` },
-    { value: hledane - 1, why: `Zkouška: z ${t[idx - 1]} na ${hledane - 1} je krok ${Math.abs(hledane - 1 - t[idx - 1])}, ale ostatní sousedé se liší o ${velikost}.` },
+    { value: hledane + 1, why: `Zkouška: ${zNebo(t[idx - 1])} ${t[idx - 1]} na ${hledane + 1} je krok ${Math.abs(hledane + 1 - t[idx - 1])}, ale ostatní sousedé se liší o ${velikost}.` },
+    { value: hledane - 1, why: `Zkouška: ${zNebo(t[idx - 1])} ${t[idx - 1]} na ${hledane - 1} je krok ${Math.abs(hledane - 1 - t[idx - 1])}, ale ostatní sousedé se liší o ${velikost}.` },
     { value: t[idx - 1] - krok, why: klesa ? `Řada klesá — číslo za ${t[idx - 1]} musí být menší.` : `Řada roste — číslo za ${t[idx - 1]} musí být větší.` },
   ], [
     `Najdi v řadě ${shown} dvě sousední čísla bez otazníku. O kolik se liší?`,

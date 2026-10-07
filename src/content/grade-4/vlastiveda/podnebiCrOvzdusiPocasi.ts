@@ -141,7 +141,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "S výškou teplota klesá, zhruba o 6 stupňů na každý kilometr. Proto je na horách chladněji a sníh vydrží déle.",
   }),
   choice("Proč je na jižní Moravě nejtepleji?", "Leží nízko a na jihu", [
-    { value: "Je tam nejvíc lidí", why: "Počet lidí teplotu nerozhoduje." },
+    { value: "Je tam nejvíc lidí", why: "Počet lidí o teplotě nerozhoduje." },
     { value: "Leží u moře", why: "Česko u moře neleží." },
     { value: "Jsou tam vysoké hory", why: "Hory by přinesly chlad. Jižní Morava je naopak nížina." },
   ], {

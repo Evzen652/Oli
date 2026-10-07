@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { ciselnaUloha, fmt, napisCislo, rnd, RADY } from "./_mat";
+import { ciselnaUloha, fmt, napisCislo, rnd, RADY, RADY_2P } from "./_mat";
 
 // Přepsáno 2026-09-11 (audit 4. ročníku). Distraktory byly jen výsledek
 // ± 1, 10, 100 a nápovědy stejné pro všechny úlohy. Teď distraktory
@@ -51,7 +51,7 @@ function scitani(a: number, b: number): PracticeTask {
   const { steps, prvniPrenos } = scitaniKroky(a, b);
   return ciselnaUloha(`${fmt(a)} + ${fmt(b)} = ?`, correct, [
     { value: bez, why: "Tady se zapomnělo na přenosy: když je součet ve sloupci 10 nebo víc, zapíše se jen jednotka a 1 se přičte k dalšímu sloupci." },
-    ...(prvniPrenos >= 0 ? [{ value: correct - 10 ** (prvniPrenos + 1), why: `Ve sloupci ${RADY[prvniPrenos]} vyšlo víc než 9, ale přenos 1 se nepřičetl k dalšímu sloupci.` }] : []),
+    ...(prvniPrenos >= 0 ? [{ value: correct - 10 ** (prvniPrenos + 1), why: `Ve sloupci ${RADY_2P[prvniPrenos]} vyšlo víc než 9, ale přenos 1 se nepřičetl k dalšímu sloupci.` }] : []),
     { value: correct + 10, why: "Výsledek je o 10 větší — v desítkách je přenos navíc nebo chyba v součtu." },
     { value: correct - 100, why: "Výsledek je o 100 menší — ve stovkách chybí přenos nebo je chyba v součtu." },
   ], [
@@ -72,7 +72,7 @@ function odcitani(a: number, b: number): PracticeTask {
   const { steps, prvniPujcka } = odcitaniKroky(a, b);
   return ciselnaUloha(`${fmt(a)} − ${fmt(b)} = ?`, correct, [
     { value: mensiOdVetsiho, why: "V některém sloupci se odečetla menší číslice od větší. Když je nahoře menší číslice, musíš si půjčit 1 z vyššího řádu." },
-    ...(prvniPujcka >= 0 ? [{ value: correct + 10 ** (prvniPujcka + 1), why: `Ve sloupci ${RADY[prvniPujcka]} se půjčila desítka, ale ve vyšším řádu se pak neodečetla jednička.` }] : []),
+    ...(prvniPujcka >= 0 ? [{ value: correct + 10 ** (prvniPujcka + 1), why: `Ve sloupci ${RADY_2P[prvniPujcka]} se půjčila desítka, ale ve vyšším řádu se pak neodečetla jednička.` }] : []),
     { value: correct - 10, why: "Výsledek je o 10 menší — v desítkách je půjčka navíc nebo chyba v odčítání." },
     { value: correct + 100, why: "Výsledek je o 100 větší — ve stovkách se zapomněla odečíst půjčka." },
   ], [

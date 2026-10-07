@@ -552,7 +552,7 @@ function policeTask(u: Autor): PracticeTask {
       {
         hints: [
           `Které ze jmen je příjmení: ${u.jmeno}, nebo ${u.prijmeni}?`,
-          `Příjmení je rodinné jméno a píše se za křestním. U autora ${u.jmeno} ${u.prijmeni} je to „${u.prijmeni}“. Podívej se na jeho první písmeno a najdi v abecedě, mezi která písmena patří.`,
+          `Příjmení je rodinné jméno a píše se za křestním. U ${u.zena ? "autorky" : "autora"} se jménem ${u.jmeno} ${u.prijmeni} je to „${u.prijmeni}“. Podívej se na jeho první písmeno a najdi v abecedě, mezi která písmena patří.`,
         ],
         explanation: `Příjmení ${u.prijmeni} začíná na ${u.pismeno}${u.pismeno === "CH" ? " (CH je v abecedě za H)" : ""}. Písmeno ${u.pismeno} patří do police ${u.a}.`,
       },

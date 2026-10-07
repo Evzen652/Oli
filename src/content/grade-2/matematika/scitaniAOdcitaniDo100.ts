@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { plural } from "@/lib/czechGrammar";
+import { plural, pad } from "@/lib/czechGrammar";
 import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
 import { napisCisla } from "@/content/_zapisCisla";
 
@@ -79,7 +79,7 @@ function minusJednomistneBez(): Built {
     cands: typicke([], [
       { v: c + 1, why: `Při odpočítávání po jedné jsi nejspíš započítal i číslo ${a}. Začni až od čísla, které je hned před ním.` },
       { v: c - 1, why: `O jednu méně — jako bys odečetl ${b + 1}, a ne ${b}.` },
-      { v: c - 10, why: `Ubral jsi navíc celou desítku. Jednotek je ${au}, na odečtení ${b} jich stačí, desítky zůstávají.` },
+      { v: c - 10, why: `Ubral jsi navíc celou desítku. Číslo ${a} má ${pad(au, "JEDNOTKA")}, na odečtení ${b} to stačí, desítky zůstávají.` },
       { v: a + b, why: `To je ${a} + ${b}. Sečetl jsi, ale v příkladu je minus.` },
     ]),
     h0: `Číslo ${a} má ${desA(at)} a ${jedA(au)}. Které z nich se po odečtení ${b} změní?`,
@@ -149,7 +149,7 @@ function minusJednomistneSPrechodem(): Built {
   return {
     q: `${a} ${M} ${b} = ?`,
     ans: c,
-    cands: typicke([{ v: at * 10 + (b - au), why: `Odečetl jsi menší číslici od větší (${b} ${M} ${au}) a desítky nechal. Jednotek je ale jen ${au}, méně než ${b} — musíš přejít přes desítku.` }], [
+    cands: typicke([{ v: at * 10 + (b - au), why: `Odečetl jsi menší číslici od větší (${b} ${M} ${au}) a desítky nechal. Číslo ${a} má ale jen ${pad(au, "JEDNOTKA")}, méně než ${b} — musíš přejít přes desítku.` }], [
       { v: c + 10, why: `Zapomněl jsi, že při přechodu přes desítku jedna desítka ubude.` },
       { v: c + 1, why: `O jednu víc — zkontroluj, kolik ti po odečtení do ${ten} ještě zbývá odečíst.` },
       { v: c - 1, why: `O jednu méně — zkontroluj, kolik ti po odečtení do ${ten} ještě zbývá odečíst.` },
@@ -227,7 +227,7 @@ function dvojmistneSPrechodem(): Built {
   return {
     q: `${a} ${M} ${b} = ?`,
     ans: c,
-    cands: typicke([{ v: (at - bt) * 10 + (bu - au), why: `Odečetl jsi u jednotek menší číslici od větší (${bu} ${M} ${au}). Jednotek je ale jen ${au}, méně než ${bu} — musíš přejít přes desítku.` }], [
+    cands: typicke([{ v: (at - bt) * 10 + (bu - au), why: `Odečetl jsi u jednotek menší číslici od větší (${bu} ${M} ${au}). Číslo ${a} má ale jen ${pad(au, "JEDNOTKA")}, méně než ${bu} — musíš přejít přes desítku.` }], [
       { v: c + 10, why: `Zapomněl jsi, že při přechodu přes desítku jedna desítka ubude.` },
       { v: step1, why: `Odečetl jsi jen desítky čísla ${b}, jednotky ${bu} chybí.` },
       { v: c + 1, why: `O jednu víc — zkontroluj, kolik odečítáš po celé desítce ${ten}.` },

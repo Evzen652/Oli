@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask, TaskVisual } from "@/lib/types";
-import { plural } from "@/lib/czechGrammar";
+import { plural, pad } from "@/lib/czechGrammar";
 import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
 
 // Přepsáno 2026-09-11 (inventura obsahu): původní pevné banky měly 7/7/7 řad,
@@ -241,7 +241,7 @@ function vzdalenost(): Built | null {
     cands: [
       { v: c + 1, why: `Počítal jsi čísla od ${a} do ${b} včetně obou. Vzdálenost tvoří dílky mezi nimi a těch je o jeden méně.` },
       au > bu
-        ? { v: (bt - at) * 10 + (au - bu), why: `U jednotek jsi odečetl menší číslici od větší (${au} ${M} ${bu}). Jednotek má ${b} jen ${bu}, musíš přejít přes desítku.` }
+        ? { v: (bt - at) * 10 + (au - bu), why: `U jednotek jsi odečetl menší číslici od větší (${au} ${M} ${bu}). Číslo ${b} má jen ${pad(bu, "JEDNOTKA")}, musíš přejít přes desítku.` }
         : { v: c + 10, why: `O desítku víc — spočítej znovu, kolik celých desítek ujdeš.` },
       ...shuffle([
         { v: a + b, why: `Sečetl jsi ${a} + ${b}. Vzdálenost na ose zjistíš odčítáním.` },

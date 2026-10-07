@@ -197,7 +197,7 @@ const POOL_L1: PracticeTask[] = [
       "Vzpomeň si, ve kterém měsíci je Štědrý den a Silvestr. Po Silvestru už začíná nový rok.",
     ],
     optionFeedback: {
-      Leden: "Leden je první měsíc, rokem začíná.",
+      Leden: "Leden je první měsíc, začíná jím rok.",
       Červen: "Červen je uprostřed roku, po něm začínají prázdniny.",
       Listopad: "Listopad je předposlední, po něm přijde ještě jeden měsíc.",
     },

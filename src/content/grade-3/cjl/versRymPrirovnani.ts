@@ -184,7 +184,7 @@ const POOL_L1: Uloha[] = [
     w: [
       ["Byl velmi silný.", "Slovo „velmi“ sílu jen zesiluje, ale s ničím ji neporovnává."],
       ["Měl sílu a odvahu.", "Věta jen vyjmenovává dvě vlastnosti, žádné porovnání v ní není."],
-      ["Silou nikoho nepřekonal.", "Věta říká, jak dopadlo srovnání s ostatními, ale neporovnává ho s žádnou konkrétní věcí ani bytostí."],
+      ["Silou nikoho nepřekonal.", "Věta říká, jak dopadlo srovnání s ostatními, ale neporovnává ho se žádnou konkrétní věcí ani bytostí."],
     ],
     h: [
       "Ve všech větách jde o sílu. Hledej tu jedinou, ve které se ta síla k něčemu připodobní.",
@@ -285,7 +285,7 @@ const POOL_L2: Uloha[] = [
     a: "prima",
     w: [
       ["mráz", "„Mráz“ patří k zimě významem, ale končí docela jinak."],
-      ["léto", "„Léto“ je k zimě opakem, a opak rým netvoří."],
+      ["léto", "„Léto“ je k zimě opakem a opak rým netvoří."],
       ["zimní", "„Zimní“ je odvozené od zadaného slova, jeho konec ale zní jinak."],
     ],
     h: [
@@ -434,7 +434,7 @@ const POOL_L3: Uloha[] = [
     ],
     h: [
       "Vypiš si poslední slovo každého řádku pod sebe a teprve pak hledej, která z nich si odpovídají.",
-      "Nejdřív si čtyři koncová slova seřaď pod sebe a očísluj je podle řádků. Potom je porovnávej vždycky po dvou a poslouchej poslední slabiku. Až najdeš obě odpovídající si dvojice, podívej se, jestli jejich čísla sousedí, nebo jsou obden.",
+      "Nejdřív si čtyři koncová slova seřaď pod sebe a očísluj je podle řádků. Potom je porovnávej vždycky po dvou a poslouchej poslední slabiku. Až najdeš obě odpovídající si dvojice, podívej se, jestli jejich čísla sousedí, nebo leží ob jeden řádek.",
     ],
     e: "Konce řádků tvoří dvě dvojice: „pes – les“ a „strom – hrom“. Obě dvojice jsou ze sousedních řádků, a proto se rýmuje první verš s druhým a třetí se čtvrtým.",
   },
@@ -602,7 +602,7 @@ const POOL_L3: Uloha[] = [
     ],
     h: [
       "Dvě možnosti patří k bouřce a jedna má stejný začátek. Rozhoduj podle poslední slabiky.",
-      "Nejzrádnější je tu možnost, která se stejně začíná — na papíře vypadá téměř shodně, jenže za společným začátkem má ještě dvě slabiky navíc. Rým přitom potřebuje shodu na konci, takže se na začátek slova vůbec nedívej.",
+      "Nejzrádnější je tu možnost, která stejně začíná — na papíře vypadá téměř shodně, jenže za společným začátkem má ještě dvě slabiky navíc. Rým přitom potřebuje shodu na konci, takže se na začátek slova vůbec nedívej.",
     ],
     e: "Rým potřebuje shodu na konci slov, tady zakončení -om. Slova spojená s bouřkou ani slovo se stejným začátkem rým netvoří.",
   },

@@ -159,7 +159,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Netopýr má srst a kojí — savec. Tučňák má peří — pták. Úhoř dýchá žábrami — ryba. Mlok vypadá jako ještěrka, ale má holou vlhkou kůži — obojživelník.",
   }),
   match(Q_TRICK, g(["Pavouk", "Pavoukovci"], ["Ptakopysk", "Savci"], ["Želva", "Plazi"], ["Krab", "Korýši"]), {
-    hints: ["Želva i krab mají tvrdý obal. Jen jedna z nich má páteř.", "Pavouk není hmyz, ptakopysk kojí a krab má klepeta. Kam tedy patří želva?"],
+    hints: ["Želva i krab mají tvrdý obal. Jen jeden z nich má páteř.", "Pavouk není hmyz, ptakopysk kojí a krab má klepeta. Kam tedy patří želva?"],
     explanation: "Pavouk má osm nohou — pavoukovec, ne hmyz. Ptakopysk kojí — savec. Želva má krunýř, ale i páteř a šupiny — plaz. Krab má krunýř a klepeta — korýš.",
   }),
   match(Q_SIGN, g(["Včela", "Tři části těla a šest nohou"], ["Štír", "Osm nohou a jedovatý ocas"], ["Chobotnice", "Měkké tělo s chapadly"], ["Krevetka", "Krunýř a mnoho nožek"]), {

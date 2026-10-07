@@ -135,7 +135,7 @@ const L3: PracticeTask[] = [
     explanation: "Stroj i muž mají měkký základ. Rozhoduje životnost: muž je pro živé bytosti, stroj pro věci. Nůž je věc, proto stroj.",
   }),
   choice("Doplň správně: „Studenti přišl_ včas.“", "přišli", [
-    { value: "přišly", why: "Koncovka -y patří k mužským neživotným a ženským jménům (hrady stály, ženy přišly). Studenti jsou životní." },
+    { value: "přišly", why: "Koncovka -y patří k mužským neživotným a ženským jménům (hrady stály, ženy přišly). Slovo „studenti“ je životné." },
     { value: "přišla", why: "„Přišla“ patří k jedné ženě nebo ke středním jménům v množném čísle (města)." },
     { value: "přišlo", why: "„Přišlo“ patří ke střednímu rodu v jednotném čísle (dítě přišlo)." },
   ], {

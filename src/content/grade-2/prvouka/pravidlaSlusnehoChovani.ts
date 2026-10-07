@@ -280,7 +280,7 @@ const POOL_L2: PracticeTask[] = [
     options: ["Odejdu a nechám talíř na stole", "Utřu si pusu ubrouskem a uklidím po sobě talíř", "Otřu si pusu do rukávu", "Nechám drobky rozházené po stole"],
     emoji: "🍽️",
     hints: [
-      "Po jídle patří k slušnému stolování čistá pusa i čistý stůl.",
+      "Po jídle patří ke slušnému stolování čistá pusa i čistý stůl.",
       "Po jídle zůstane na puse omáčka a na stole prázdný talíř. Co s tím udělá slušný strávník? Zkus myslet na obojí — na sebe i na stůl.",
     ],
     optionFeedback: {
@@ -451,12 +451,12 @@ const POOL_L3: PracticeTask[] = [
       "Projdi možnosti jednu po druhé a zeptej se: Je to zdvořilé, nebo to ostatní u stolu ruší? Pozor, hledáš tu jedinou, která ruší.",
     ],
     optionFeedback: {
-      "Poprosit o podání soli": "Poprosit je zdvořilé — to k slušnému stolování patří.",
-      "Utřít si pusu ubrouskem": "Ubrousek k slušnému stolování patří.",
+      "Poprosit o podání soli": "Poprosit je zdvořilé — to ke slušnému stolování patří.",
+      "Utřít si pusu ubrouskem": "Ubrousek ke slušnému stolování patří.",
       "Poděkovat za jídlo": "Poděkování za jídlo je slušné.",
     },
     explanation:
-      "Mlaskání a mluvení s plnou pusou ruší ostatní u stolu a k slušnému stolování nepatří. Prosba, ubrousek i poděkování jsou naopak správné.",
+      "Mlaskání a mluvení s plnou pusou ruší ostatní u stolu a ke slušnému stolování nepatří. Prosba, ubrousek i poděkování jsou naopak správné.",
   },
   {
     question: "Spolužák po hodině sám zvedá těžké židle na lavice. Co uděláš?",
@@ -490,7 +490,7 @@ const POOL_L3: PracticeTask[] = [
       "Rodina kamaráda si rozbité sklenice stejně všimne. Je lepší, když se to dozví od tebe i se slovem „promiňte“, nebo když najdou schované střepy a nikdo se nehlásí?",
     ],
     optionFeedback: {
-      "Schovat střepy a tvářit se, že o ničem nevím": "Schované střepy se najdou, můžou někoho pořezat — a přestanou ti věřit.",
+      "Schovat střepy a tvářit se, že o ničem nevím": "Schované střepy se najdou, můžou někoho pořezat — a lidé ti přestanou věřit.",
       "Svést to na kamarádova sourozence": "Svést vinu na někoho jiného je lež, která ublíží nevinnému.",
       "Rychle odejít, než si toho někdo všimne": "Útěk nic nevyřeší a je nepoctivý.",
     },

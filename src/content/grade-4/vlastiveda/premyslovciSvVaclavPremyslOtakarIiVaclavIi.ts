@@ -292,7 +292,7 @@ const POOL_L3: PracticeTask[] = [
       "Václav III. (poslední Přemyslovec, 1306)",
     ],
     hints: ["Pozor na dva Otakary: I. (1212) byl dřív než II. (1278).", "Václav III. uzavírá rod roku 1306."],
-    explanation: "Bořivoj, sv. Václav (†935), Přemysl Otakar I. s dědičným královstvím (1212), Přemysl Otakar II. na Moravském poli (1278) a Václav III. (1306). Nižší číslo u jména znamená dřívější panovníka.",
+    explanation: "Bořivoj, sv. Václav (†935), Přemysl Otakar I. s dědičným královstvím (1212), Přemysl Otakar II. na Moravském poli (1278) a Václav III. (1306). Nižší číslo u jména znamená dřívějšího panovníka.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",

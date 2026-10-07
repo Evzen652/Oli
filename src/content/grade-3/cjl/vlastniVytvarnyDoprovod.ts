@@ -39,7 +39,7 @@ const L1: PracticeTask[] = [
     { value: "obrázky čtení úplně nahrazují", why: "Obrázky čtení doplňují, nenahrazují." },
   ], { hints: ["Co pomáhá malému čtenáři, když ještě čte pomalu?", "Obrázek napoví, o čem se píše, a malý čtenář se v příběhu lépe vyzná."], explanation: "Obrázky pomáhají dětem porozumět příběhu." }),
   choice("Co uděláš dřív, než začneš kreslit ilustraci?", "pozorně si přečtu text", [
-    { value: "vyberu nejhezčí pastelku", why: "Pastelka počká — nejdřív musíš vědět co kreslit." },
+    { value: "vyberu nejhezčí pastelku", why: "Pastelka počká — nejdřív musíš vědět, co kreslit." },
     { value: "nakreslím, co mě napadne", why: "Obrázek musí sedět k textu." },
     { value: "zjistím, kolik kniha stojí", why: "Cena kreslení nepomůže." },
   ], { hints: ["Jak zjistíš, co máš nakreslit?", "Bez znalosti příběhu nevíš, jak vypadají postavy ani co se děje."], explanation: "Nejdřív si pozorně přečteme text." }),

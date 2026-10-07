@@ -81,7 +81,7 @@ const POOL_L1: TrueFalseItem[] = [
       "Když celý den skoro nepiješ, začne tě bolet hlava a jsi unavený. Co to tělu chybí a kolik by ho mělo dostat?",
     ],
     solution: "Zdravé není pít málo vody — tělo jí potřebuje dost, proto pijeme pravidelně během dne.",
-    feedback: "Tělo potřebuje vody dost. Pít málo zdravé nepovažujeme, věta neplatí.",
+    feedback: "Tělo potřebuje vody dost. Pít málo za zdravé nepovažujeme, věta neplatí.",
   },
   {
     question: "Ovoce je zdravé. Je to pravda?",

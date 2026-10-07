@@ -46,7 +46,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Ovce", "Slepice", "Kráva", "Prase"],
     emoji: "🐔",
     hints: [
-      "K snídani si někdy uvaříme vajíčko — které zvíře ho snese?",
+      "Ke snídani si někdy uvaříme vajíčko — které zvíře ho snese?",
       "Vejce snášejí jen ptáci. Najdi mezi možnostmi jediného ptáka, který žije na dvoře, kdáká a spí v kurníku.",
     ],
     solutionSteps: ["Vejce snáší slepice — je to pták a snáší je skoro každý den do hnízda v kurníku."],
@@ -212,7 +212,7 @@ const POOL_L1: PracticeTask[] = [
     solutionSteps: ["Samice kohouta je slepice — kohout, slepice a kuře patří k sobě."],
     optionFeedback: {
       Kachna: "Kachna je samice kačera, ne kohouta.",
-      Husa: "Husa je samice houseře, ne kohouta.",
+      Husa: "Husa je samice housera, ne kohouta.",
       Koza: "Koza není pták. Je to samice kozla.",
     },
   },
@@ -322,7 +322,7 @@ const POOL_L2: PracticeTask[] = [
     emoji: "🐔",
     hints: [
       "Přiřaď užitek ke slepici — co snáší téměř každý den?",
-      "Slepice je pták. Ráno v kurníku najdeme v hnízdě něco, co si pak uvaříme natvrdo nebo usmažíme k snídani.",
+      "Slepice je pták. Ráno v kurníku najdeme v hnízdě něco, co si pak uvaříme natvrdo nebo usmažíme ke snídani.",
     ],
     solutionSteps: ["Slepice nám dává vejce — snáší je do hnízda v kurníku."],
     optionFeedback: {

@@ -31,7 +31,7 @@ function prumer(count: number, max: number): PracticeTask {
   const serazena = [...nums].sort((a, b) => a - b);
   const chyby = [
     { value: sum, why: `${sum} je součet. Průměr dostaneš, když součet vydělíš počtem čísel.` },
-    ...(sum % (count - 1) === 0 ? [{ value: sum / (count - 1), why: `Součet se dělil ${POCET_7P[count - 1]}. Čísel je ale ${POCET_1P[count]}.` }] : []),
+    ...(sum % (count - 1) === 0 ? [{ value: sum / (count - 1), why: `Součet se dělil ${POCET_7P[count - 1]}. ${count <= 4 ? "Čísla jsou" : "Čísel je"} ale ${POCET_1P[count]}.` }] : []),
     ...(count % 2 === 1 ? [{ value: serazena[Math.floor(count / 2)], why: "To je prostřední číslo, když čísla seřadíš. Průměr se ale počítá ze součtu všech čísel." }] : []),
     { value: avg + 1, why: `Zkouška: ${count} × ${avg + 1} = ${count * (avg + 1)}, ale součet je ${sum}.` },
     { value: avg - 1, why: `Zkouška: ${count} × ${avg - 1} = ${count * (avg - 1)}, ale součet je ${sum}.` },
@@ -39,7 +39,7 @@ function prumer(count: number, max: number): PracticeTask {
   // Kontext podle součtu: stejná čísla = stejná úloha (jinak by se malá nápověda opakovala u různých zadání).
   return ciselnaUloha(KONTEXT[sum % KONTEXT.length](seznam(nums)), avg, chyby, [
     `Nejdřív sečti všechna čísla: ${nums.join(" + ")}. Kolik vyjde?`,
-    `Průměr = součet všech čísel ÷ jejich počet. Čísel je ${POCET_1P[count]}, takže celý součet vyděl ${POCET_7P[count]}.`,
+    `Průměr = součet všech čísel ÷ jejich počet. ${count <= 4 ? "Čísla jsou" : "Čísel je"} ${POCET_1P[count]}, takže celý součet vyděl ${POCET_7P[count]}.`,
   ], [
     `Součet: ${nums.join(" + ")} = ${sum}`,
     `Průměr: ${sum} ÷ ${count} = ${avg}`,

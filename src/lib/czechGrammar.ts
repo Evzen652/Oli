@@ -345,5 +345,39 @@ export function adj(n: number, key: string): string {
  * @example phrase(1, "STEJNÝ", "DÍL") → "1 stejný díl"
  */
 export function phrase(n: number, adjKey: string, nounKey: string): string {
-  return `${n} ${adj(n, adjKey)} ${form(n, nounKey)}`;
+  return `${n} ${adjRod(n, adjKey, genderOf(nounKey, n))} ${form(n, nounKey)}`;
+}
+
+/**
+ * `adj()` zná jen mužský neživotný rod. Pro ženský a střední rod se tvar
+ * odvodí z kmene („stejn-ý"): 1 stejná/stejné, 2–4 stejné/stejná.
+ * Do 2026-10-07 `phrase(3, "STEJNÝ", "ČÍSLO")` vracelo „3 stejné čísla".
+ * Mužský životný (stejní, velcí…) tu není — v obsahu se nepoužívá.
+ */
+function adjRod(n: number, key: string, rod: Gender | null): string {
+  const forms = ADJ_FORMS[key as keyof typeof ADJ_FORMS];
+  if (!forms || (rod !== "f" && rod !== "n")) return adj(n, key);
+  const kmen = forms[0].slice(0, -1);
+  const sg = rod === "f" ? `${kmen}á` : `${kmen}é`;
+  const pl = rod === "f" ? `${kmen}é` : `${kmen}á`;
+  return plural(n, sg, pl, forms[2]);
+}
+
+/**
+ * Předložka „z/ze" před číslem zapsaným číslicemi. Vokalizace se řídí tím,
+ * jak se číslo VYSLOVÍ v 2. pádě: „ze čtyř", „ze sedmi", „ze tří", „ze dvou",
+ * „ze šesti", „ze sta" — ale „z pěti", „z osmi", „z jedenácti", „z tisíce".
+ * Přidáno 2026-10-07: šablony psaly vždy „z" („polovina z 4 cm").
+ *
+ * Rozhoduje první vyslovené slovo: tisíce (1000–1999 → „tisíce", z),
+ * jinak stovky, desítky, jednotky.
+ */
+export function zNebo(n: number): "z" | "ze" {
+  const a = Math.abs(Math.trunc(n));
+  // Skupina, která se vysloví jako první (tisíce → jejich počet, jinak samo číslo).
+  const prvni = a >= 1000 ? Math.floor(a / 1000) : a;
+  if (a >= 1000 && prvni === 1) return "z"; // „z tisíce"
+  if (prvni >= 100) return [1, 2, 3, 4, 6, 7].includes(Math.floor(prvni / 100)) ? "ze" : "z"; // ze sta, ze dvou set, ze tří set…
+  if (prvni >= 20) return [2, 3, 4, 6, 7].includes(Math.floor(prvni / 10)) ? "ze" : "z"; // ze dvaceti, ze třiceti, ze čtyřiceti…
+  return [2, 3, 4, 6, 7, 12, 13, 14, 16, 17].includes(prvni) ? "ze" : "z";
 }

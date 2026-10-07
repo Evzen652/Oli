@@ -487,7 +487,7 @@ const POOL_L3: Uloha[] = [
     q: "Který z těchto textů je hádanka?", a: "Kdo má bodliny a v zimě spí pod listím?", emoji: "🦔",
     d: [
       ["Drak se třemi hlavami hlídal princeznu.", "To je úryvek z pohádky. Vystupují v něm postavy, nic se nehádá."],
-      ["Sněží, sněží celou noc, / bílá zima má svou moc.", "Tyto verše malují zimní obraz, jsou to verše básně. Nic se v nich neptá."],
+      ["Sněží, sněží celou noc, / bílá zima má svou moc.", "Tyto verše malují zimní obraz, jsou to verše básně. Na nic se v nich neptá."],
       ["Skáču, skáču, raz a dva, / kdo mě chytí, vyhrává.", "To je říkanka ke hře na honěnou. Nic nepopisuje k uhodnutí."],
     ],
     h: [

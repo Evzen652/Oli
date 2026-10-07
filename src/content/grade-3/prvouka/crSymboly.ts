@@ -573,7 +573,7 @@ const POOL_L3: PracticeTask[] = [
     "Co se stalo dřív — vznik Československa (28. října 1918), nebo konec druhé světové války (8. května 1945)?",
     "Dřív vzniklo Československo",
     [
-      { o: "Dřív skončila druhá světová válka", why: "Válka skončila roku 1945, tedy o 27 let později než vznikl společný stát." },
+      { o: "Dřív skončila druhá světová válka", why: "Válka skončila roku 1945, tedy o 27 let později, než vznikl společný stát." },
       { o: "Obě události se staly ve stejném roce", why: "Letopočty se liší: 1918 a 1945 dělí celé generace." },
       { o: "Z uvedených dat to nejde poznat", why: "Poznat to lze snadno — stačí porovnat oba letopočty jako běžná čísla." },
     ],

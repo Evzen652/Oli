@@ -153,7 +153,7 @@ const POOL_L2: PracticeTask[] = [
     { value: "Listí shodí vítr", why: "Vítr pomůže, ale strom listy odhazuje sám." },
     { value: "Aby se zahřály kořeny", why: "Listí trochu kořeny přikryje, ale hlavní důvod je voda." },
   ], {
-    hints: ["Z listů se pořád vypařuje voda. Kde ji strom vezme, když je zem zmrzlá?", "V zimě kořeny ze zmrzlé půdy vodu nedostanou. Strom proto zbaví se části, kudy by ji ztrácel."],
+    hints: ["Z listů se pořád vypařuje voda. Kde ji strom vezme, když je zem zmrzlá?", "V zimě kořeny ze zmrzlé půdy vodu nedostanou. Strom se proto zbaví části, kudy by ji ztrácel."],
     explanation: "Listy vypařují hodně vody. V zimě je půda zmrzlá a kořeny vodu nedostanou, a tak strom listy shodí, aby nevyschl. Na jaře vyraší nové z pupenů.",
   }),
   choice("Jak se šíří plody javoru?", "Křidélka se točí a nese je vítr", [

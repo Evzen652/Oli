@@ -97,7 +97,7 @@ const POOL_L1: PracticeTask[] = [
     [
       ["Český král ze středověku", "Krakonoš není skutečný panovník z dějin — je to bytost z pověstí, která žije v horách."],
       ["Blanický rytíř, který se probudil", "Blaničtí rytíři spí v hoře Blaník a pořád čekají. Krakonoš s nimi nemá nic společného."],
-      ["Syn Přemysla Oráče", "Přemyslovi potomci byli skuteční knížata. Krakonoš je nadpřirozená bytost z hor."],
+      ["Syn Přemysla Oráče", "Přemyslovi potomci byli skutečná knížata. Krakonoš je nadpřirozená bytost z hor."],
     ],
     "Krakonoš není člověk — je to nadpřirozená bytost z pověstí.",
     "Jeho jméno se podobá názvu našeho nejvyššího pohoří. Tam podle pověstí poroučí počasí i přírodě. Která možnost to vystihuje?",

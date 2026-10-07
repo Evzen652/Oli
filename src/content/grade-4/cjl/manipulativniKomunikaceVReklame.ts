@@ -141,7 +141,7 @@ const L1: PracticeTask[] = [
     explanation: "Rozumný zákazník porovná výrobek s jinými a zjistí si o něm víc, než koupí.",
   }),
   choice("Reklama na hračku běží hlavně při dětských pořadech. Proč?", "děti pak hračku chtějí po rodičích", [
-    { value: "dospělí se na televizi nedívají", why: "Dívají, ale hračky chtějí hlavně děti." },
+    { value: "dospělí se na televizi nedívají", why: "Dívají se, ale hračky chtějí hlavně děti." },
     { value: "jindy je reklama zakázaná", why: "Zakázaná není, jen by nepřinesla tolik." },
     { value: "hračky jsou zadarmo", why: "Hračky zadarmo nejsou." },
   ], {

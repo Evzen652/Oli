@@ -31,6 +31,6 @@ export function tvarUlohy(
         `Doplň do věty „${veta}“ tvar slova „${slovo}“.`,
         `„${slovo}“ se skloňuje podle vzoru ${vzor}. Ten má v tomto pádě tvar „${tvarVzoru}“ — stejnou koncovku dej i slovu „${slovo}“.`,
       ],
-      explanation: `Ve větě „${veta.replace("…", spravne)}“ je ${pad}. Vzor ${vzor} tu má tvar „${tvarVzoru}“, proto „${spravne}“.`,
+      explanation: `Ve větě „${veta.replace("…", spravne)}“ je slovo „${spravne}“ ${v} ${pad}. Vzor ${vzor} tu má tvar „${tvarVzoru}“, proto „${spravne}“.`,
     });
 }

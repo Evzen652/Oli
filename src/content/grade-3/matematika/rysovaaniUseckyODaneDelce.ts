@@ -1,6 +1,6 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { choice, shuffle, type Distractor } from "../_shared";
-import { plural, isAre } from "@/lib/czechGrammar";
+import { plural, isAre, zNebo } from "@/lib/czechGrammar";
 
 // Přepsáno 2026-09-11 (inventura obsahu): úrovně měly jen 8/8/12 ručních otázek,
 // všechny úlohy sdílely stejnou dvojici nápověd, chybné možnosti neměly zpětnou
@@ -54,7 +54,7 @@ function odNuly(n: number, i: number): PracticeTask {
       `Začátek úsečky je u nuly, konec u čísla ${n}. Co ta čísla na pravítku měří?`,
       `Když bod ${X} leží přesně u nuly, délka úsečky ${X}${Y} se přečte rovnou u bodu ${Y}. Velká čísla na pravítku jsou centimetry, malé dílky mezi nimi milimetry. Kolik celých centimetrů je od nuly k číslu ${n}?`,
     ],
-    explanation: `Bod ${X} leží u nuly, takže délku čteme přímo u bodu ${Y}: od 0 do ${n} je ${n} cm. Proto |${X}${Y}| = ${n} cm.`,
+    explanation: `Bod ${X} leží u nuly, takže délku čteme přímo u bodu ${Y}: od 0 do ${n} ${isAre(n)} ${n} cm. Proto |${X}${Y}| = ${n} cm.`,
   }), 0, n);
 }
 
@@ -158,7 +158,7 @@ function cmMmNaMm([c, m]: [number, number], i: number): PracticeTask {
   ]), {
     hints: [
       `Kolik milimetrů je ${c} cm? A co pak uděláš s ${m} mm navíc?`,
-      `Jeden centimetr má deset milimetrů, takže ${c} cm je ${c} krát deset milimetrů. K tomu přičti ještě ${m} mm. Na pravítku to je ${c} ${plural(c, "velký dílek", "velké dílky", "velkých dílků")} a k tomu ${m} ${plural(m, "malý", "malé", "malých")}.`,
+      `Jeden centimetr má deset milimetrů, takže ${c} cm je ${c}krát deset milimetrů. K tomu přičti ještě ${m} mm. Na pravítku to ${isAre(c)} ${c} ${plural(c, "velký dílek", "velké dílky", "velkých dílků")} a k tomu ${m} ${plural(m, "malý", "malé", "malých")}.`,
     ],
     explanation: `${c} cm = ${10 * c} mm, protože každý centimetr má 10 mm. K tomu ${m} mm: ${10 * c} + ${m} = ${x} mm.`,
   });
@@ -175,9 +175,9 @@ function ctiMm([c, m]: [number, number], i: number): PracticeTask {
   ]), {
     hints: [
       `Číslo ${c} na pravítku znamená ${c} cm. Kolik milimetrů to je a kolik dílků ještě přibude?`,
-      `Každý centimetr má deset milimetrových dílků. Od nuly k číslu ${c} je tedy ${c} krát deset dílků a od čísla ${c} pak odpočítej ještě ${dilky(m)}. Oba počty sečti.`,
+      `Každý centimetr má deset milimetrových dílků. Od nuly k číslu ${c} je tedy ${c}krát deset dílků a od čísla ${c} pak odpočítej ještě ${dilky(m)}. Oba počty sečti.`,
     ],
-    explanation: `Od nuly k číslu ${c} je ${c} cm = ${10 * c} mm. K tomu ${dilky(m)} za číslem ${c}, tedy ${m} mm: ${10 * c} + ${m} = ${x} mm.`,
+    explanation: `Od nuly k číslu ${c} ${isAre(c)} ${c} cm = ${10 * c} mm. K tomu ${dilky(m)} za číslem ${c}, tedy ${m} mm: ${10 * c} + ${m} = ${x} mm.`,
   }), 0, c + m / 10);
 }
 
@@ -249,15 +249,15 @@ function polovina(c: number, i: number): PracticeTask {
   ]), {
     hints: sude
       ? [
-        `Nejdřív zjisti, kolik je polovina z ${c} cm. V jakých jednotkách se ale otázka ptá?`,
-        `Bod S dělí úsečku ${X}${Y} na dvě stejné části, takže ${X}S je polovina z ${c} cm. Tu polovinu pak převeď na milimetry — jeden centimetr má deset milimetrů.`,
+        `Nejdřív zjisti, kolik je polovina ${zNebo(c)} ${c} cm. V jakých jednotkách se ale otázka ptá?`,
+        `Bod S dělí úsečku ${X}${Y} na dvě stejné části, takže ${X}S je polovina ${zNebo(c)} ${c} cm. Tu polovinu pak převeď na milimetry — jeden centimetr má deset milimetrů.`,
       ]
       : [
         `Polovinu z ${c} cm v celých centimetrech nevyjádříš. Zkus nejdřív převést na milimetry.`,
         `Převeď ${c} cm na milimetry, každý centimetr má deset milimetrů. Bod S dělí úsečku ${X}${Y} na dvě stejné části, takže počet milimetrů pak rozděl na dvě stejné poloviny.`,
       ],
     explanation: sude
-      ? `Polovina z ${c} cm je ${c / 2} cm. V milimetrech: ${c / 2} cm = ${x} mm. Proto |${X}S| = ${x} mm.`
+      ? `Polovina ${zNebo(c)} ${c} cm ${isAre(c / 2)} ${c / 2} cm. V milimetrech: ${c / 2} cm = ${x} mm. Proto |${X}S| = ${x} mm.`
       : `${c} cm = ${10 * c} mm. Polovina z ${10 * c} mm je ${x} mm, protože ${x} + ${x} = ${10 * c}. Proto |${X}S| = ${x} mm.`,
   });
 }

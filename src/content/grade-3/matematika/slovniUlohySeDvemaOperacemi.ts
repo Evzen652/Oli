@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { plural, pad, isAre } from "@/lib/czechGrammar";
+import { plural, pad, isAre, zNebo } from "@/lib/czechGrammar";
 import { choice, pick, type Distractor } from "../_shared";
 import { napisCisla } from "@/content/_zapisCisla";
 
@@ -38,7 +38,7 @@ function autobus(): Uloha {
     q: `V autobusu ${plural(a, "jel", "jeli", "jelo")} ${a} ${cest(a)}. Na zastávce jich ${b} ${vystoupilo} a ${c} ${plural(c, "nastoupil", "nastoupili", "nastoupilo")}. Kolik cestujících jede dál?`,
     a: x,
     calc: `${a} − ${b} + ${c}`,
-    h0: `Nejdřív zjisti, kolik cestujících zůstalo, když jich z ${a} ${vystoupilo} ${b}. Nastupující (${c}) přidáš až potom.`,
+    h0: `Nejdřív zjisti, kolik cestujících zůstalo, když jich ${zNebo(a)} ${a} ${vystoupilo} ${b}. Nastupující (${c}) přidáš až potom.`,
     h1: `Nejdřív od ${a} odečti ${b}, protože ti, kdo vystoupili, už v autobusu nejsou. Potom k mezivýsledku přičti ${c}, protože tolik cestujících nastoupilo a v autobusu jich přibylo.`,
     e: `Nejdřív odečteme ty, kdo vystoupili: ${a} − ${b} = ${a - b}. Pak přičteme ty, kdo nastoupili: ${a - b} + ${c} = ${x}. Proto v autobusu teď ${plural(x, "jede", "jedou", "jede")} ${x} ${cest(x)}.`,
     d: [
@@ -200,7 +200,7 @@ function sesity(): Uloha {
     e: `Sešity stály ${n} × ${p} = ${cena} Kč. S pravítkem dohromady ${cena} + ${q} = ${x} Kč.`,
     d: [
       { value: String(cena), why: `${cena} Kč stály jen sešity — přičti ještě pravítko za ${q} Kč.` },
-      { value: String(n + p + q), why: `Všechna čísla jsi sečetl. Cena ${p} Kč platí pro každý z ${n} sešitů, proto se násobí.` },
+      { value: String(n + p + q), why: `Všechna čísla jsi sečetl. Cena ${p} Kč platí pro každý ${zNebo(n)} ${n} sešitů, proto se násobí.` },
       { value: String(n * (p + q)), why: `Pravítko jsi započítal ${n}krát, ale Jana koupila jen jedno.` },
       { value: String(p + q), why: `To je cena jednoho sešitu a pravítka — sešitů je ale ${n}.` },
     ],
@@ -268,7 +268,7 @@ function babicka(): Uloha {
     h1: `Nejdřív vynásob ${s} × ${q} — tolik jablek dostala vnoučata dohromady. Potom přičti ${z}, protože i ${zbyla}, babička na začátku měla. Počítáš vlastně odzadu.`,
     e: `Vnoučata dostala dohromady ${s} × ${q} = ${rozdala} ${jab(rozdala)}. Když přičteme i ${zbyla}, babička měla ${rozdala} + ${z} = ${x} ${jab(x)}.`,
     d: [
-      { value: String(rozdala), why: "Zapomněl jsi na jablka, která babičce zbyla — i ta na začátku měla." },
+      { value: String(rozdala), why: "Zapomněl jsi na jablka, která babičce zbyla. I ta babička na začátku měla." },
       { value: String(rozdala - z), why: "Zbylá jablka se neodečítají — babička je na začátku také měla, takže se přičítají." },
       { value: String(s + q + z), why: "Čísla jsi jen sečetl. Každé vnouče dostalo stejně, proto se počet vnoučat a počet jablek pro jedno vnouče násobí." },
       { value: String(s * (q + z)), why: "Zbylá jablka jsi započítal každému vnoučeti — zbyla ale jen jednou." },
@@ -334,7 +334,7 @@ function cteni(): Uloha {
     a: j,
     calc: `(${s} − ${p}) ÷ ${d}`,
     h0: `Nejdřív zjisti, kolik stran Janě ještě zbývá: kniha má ${s}, přečetla ${p}. Pak teprve počítej po ${d} stranách.`,
-    h1: `Nejdřív od ${s} odečti ${p} — to je nepřečtený zbytek. Potom zbytek vyděl číslem ${d}, protože každý den ubude ${d} ${plural(d, "strana", "strany", "stran")}. Vyjde počet dní.`,
+    h1: `Nejdřív od ${s} odečti ${p} — to je nepřečtený zbytek. Potom zbytek vyděl číslem ${d}, protože každý den ${d >= 2 && d <= 4 ? "ubudou" : "ubude"} ${d} ${plural(d, "strana", "strany", "stran")}. Vyjde počet dní.`,
     e: `Zbývá ${s} − ${p} = ${zbyva} stran. Po ${d} stranách denně to je ${zbyva} ÷ ${d} = ${j} ${dni(j)}. Zkouška: ${j} × ${d} = ${zbyva}.`,
     d: [
       { value: String(s / d), why: `Počítal jsi celou knihu — Jana už ale ${p} ${str(p)} přečetla.` },

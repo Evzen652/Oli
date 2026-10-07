@@ -424,7 +424,7 @@ const EXTRA_L3: PracticeTask[] = [
 ];
 
 const DOPLNEK: Record<number, string> = {
-  "1": "Pomůže ti, jak těžké bylo materiál získat: kámen ležel všude, kov se musel nejdřív naučit tavit.",
+  "1": "Pomůže ti, jak těžké bylo materiál získat: kámen ležel všude, tavit kov se lidé museli nejdřív naučit.",
   "2": "Sleduj, jak se měnil život: nejdřív lidé za potravou putovali, pak se usadili u polí a až potom tavili kovy.",
   "3": "U národů se ptej, kdo koho vystřídal a kdo jsou předkové dnešních Čechů — ti přišli nejpozději."
 };

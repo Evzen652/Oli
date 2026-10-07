@@ -84,16 +84,17 @@ function veVete([tema, veta, jm, jedne, d]: (typeof VE_VETE)[number]): PracticeT
 }
 
 // ── L3a: stejné slovo — vlastní, nebo obecné jméno? ──────────────────────────
+// `znamena` je ve 4. pádě — stojí vždy po „znamená" (znamená co).
 interface Dvojznacne { W: string; a: string; spatne: string[]; znamena: string; kazde: string; e: string }
 const DVOJZNACNA: Dvojznacne[] = [
   { W: "LIŠKA", a: "Pan LIŠKA opravuje auta.", spatne: ["V lese běžela LIŠKA.", "Ta LIŠKA má huňatý ocas.", "Viděli jsme LIŠKU u nory."], znamena: "zvíře", kazde: "každou lišku", e: "Ve větě „Pan Liška opravuje auta.“ je Liška příjmení jednoho určitého pána. Proto je to vlastní jméno s velkým L." },
   { W: "ZAJÍC", a: "Náš soused pan ZAJÍC má psa.", spatne: ["Na poli skáče ZAJÍC.", "Ten ZAJÍC má dlouhé uši.", "Pes honil ZAJÍCE."], znamena: "zvíře", kazde: "každého zajíce", e: "Ve větě „Náš soused pan Zajíc má psa.“ je Zajíc příjmení souseda. Proto je to vlastní jméno s velkým Z." },
-  { W: "MOST", a: "Strýc bydlí ve městě MOST.", spatne: ["Přes řeku vede MOST.", "Ten MOST je kamenný.", "Auta jedou přes MOST."], znamena: "stavba přes řeku", kazde: "každý most", e: "Ve větě „Strýc bydlí ve městě Most.“ je Most název jednoho určitého města. Proto je to vlastní jméno s velkým M." },
+  { W: "MOST", a: "Strýc bydlí ve městě MOST.", spatne: ["Přes řeku vede MOST.", "Ten MOST je kamenný.", "Auta jedou přes MOST."], znamena: "stavbu přes řeku", kazde: "každý most", e: "Ve větě „Strýc bydlí ve městě Most.“ je Most název jednoho určitého města. Proto je to vlastní jméno s velkým M." },
   { W: "TÁBOR", a: "Město TÁBOR leží v jižních Čechách.", spatne: ["V létě jedu na TÁBOR.", "Na TÁBOŘE jsme spali ve stanu.", "Ten TÁBOR byl u lesa."], znamena: "letní pobyt dětí", kazde: "každý tábor", e: "Ve větě „Město Tábor leží v jižních Čechách.“ je Tábor název města. Proto je to vlastní jméno s velkým T." },
   { W: "PÍSEK", a: "Babička žije ve městě PÍSEK.", spatne: ["Na pláži je jemný PÍSEK.", "Děti si hrají v PÍSKU.", "Tatínek přivezl PÍSEK na stavbu."], znamena: "drobná zrníčka kamínků", kazde: "všechen písek", e: "Ve větě „Babička žije ve městě Písek.“ je Písek název jednoho určitého města. Proto je to vlastní jméno s velkým P." },
-  { W: "KOS", a: "Pan KOS je náš trenér.", spatne: ["Na stromě zpívá KOS.", "Ten KOS je celý černý.", "Viděli jsme KOSA na zahradě."], znamena: "pták", kazde: "každého kosa", e: "Ve větě „Pan Kos je náš trenér.“ je Kos příjmení trenéra. Proto je to vlastní jméno s velkým K." },
-  { W: "VRÁNA", a: "Pan VRÁNA nás učí zpívat.", spatne: ["Na poli sedí VRÁNA.", "Ta VRÁNA hlasitě krákala.", "Kočka pozorovala VRÁNU."], znamena: "pták", kazde: "každou vránu", e: "Ve větě „Pan Vrána nás učí zpívat.“ je Vrána příjmení učitele. Proto je to vlastní jméno s velkým V." },
-  { W: "MRÁZ", a: "Pan MRÁZ prodává zeleninu.", spatne: ["V noci byl velký MRÁZ.", "Ten MRÁZ štípal do tváří.", "Ráno přišel první MRÁZ."], znamena: "velká zima", kazde: "každý mráz", e: "Ve větě „Pan Mráz prodává zeleninu.“ je Mráz příjmení prodavače. Proto je to vlastní jméno s velkým M." },
+  { W: "KOS", a: "Pan KOS je náš trenér.", spatne: ["Na stromě zpívá KOS.", "Ten KOS je celý černý.", "Viděli jsme KOSA na zahradě."], znamena: "ptáka", kazde: "každého kosa", e: "Ve větě „Pan Kos je náš trenér.“ je Kos příjmení trenéra. Proto je to vlastní jméno s velkým K." },
+  { W: "VRÁNA", a: "Pan VRÁNA nás učí zpívat.", spatne: ["Na poli sedí VRÁNA.", "Ta VRÁNA hlasitě krákala.", "Kočka pozorovala VRÁNU."], znamena: "ptáka", kazde: "každou vránu", e: "Ve větě „Pan Vrána nás učí zpívat.“ je Vrána příjmení učitele. Proto je to vlastní jméno s velkým V." },
+  { W: "MRÁZ", a: "Pan MRÁZ prodává zeleninu.", spatne: ["V noci byl velký MRÁZ.", "Ten MRÁZ štípal do tváří.", "Ráno přišel první MRÁZ."], znamena: "velkou zimu", kazde: "každý mráz", e: "Ve větě „Pan Mráz prodává zeleninu.“ je Mráz příjmení prodavače. Proto je to vlastní jméno s velkým M." },
 ];
 
 function dvojznacne(x: Dvojznacne): PracticeTask {

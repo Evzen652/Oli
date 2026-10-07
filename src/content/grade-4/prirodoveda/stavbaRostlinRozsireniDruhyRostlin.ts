@@ -182,7 +182,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   match("Spoj rostlinu se zvířetem, které jí pomáhá.", p(["Jabloň", "Včela ji opylí"], ["Dub", "Sojka roznese žaludy"], ["Borůvka", "Pták sní plody a roznese semena"], ["Lopuch", "Zvíře odnese plody v srsti"]), {
     hints: ["Která rostlina potřebuje, aby jí někdo přenesl pyl?", "Sojka schovává žaludy do země a na některé zapomene. Borůvky sezobe pták a lopuch jezdí na liškách a psech."],
-    explanation: "Včela opylí květy jabloně. Sojka zahrabává žaludy a z zapomenutých vyrostou duby. Pták sní borůvky a semena vyloučí jinde. Lopuch se přichytí na srst a zvíře ho odnese.",
+    explanation: "Včela opylí květy jabloně. Sojka zahrabává žaludy a ze zapomenutých vyrostou duby. Pták sní borůvky a semena vyloučí jinde. Lopuch se přichytí na srst a zvíře ho odnese.",
   }),
   match("Spoj pokus se semínky s tím, co se stane.", p(["Semínka na suché vatě", "Nevyklíčí, chybí voda"], ["Semínka na mokré vatě v lednici", "Klíčí velmi pomalu, je chladno"], ["Semínka na mokré vatě v teple", "Rychle vyklíčí"], ["Semínka úplně pod vodou", "Bez vzduchu nevyklíčí a shnijí"]), {
     hints: ["Semínko ke klíčení potřebuje vodu, teplo a vzduch.", "V každém pokusu něco chybí — až na jeden. Který pokus má všechno?"],

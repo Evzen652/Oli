@@ -645,7 +645,7 @@ function vzkazTask(v: Vzkaz): PracticeTask {
     v.chyby,
     [
       `Nejdřív si z toho, co se stalo, vypiš tři věci: ${v.potreba}. Pak teprve čti vzkazy.`,
-      `Dobrý vzkaz nese všechny tři údaje. U každé možnosti si odškrtni ${v.potreba} — u tří možností jeden údaj schází nebo je nahrazený něčím mlhavým.`,
+      `Dobrý vzkaz nese všechny tři údaje. U každé možnosti si odškrtni, ${v.potreba} — u tří možností jeden údaj schází nebo je nahrazený něčím mlhavým.`,
     ],
     `Tenhle vzkaz musí nést tři údaje: ${v.potreba}. Když jeden chybí, ten, komu vzkaz patří, podle něj nemůže nic udělat.`,
     v.emoji,

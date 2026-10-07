@@ -189,3 +189,27 @@ describe("úplnost rejstříku rodů", () => {
     expect(bezRodu).toEqual([]);
   });
 });
+
+describe("zNebo — předložka z/ze před číslem", () => {
+  it("vokalizuje podle vyslovené číslovky", async () => {
+    const { zNebo } = await import("@/lib/czechGrammar");
+    const ze = [2, 3, 4, 6, 7, 12, 13, 14, 16, 17, 20, 34, 46, 48, 60, 75, 100, 250, 4000, 7000];
+    const z = [1, 5, 8, 9, 10, 11, 15, 18, 19, 50, 85, 90, 500, 800, 1000, 1500];
+    for (const n of ze) expect(zNebo(n), String(n)).toBe("ze");
+    for (const n of z) expect(zNebo(n), String(n)).toBe("z");
+  });
+});
+
+describe("phrase — rod podstatného jména", () => {
+  it("střední a ženský rod: 3 stejná čísla, 1 stejná část", () => {
+    expect(phrase(3, "STEJNÝ", "ČÍSLO")).toBe("3 stejná čísla");
+    expect(phrase(1, "STEJNÝ", "ČÍSLO")).toBe("1 stejné číslo");
+    expect(phrase(5, "STEJNÝ", "ČÍSLO")).toBe("5 stejných čísel");
+    expect(phrase(1, "STEJNÝ", "ČÁST")).toBe("1 stejná část");
+    expect(phrase(3, "STEJNÝ", "ČÁST")).toBe("3 stejné části");
+  });
+  it("mužský neživotný beze změny", () => {
+    expect(phrase(3, "STEJNÝ", "DÍL")).toBe("3 stejné díly");
+    expect(phrase(1, "STEJNÝ", "DÍL")).toBe("1 stejný díl");
+  });
+});

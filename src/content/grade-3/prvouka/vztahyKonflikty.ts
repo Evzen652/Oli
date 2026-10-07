@@ -309,7 +309,7 @@ const POOL_L2: PracticeTask[] = [
     "Spolužák tě o přestávce fyzicky uhodí. Jak správně zareaguješ?",
     "Řeknu to učiteli nebo jinému dospělému",
     [
-      ["Uhodím ho zpátky", "Oplácením vznikne rvačka a potrestaní budete oba."],
+      ["Uhodím ho zpátky", "Oplácením vznikne rvačka a potrestáni budete oba."],
       ["Nic neřeknu a budu se schovávat", "Schovávání problém neřeší — spolužák může udeřit znovu."],
       ["Budu si myslet, že jsem si to zasloužil", "Za ránu nemůže ten, kdo ji dostal. Vinu si nedávej."],
     ],
@@ -517,7 +517,7 @@ const POOL_L3: PracticeTask[] = [
     "Rozdělit si dny v týdnu, aby se obě skupiny pravidelně vystřídaly",
     [
       ["Hřiště dostane ta skupina, která je početnější", "Počet lidí nerozhoduje o právu. Menší skupina by nehrála nikdy."],
-      ["Hřiště dostane skupina, která tam přiběhne dřív", "Závod ve běhu je nebezpečný a vyhrávali by pořád ti nejrychlejší."],
+      ["Hřiště dostane skupina, která tam přiběhne dřív", "Závod v běhu je nebezpečný a vyhrávali by pořád ti nejrychlejší."],
       ["Nebude hrát nikdo, aby se nikdo nezlobil", "Zákaz pro všechny nikoho neuspokojí — je to prohra pro obě strany."],
     ],
     "Hřiště je jedno, ale přestávek je v týdnu víc.",

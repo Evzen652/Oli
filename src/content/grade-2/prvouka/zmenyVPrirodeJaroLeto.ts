@@ -516,7 +516,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     emoji: "🏊",
     hints: [
-      "Porovnej počasí na jaře a v létě — kdy bývá nejvíc teplo?",
+      "Porovnej počasí na jaře a v létě — kdy bývá nejtepleji?",
       "Spoj dvě věci: jaké je počasí v létě a k čemu nám v takovém počasí voda slouží. Na jaře bývá voda ještě studená.",
     ],
     explanation:
