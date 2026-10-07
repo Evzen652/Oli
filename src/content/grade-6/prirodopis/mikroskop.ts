@@ -443,8 +443,12 @@ function l2Zvetseni(): PracticeTask | null {
     [
       { value: x(ok + ob), why: `Tady jsou čísla sečtená: ${c(ok)} + ${c(ob)}. Zvětšení okuláru a objektivu se násobí, ne sčítá.` },
       { value: x(ok * pred), why: `To je zvětšení s původním objektivem ${x(pred)}. Po přepnutí se počítá s novým objektivem.` },
-      { value: x(ob), why: "To je jen zvětšení nového objektivu. Obraz zvětšuje ještě okulár, proto se obě čísla násobí." },
+      // `buildChoiceTask` bere první tři různé distraktory. Dokud byl tenhle
+      // čtvrtý, do nabídky se skoro nedostal a klíč byl NEJVĚTŠÍ číslo ze
+      // čtyř — stačilo vybrat největší (zjištěno 2026-10-07,
+      // `PO_TYPECH=1 npm run check:length`). „Jen objektiv" je záloha.
       { value: x(z * 10), why: `Na konci přebývá nula. Znásob ${c(ok)} · ${c(ob)} znovu a pečlivě spočítej nuly.` },
+      { value: x(ob), why: "To je jen zvětšení nového objektivu. Obraz zvětšuje ještě okulár, proto se obě čísla násobí." },
     ],
     {
       hints: [

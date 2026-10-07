@@ -249,9 +249,12 @@ const L3: PracticeTask[] = [
     explanation: "Oblečení je vzhled — věta říká, jak Pavla vypadá.",
   }),
   choice("Jak poznáš, že je postava lakomá, i když to autor nenapíše?", "podle toho, že se nikdy o nic nerozdělí a počítá každou korunu", [
-    { value: "podle barvy jejích vlasů", why: "Vlasy o povaze nic neřeknou." },
-    { value: "podle jejího jména", why: "Jméno o povaze nic neříká." },
-    { value: "podle toho, kde bydlí", why: "Bydliště o povaze nic neříká." },
+    // Dřív „podle barvy vlasů / jména / bydliště" — nesmyslné a o 60 %
+    // kratší než klíč, takže se trefoval podle délky (audit `format`,
+    // opraveno 2026-10-07). Teď blízké omyly: bohatství, nevrlost, utrácení.
+    { value: "podle toho, že má hodně peněz a bydlí ve velkém domě", why: "Bohatý člověk nemusí být lakomý. Lakomost se pozná podle toho, jak s penězi zachází, ne kolik jich má." },
+    { value: "podle toho, že se často mračí a s nikým se moc nebaví", why: "Mračení ukazuje spíš nevrlost nebo smutek. O tom, jestli se postava umí dělit, neříká nic." },
+    { value: "podle toho, že ráda nakupuje a utrácí za drahé věci", why: "To je spíš opak. Lakomec peníze nerad utrácí, ani za sebe." },
   ], {
     hints: ["Co dělá lakomý člověk?", "Povahu poznáš z chování. Lakomec nerad dává a o peníze se bojí."],
     explanation: "Lakomost poznáme z chování — postava se nerozdělí a počítá každou korunu.",
@@ -281,9 +284,10 @@ const L3: PracticeTask[] = [
     explanation: "Honzova slova ukazují, že je odvážný a sebevědomý — poznáme to z řeči.",
   }),
   choice("Proč nám může být sympatická i postava, která udělá chybu?", "protože chápeme, proč to udělala, a vidíme, že se snaží", [
-    { value: "protože je hlavní postava", why: "Hlavní postava sympatická být nemusí." },
-    { value: "protože je hezká", why: "Vzhled o sympatiích nerozhoduje." },
-    { value: "protože má hezké jméno", why: "Jméno o sympatiích nerozhoduje." },
+    // Dřív o polovinu kratší než klíč — tipovalo se podle délky (2026-10-07).
+    { value: "protože je to hlavní postava a celá kniha je o ní", why: "Hlavní postava sympatická být nemusí. Rozhoduje, jestli rozumíme důvodům, proč jednala, jak jednala." },
+    { value: "protože je hezká a ostatní postavy ji mají rády", why: "Vzhled ani to, jak ji mají rády ostatní postavy, o našich sympatiích nerozhoduje. Fandíme jí, když chápeme, proč chybovala." },
+    { value: "protože jí autor dal hezké jméno a pěkné oblečení", why: "Jméno ani oblečení o sympatiích nerozhodují." },
   ], {
     hints: ["Děláš někdy chyby i ty?", "Postava s chybami je podobná skutečným lidem. Když rozumíme jejím důvodům, fandíme jí."],
     explanation: "Když chápeme důvody postavy a vidíme, že se snaží, fandíme jí i přes chyby.",

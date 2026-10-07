@@ -489,7 +489,12 @@ function genL2(co: "D" | "n"): Kus | null {
   return uloha(
     question,
     cis(v.n),
-    distraktoryN(v, ["zamena", "mocnina", "vynechany", "soucin", "extrem"], holeCislo, "rozklad"),
+    // Součin hned na druhém místě: `buildChoiceTask` bere první tři různé
+    // distraktory a „vynechany" jich přidá i víc, takže součin (jediná
+    // typická chyba VĚTŠÍ než klíč) se dřív do nabídky skoro nedostal —
+    // klíč byl nejvyšší číslo nabídky a dalo se tipovat (2026-10-07,
+    // `PO_TYPECH=1 npm run check:length`).
+    distraktoryN(v, ["zamena", "soucin", "mocnina", "vynechany", "extrem"], holeCislo, "rozklad"),
     {
       hints: HINTS_L2(troj),
       solutionSteps: krokyRozkladN(v),

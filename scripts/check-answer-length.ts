@@ -31,6 +31,13 @@
 //
 // Nález NENÍ důkaz chyby: u faktických témat bývá definice delší z podstaty.
 // Skript proto **nekončí chybou**, jen ukáže, kde dopsat distraktory.
+//
+// PO_TYPECH=1 — počítá zvlášť každý TYP OTÁZKY (téma × úroveň × konec
+// zadání, číslice nahrazené #), ne celé téma. Přibylo 2026-10-07: u masové
+// kultury (6. r.) byl klíč výrazně nejdelší ve 42 % jejích úloh, ale téma
+// jako celek vyšlo na 2,5 % — L1, L2 a jiné typy L3 to rozředily. Pevná
+// škála se vylučuje stejně jako dřív (po tématu). Nálezy v tomhle režimu
+// jsou HRUBŠÍ — u číselných odpovědí bývá větší číslo delší z podstaty.
 import { getAllTopics } from "@/lib/contentRegistry";
 
 const zadane = (process.env.IDS ?? "").split(",").filter(Boolean);
@@ -43,13 +50,16 @@ const NASOBEK = Number(process.env.NASOBEK ?? 1.25);
 const REPEATS = Number(process.env.REPEATS ?? 6);
 /** Pod tolik úloh je podíl šum, ne vzorec. */
 const MIN_ULOH = 8;
+const PO_TYPECH = process.env.PO_TYPECH === "1";
+/** Typ otázky: konec zadání bez konkrétních čísel. */
+const typOtazky = (q: string) => q.replace(/\d+/g, "#").trim().slice(-40);
 
 const temata = getAllTopics().filter(
   (t) => t.generator && (zadane.length === 0 || zadane.includes(t.id)),
 );
 
 interface Ukazka { level: number; question: string; klic: string; druha: string }
-interface Kandidat { nabidka: string; klicNejdelsi: boolean; ukazka?: Ukazka }
+interface Kandidat { nabidka: string; klicNejdelsi: boolean; skupina: string; ukazka?: Ukazka }
 interface Tema { id: string; n: number; klic: number; distr: number; ukazky: Ukazka[] }
 
 const rows: Tema[] = [];
@@ -63,6 +73,8 @@ for (const t of temata) {
   /** otisk nabídky → klíče, které se u ní v tématu vyskytly (pevná škála) */
   const skaly = new Map<string, Set<string>>();
   let n = 0;
+  /** počet úloh ve skupině (téma, nebo s PO_TYPECH typ otázky) */
+  const nSkupiny = new Map<string, number>();
   for (const level of [1, 2, 3]) {
     for (let r = 0; r < REPEATS; r++) {
       let tasks: ReturnType<NonNullable<typeof t.generator>>;
@@ -80,6 +92,8 @@ for (const t of temata) {
         if (videno.has(id)) continue;
         videno.add(id);
         n++;
+        const skupina = PO_TYPECH ? `${t.id} L${level} …${typOtazky(task.question)}` : t.id;
+        nSkupiny.set(skupina, (nSkupiny.get(skupina) ?? 0) + 1);
         const nabidka = [...o].sort().join("");
         const klice = skaly.get(nabidka) ?? new Set<string>();
         klice.add(klic);
@@ -90,6 +104,7 @@ for (const t of temata) {
         kandidati.push({
           nabidka,
           klicNejdelsi,
+          skupina,
           ukazka: klicNejdelsi
             ? { level, question: task.question.slice(0, 70), klic, druha: podleDelky[1] }
             : undefined,
@@ -99,29 +114,33 @@ for (const t of temata) {
   }
   if (n < MIN_ULOH) continue;
   const zive = kandidati.filter((k) => (skaly.get(k.nabidka)?.size ?? 1) === 1);
-  const klicNejdelsi = zive.filter((k) => k.klicNejdelsi).length;
-  const distrNejdelsi = zive.length - klicNejdelsi;
   celkemUloh += n;
-  celkemKlic += klicNejdelsi;
-  celkemDistr += distrNejdelsi;
-  rows.push({
-    id: t.id,
-    n,
-    klic: klicNejdelsi,
-    distr: distrNejdelsi,
-    ukazky: zive.map((k) => k.ukazka).filter((u): u is Ukazka => !!u),
-  });
+  for (const [skupina, nS] of nSkupiny) {
+    const vSkupine = zive.filter((k) => k.skupina === skupina);
+    const klicNejdelsi = vSkupine.filter((k) => k.klicNejdelsi).length;
+    const distrNejdelsi = vSkupine.length - klicNejdelsi;
+    celkemKlic += klicNejdelsi;
+    celkemDistr += distrNejdelsi;
+    if (nS < MIN_ULOH) continue;
+    rows.push({
+      id: skupina,
+      n: nS,
+      klic: klicNejdelsi,
+      distr: distrNejdelsi,
+      ukazky: vSkupine.map((k) => k.ukazka).filter((u): u is Ukazka => !!u),
+    });
+  }
 }
 const podil = (r: Tema) => r.klic / r.n;
 rows.sort((a, b) => podil(b) - podil(a));
 const nad = rows.filter((r) => podil(r) >= PRAH && r.klic >= PREVAHA * Math.max(1, r.distr));
 
-console.log(`Zkontrolováno ${celkemUloh} úloh ve ${rows.length} tématech (REPEATS=${REPEATS}, práh délky ${NASOBEK}×).`);
+console.log(`Zkontrolováno ${celkemUloh} úloh ve ${rows.length} ${PO_TYPECH ? "typech otázek" : "tématech"} (REPEATS=${REPEATS}, práh délky ${NASOBEK}×).`);
 console.log(
   `Výrazně nejdelší možnost je klíč v ${(100 * celkemKlic / celkemUloh).toFixed(1)} % úloh, `
   + `distraktor v ${(100 * celkemDistr / celkemUloh).toFixed(1)} %.`,
 );
-console.log(`\nTémat, kde klíč převažuje ≥ ${PREVAHA}× a je nejdelší v ≥ ${(100 * PRAH).toFixed(0)} % úloh: ${nad.length}\n`);
+console.log(`\n${PO_TYPECH ? "Typů otázek" : "Témat"}, kde klíč převažuje ≥ ${PREVAHA}× a je nejdelší v ≥ ${(100 * PRAH).toFixed(0)} % úloh: ${nad.length}\n`);
 
 for (const r of nad) {
   console.log(

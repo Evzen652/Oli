@@ -324,11 +324,13 @@ function zpetnaTeplota(): PracticeTask | null {
     [
       { value: `${Z(konec + zmena)} °C`, why: `Oteplení se přičetlo, místo aby se odečetlo. Ráno bylo chladněji než v poledne, takže se od ${Z(konec)} °C jde po ose zpátky doleva.` },
       { value: `${Z(-rano)} °C`, why: `Číslo sedí, znaménko ne: posun o ${pad(zmena, "DÍL")} doleva z ${Z(konec)} končí vlevo od nuly.` },
+      // Dřív tu bylo „0 °C" — a klíč pak býval JEDINÉ záporné číslo v nabídce,
+      // takže stačilo vybrat to s minusem (zjištěno 2026-10-07 přes
+      // `PO_TYPECH=1 npm run check:length`). „−změna" je skutečná chyba
+      // (posun od nuly místo od polední teploty) a je vždy záporná.
       {
-        value: "0 °C",
-        why: konec > 0
-          ? `U nuly cesta zpátky neskončila: z ${konec} °C k nule stačí ${pad(konec, "DÍL")}, ale odečíst se má ${zmena} °C.`
-          : `Nula leží vpravo od ${Z(konec)} °C, ale cesta zpátky vede opačným směrem — doleva, ještě dál od nuly.`,
+        value: `${Z(-zmena)} °C`,
+        why: `To by vyšlo, kdyby v poledne byla nula. V poledne ale teploměr ukazoval ${Z(konec)} °C, a o ${pad(zmena, "DÍL")} doleva se jde od tohoto čísla, ne od nuly.`,
       },
     ],
     [
