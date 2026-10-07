@@ -193,11 +193,15 @@ describe.each([1, 2, 3])("Kultura, druhy umění a instituce — level %i", (lev
   });
 
   it("klíč není systematicky nejdelší možnost", () => {
-    const nejdelsiJeKlic = tasks.filter((t) => {
+    // Přes 10 vzorků, ne přes jeden: u jediného vzorku L3 (průměr ~0,64)
+    // přeskočil poměr práh 0,8 asi v 1,6 % běhů a test náhodně padal
+    // (zjištěno 2026-10-07 při plném běhu sady).
+    const vzorek = level === 3 ? Array.from({ length: 10 }, () => topic.generator(level)).flat() : tasks;
+    const nejdelsiJeKlic = vzorek.filter((t) => {
       const maxLen = Math.max(...t.options!.map((o) => o.length));
       return t.correctAnswer.length === maxLen;
     }).length;
-    expect(nejdelsiJeKlic / tasks.length, "klíč = nejdelší možnost příliš často").toBeLessThan(0.8);
+    expect(nejdelsiJeKlic / vzorek.length, "klíč = nejdelší možnost příliš často").toBeLessThan(0.8);
   });
 
   it("NEZÁVISLÝ SOLVER: klíč souhlasí s klasifikátorem/tabulkou", () => {
@@ -209,6 +213,20 @@ describe.each([1, 2, 3])("Kultura, druhy umění a instituce — level %i", (lev
 });
 
 describe("Kultura, druhy umění a instituce — gradace a chybový model", () => {
+  it("masová kultura: klíč není výrazně nejdelší možnost", () => {
+    // Do 2026-10-07 byly „nemasové" distraktory o čtvrtinu kratší než klíče:
+    // klíč byl aspoň 1,25× delší než nejdelší distraktor ve 42 % těchto úloh
+    // a dalo se tipovat podle délky. `check:length` to nevidělo, protože
+    // měří celé téma a L1/L2 to rozředí. Teď 0 %; obráceně ověřeno.
+    const masa = Array.from({ length: 30 }, () => topic.generator(3)).flat().filter((t) => /MASOV/.test(t.question));
+    expect(masa.length).toBeGreaterThan(20);
+    const vyrazne = masa.filter((t) => {
+      const d = Math.max(...t.options!.filter((o) => o !== t.correctAnswer).map((o) => o.length));
+      return t.correctAnswer.length >= 1.25 * d;
+    }).length;
+    expect(vyrazne / masa.length, "klíč výrazně nejdelší příliš často").toBeLessThan(0.1);
+  });
+
   it("L1 a L3 otázky jsou textově disjunktní", () => {
     const l1 = new Set(topic.generator(1).map((t) => t.question));
     const l3 = topic.generator(3).map((t) => t.question);
@@ -216,7 +234,9 @@ describe("Kultura, druhy umění a instituce — gradace a chybový model", () =
   });
 
   it("chybový model 1–3: muzeum↔galerie a knihovna↔muzeum se v distraktorech opravdu objevují", () => {
-    const vseL1L2 = [...topic.generator(1), ...topic.generator(2)];
+    // 10 vzorků: v jediném chyběla otázka na muzeum asi 1× za 5 000 a `some`
+    // nad prázdným polem test shodil, i když obsah byl v pořádku (2026-10-07).
+    const vseL1L2 = Array.from({ length: 10 }, () => [...topic.generator(1), ...topic.generator(2)]).flat();
     const muzejniOtazky = vseL1L2.filter((t) => t.correctAnswer === "muzeum");
     expect(muzejniOtazky.some((t) => t.options!.includes("galerie")), "muzeum nikdy nemá galerii jako distraktor").toBe(true);
     const galerijniOtazky = vseL1L2.filter((t) => t.correctAnswer === "galerie");

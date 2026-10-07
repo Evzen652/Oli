@@ -278,14 +278,14 @@ const MASA_ITEMS: string[] = [
 ];
 
 const NEMASA_ITEMS: Distractor[] = [
-  { value: "Píseň, kterou složil kamarád a hraje ji jen doma na kytaru pro rodinu.", why: "Píseň hraje jen doma pro rodinu — nešíří se žádným médiem k velkému, neurčitému publiku, je to jen malý okruh lidí." },
+  { value: "Píseň, kterou složil kamarád a každou neděli ji hraje jen doma na kytaru pro svou rodinu.", why: "Píseň hraje jen doma pro rodinu — nešíří se žádným médiem k velkému, neurčitému publiku, je to jen malý okruh lidí." },
   { value: "Divadelní představení, které nacvičila celá třída a předvedla ho jen rodičům ve škole.", why: "Představení vidí jen rodiče ve škole — nešíří se hromadným médiem, publikum je malé a předem známé." },
-  { value: "Fotografie z výletu, kterou žák ukázal jen svým kamarádům ve třídě.", why: "Fotografii vidí jen pár kamarádů ve třídě — nešíří se žádným médiem k velkému, neurčitému publiku." },
-  { value: "Vtip, který zná a vypráví si celá parta kamarádů ve škole.", why: "Vtip zná jen parta kamarádů ve škole — to je malý a předem známý okruh lidí, ne masové šíření médiem." },
-  { value: "Vánoční koleda, kterou rodina zpívá každý rok jen doma u stromečku.", why: "Koledu zpívá jen rodina doma — i když je to oblíbená tradice, nešíří se to médiem k širokému publiku." },
-  { value: "Hra, kterou vymyslela celá třída a hraje ji jen o přestávkách.", why: "Hru hraje jen třída o přestávkách — je to oblíbené mezi spolužáky, ale nešíří se to žádným médiem." },
-  { value: "Fotbalový zápas, který sehráli žáci jen mezi sebou na hřišti za školou.", why: "Zápas viděli jen žáci na hřišti za školou — malý okruh lidí, žádné médium, které by to šířilo dál." },
-  { value: "Báseň, kterou napsala spolužačka a přečetla ji jen svým kamarádkám.", why: "Báseň slyšelo jen pár kamarádek — nešíří se to médiem k velkému, neurčitému publiku." },
+  { value: "Fotografie ze školního výletu na hory, kterou žák o přestávce ukázal jen svým kamarádům ve třídě.", why: "Fotografii vidí jen pár kamarádů ve třídě — nešíří se žádným médiem k velkému, neurčitému publiku." },
+  { value: "Vtip o ztraceném deštníku, který zná a pořád dokola si ho vypráví celá parta kamarádů ve škole.", why: "Vtip zná jen parta kamarádů ve škole — to je malý a předem známý okruh lidí, ne masové šíření médiem." },
+  { value: "Vánoční koleda, kterou celá rodina zpívá každý rok na Štědrý večer jen doma u stromečku.", why: "Koledu zpívá jen rodina doma — i když je to oblíbená tradice, nešíří se to médiem k širokému publiku." },
+  { value: "Hra na honěnou s novými pravidly, kterou vymyslela celá třída a hraje ji jen o velké přestávce.", why: "Hru hraje jen třída o přestávkách — je to oblíbené mezi spolužáky, ale nešíří se to žádným médiem." },
+  { value: "Fotbalový zápas, který sehráli žáci dvou tříd jen mezi sebou na malém hřišti za školou.", why: "Zápas viděli jen žáci na hřišti za školou — malý okruh lidí, žádné médium, které by to šířilo dál." },
+  { value: "Báseň o podzimu, kterou napsala spolužačka do sešitu a přečetla ji jen svým kamarádkám.", why: "Báseň slyšelo jen pár kamarádek — nešíří se to médiem k velkému, neurčitému publiku." },
 ];
 
 const TAIL_MASA = [
