@@ -144,6 +144,43 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-10-07b — kontroly, mazání dítěte, zásady, podklad pro obchody
+
+Autonomní průchod otevřenými body z `SESSION_HANDOFF.md` §4, které nečekají
+na rozhodnutí. Pět commitů, nic nepushnuto.
+
+- ✅ **Čistý běh celé sady bez dev serveru:** 9 332 testů, 0 pádů,
+  **0 chyb** (minulé 2× `onTaskUpdate` timeout byla opravdu zátěž stroje).
+- ✅ **Lint shody — planý poplach u jmenné části přísudku** (`7c5839a`).
+  „0,3 m je 3 desetiny metru" už nehlásí: desetinná čárka není hranice
+  úseku a číslo před sponou se počítá jako podmět (ne za předložkou —
+  „od 0 do 4 je 4 centimetry" i „mezi 2 a 6 je…" hlásí dál).
+  `audit:agreement` 45 591 úloh bez nálezu.
+- ✅ **Smazání dítěte smaže i jeho účet** (`6ffbe24`). Dialog slibuje
+  „Všechna data budou nenávratně ztracena", klient ale mazal jen řádek
+  `children` — zůstával auth účet dítěte (se jménem v metadatech),
+  `student_skill_level` a řádky pod jeho `user_id`. Nová edge funkce
+  **`delete-child`** (rodič z JWT, dítě musí patřit jemu; cizí → 403).
+  Klient při nenasazené funkci (404) maže postaru, takže pořadí push/deploy
+  nic nerozbije. ⚠️ **Funkci nasadí Evžen:** `supabase functions deploy delete-child`.
+  Test `delete-child.test.ts`, tři měřítka ověřena obráceně.
+- ✅ **Kontroly úniku v nápovědě si přestaly odporovat** (`0a54ce8`):
+  `hintLeakage.normalize()` nově odstraňuje i `“ ” ‚ ‘ ’` (sken všech úloh
+  100 → 83 heuristických nálezů, 21 planých zmizelo u přízvuku);
+  `topic-gate` má výjimku pro doslovný rejstřík všech možností.
+- ✅ **Zásady: k čemu je jazykový model** (`a4e815a`). Tvrdily slovní
+  hodnocení a týdenní shrnutí — obojí běží bez modelu. Reálně se volá jen
+  rozbor chyb (`analyze-misconceptions`), který v zásadách chyběl.
+  Opraveno v `legal.ts` (`PRIJEMCI`) i `Privacy.tsx`.
+- ✅ **Podklad pro Data Safety / App Privacy:** `docs/STORE_DATA_FORMS.md`.
+  Každý řádek s odkazem do kódu; ⚖️ u toho, co musí rozhodnout Evžen
+  s právníkem (hash IP, povinné jméno dítěte, `allowBackup`).
+- ✅ **Ověřeno, že neplatí:** volný text dítěte k Groqu (`semantic-gate`)
+  **neodchází** — jediné místo, které zakládá sezení, nastaví téma a stav
+  `EXPLAIN`, takže `INPUT_CAPTURE` je z dětského UI nedosažitelný. Cesta
+  je mrtvý kód (CLAUDE.md ji vede jako „odchází"). Bod `parovani` „utržená
+  věta" ze `SESSION_HANDOFF` §4 je vyřízený opravou z 13. 9.
+
 ### Session 2026-10-07 — poslední realizovatelná mezera v obsahu 2.–6. ročníku
 
 - ✅ **Nové téma: Pořádek slov ve větě (2. r.)** —

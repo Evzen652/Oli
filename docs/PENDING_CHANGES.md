@@ -7,6 +7,27 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-10-07 (b) — kontroly, mazání dítěte, zásady, podklad pro obchody
+
+Detail v `PROJECT_STATUS.md` §6, session 2026-10-07b. Krátce, co se tu tím zavírá:
+
+- ✅ **Lint shody hlásí planý poplach u jmenné části přísudku** (bod
+  z 2026-09-12 níž) — opraveno v `czechAgreementLint.ts`, věta
+  „0,3 m je 3 desetiny metru" je v sekci „nesmí hlásit".
+- ✅ **Dvě kontroly na leak si odporují** (📌 nálezy autorů, bod 1 níž) —
+  `normalize()` zná všechny uvozovky, `topic-gate` má výjimku pro rejstřík.
+- ✅ **Podklad pro Data Safety / Privacy Nutrition Labels** (mobilní vydání
+  níž) — `docs/STORE_DATA_FORMS.md`. Formuláře samotné vyplní Evžen.
+- ✅ **Nově nalezeno a opraveno:** smazání dítěte nechávalo jeho auth účet
+  a `student_skill_level` → edge funkce `delete-child`.
+  ⚠️ **Na tobě:** `supabase functions deploy delete-child`. Do nasazení
+  se maže postaru (jen řádek dítěte).
+- ✅ **Nově nalezeno a opraveno:** zásady připisovaly jazykovému modelu
+  hodnocení a týdenní shrnutí (běží bez něj) a zamlčely rozbor chyb.
+
+**Zůstává otevřené (rozhodnutí):** `android:allowBackup="true"` u dětské
+aplikace (záloha může nést přihlašovací token) — `STORE_DATA_FORMS.md` §6.
+
 ## ✅ VYŘÍZENO 2026-09-30 (D) — mobilní hlavička, nestabilní testy, párové souhlásky
 
 Na 375 px se v hlavičce cvičení kreslilo logo přes „Zpět" a začátek
@@ -873,11 +894,11 @@ Zbývá k rozhodnutí: odchod do WhatsApp z dětské obrazovky (za branou).
   ✅ `android/app/.gitignore` doplněn o výstup syncu (`39b4ecc`) — stihlo se
   to dřív, než sync poprvé poběží.
 - ✅ `ExampleInstrumentedTest.java` testoval `com.getcapacitor.app` (`39b4ecc`).
-- **Podklad pro Data Safety / Privacy Nutrition Labels neexistuje.**
+- ✅ **Podklad pro Data Safety / Privacy Nutrition Labels** — od 2026-10-07 `docs/STORE_DATA_FORMS.md`. Dřív tu stálo: neexistuje.
   Nejblíž je `legal.ts` (`PRIJEMCI`) a `Privacy.tsx`, ale ani jedno není
   namapované na kategorie formulářů.
 
-## 🟠 Lint shody hlásí planý poplach u jmenné části přísudku (2026-09-12)
+## ✅ Lint shody hlásí planý poplach u jmenné části přísudku (2026-09-12) — opraveno 2026-10-07
 
 `czechAgreementLint.ts` označí větu **„0,3 m je 3 desetiny metru"** za chybu
 a chce „jsou 3 desetiny". Spona se tu ale shoduje s podmětem („0,3 m",
@@ -969,7 +990,7 @@ Co kritici našli (výběr věcí, které brána ani docs-check nechytily):
 - **Chybná čárka v tématu o čárkách** — „nebo" ve vylučovacím poměru.
 
 📌 **Nálezy autorů, které přesahují jejich dávku (k opravě mimo obsah):**
-1. **Dvě kontroly na leak si odporují.** `src/test/topic-gate.test.ts` hledá
+1. ✅ (opraveno 2026-10-07) **Dvě kontroly na leak si odporují.** `src/test/topic-gate.test.ts` hledá
    klíč v nápovědě prostým `includes` **bez výjimky pro „rejstřík možností"**,
    kterou `supabase/functions/_shared/hintLeakage.ts` má. Navíc `normalize()`
    v `hintLeakage` odstraňuje `„`, ale ne `“`, takže za uvozovkou nevidí

@@ -708,6 +708,19 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
 
 ## 4. Otevřené pro další session
 
+### 🟠 Přibylo 7. 10.
+
+- ⚠️ **Nasadit `delete-child`** (`supabase functions deploy delete-child`).
+  Smazání dítěte z přehledu dřív nechávalo jeho auth účet (se jménem)
+  a `student_skill_level`; oprava je v `main` lokálně (`6ffbe24`), ale do
+  nasazení funkce klient maže postaru. Claude nasazovat nesmí.
+- **`android:allowBackup="true"`** — u dětské aplikace rozhodnout (záloha
+  může nést přihlašovací token). `docs/STORE_DATA_FORMS.md` §6.
+- **`semantic-gate` je mrtvá cesta, ale nebezpečná:** kdyby se dětské UI
+  zase dostalo do stavu `INPUT_CAPTURE`, volný text dítěte odejde ke Groqu
+  — a zásady tvrdí opak. Dnes nedosažitelné (ověřeno 7. 10.). Patří smazat
+  s ostatní AI větví.
+
 ### 🟠 Přibylo 30. 9.
 
 - **RVP uzel pro slovní úlohy 4. a 5. ročníku.** `data/rvp_data.json` (jen ke
@@ -792,7 +805,9 @@ v malé nápovědě). Tohle měřítko ty tři nálezy původně našlo.
 - **`cap sync` nikdy neproběhl** (chybí `android/app/src/main/assets/`).
   `.gitignore` na jeho výstup je doplněný (`39b4ecc`), takže první sync
   nezanese repo.
-- **Podklad pro Data Safety / Privacy Nutrition Labels neexistuje.** Nejblíž je
+- ✅ **Podklad pro Data Safety / Privacy Nutrition Labels** je od 7. 10.
+  v `docs/STORE_DATA_FORMS.md` (každý řádek s odkazem do kódu, ⚖️ u toho,
+  co rozhoduje Evžen). Dřív tu stálo „neexistuje". Nejblíž byl
   `PRIJEMCI` v `legal.ts` a `Privacy.tsx`, ale ani jedno není namapované na
   kategorie formulářů.
 
@@ -834,21 +849,25 @@ Věci, na které kritici narazili a nechali je k rozhodnutí:
   (poměr k nejkratší možnosti; čísla 1 459 a 1 535 pocházejí odtud). Po
   přeměření na „jak často je klíč **výrazně** nejdelší“ vyšlo, že plošný problém
   to nebyl — 25 témat ano, a všechna jsou opravená. Detail v session 46–47 výš.
-- **Dvě kontroly na leak si odporují:** `src/test/topic-gate.test.ts` hledá klíč
+- ✅ (7. 10.) **Dvě kontroly na leak si odporují:** `src/test/topic-gate.test.ts` hledá klíč
   v nápovědě prostým `includes` bez výjimky pro „rejstřík možností", kterou
   `supabase/functions/_shared/hintLeakage.ts` má; a `normalize()` v `hintLeakage`
   odstraňuje `„`, ale ne `“`. Autoři to obcházeli v obsahu — patří opravit
   v kontrolách.
-- **`parovani`** (`grade-5/_shared.ts`) končí velkou nápovědu utrženou větou
+- ✅ (vyřízeno opravou kořene 13. 9., ověřeno 7. 10.) **`parovani`** (`grade-5/_shared.ts`) končí velkou nápovědu utrženou větou
   o jiné dvojici („…doplň vylučováním. V Římě stojí Koloseum…"). Týká se všech
   témat, která helper používají — souvisí s kořenem výš.
 - ✅ **Kontrola „generátor vrátil míň úloh, než má v poolech" existuje** —
   `generator-task-count.test.ts`, minimum 12 na téma × úroveň.
-- **`czechAgreementLint` hlásí planý poplach u jmenné části přísudku** —
+- ✅ (7. 10.) **`czechAgreementLint` hlásí planý poplach u jmenné části přísudku** —
   „0,3 m **je** 3 desetiny metru" chce opravit na „jsou". Patří do sekce
   „nesmí hlásit" v `czech-agreement-lint.test.ts`.
 
-### 📋 6. ročník — plán doplnění
+### ✅ 6. ročník — plán doplnění (SPLNĚNÝ, historie)
+
+> ⚠️ **Zastaralé, nech jen jako historii.** Šestka je hotová od 25. 9.
+> (117/117, viz úvod). Čísla níž („37 témat ze 117", „nezačaty") platila
+> k 15. 9. Opraveno 7. 10.
 
 Šestka je **pilot, ne hotový ročník**: **37 témat ze 117** (fyzika 13/13 hotová,
 dějepis 24/24 hotový; čeština, matematika, přírodopis, zeměpis a občanka nezačaty).
@@ -875,7 +894,7 @@ z něj stojí za pozornost hned:
 ### 🟠 Sliby vs. obsah
 
 Titulek a Open Graph slibují „1. stupeň ZŠ" (1.–5. ročník). Otevřené jsou
-**2.–6.**, chybí 1. ročník; 6. ročník má zatím jen fyziku a dějepis.
+**2.–6.**, chybí 1. ročník; 6. ročník je od 25. 9. kompletní (do 7. 10. tu stálo „zatím jen fyziku a dějepis").
 Otevření 7. ročníku by oslabilo rodičovskou bránu — hlídá `parent-gate.test.ts`.
 
 ### 🟠 Drobnější
