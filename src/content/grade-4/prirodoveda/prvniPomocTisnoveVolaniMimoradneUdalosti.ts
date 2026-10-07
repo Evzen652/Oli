@@ -109,7 +109,7 @@ const POOL_L1: PracticeTask[] = [
     hints: ["Který způsob ti nemůže uprostřed cesty vypnout proud?", "Při požáru se může zastavit elektřina. Kudy se dostaneš dolů vlastníma nohama?"],
     explanation: "Z hořící budovy se odchází po schodech, co nejníž u země, kde je méně kouře. Výtah se při požáru může zastavit.",
   }),
-  choice("Co uděláš, když kamarádovi teče krev z ranky na ruce?", "Přitlačíš na ni čistou látku", [
+  choice("Co uděláš, když kamarádovi silně krvácí rána na ruce?", "Přitlačíš na ni čistou látku", [
     { value: "Opláchneš ji pod tekoucí vodou", why: "Voda krev odplaví, ale krvácení nezastaví. Nejdřív přitlačit." },
     { value: "Počkáš, až to samo přestane", why: "Čekáním kamarád ztrácí krev. Krvácení se musí zastavit." },
     { value: "Zafoukáš na ni, aby to nebolelo", why: "Foukání krvácení nezastaví." },

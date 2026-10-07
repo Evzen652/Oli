@@ -235,7 +235,7 @@ const POOL_L1: Polozka[] = [
     d: [
       { value: "Den vzniku samostatného československého státu", why: "Ten svátek připomíná vznik Československa v roce 1918, ne studentské protesty. Studentské protesty připomíná Den boje za svobodu a demokracii." },
       { value: "Den české státnosti", why: "Ten svátek připomíná svatého Václava, ne studentské protesty z 20. století. Studentské protesty připomíná Den boje za svobodu a demokracii." },
-      { value: "Den vítězství", why: "Ten svátek připomíná konec druhé světové války, ne studentské protesty. Studentské protesty připomíná Den boje za svobodu a demokracii." },
+      { value: "Den vítězství", why: "Ten svátek připomíná konec druhé světové války v Evropě, ne studentské protesty. Studentské protesty připomíná Den boje za svobodu a demokracii." },
     ],
     hints: [
       "Přemýšlej, který svátek má datum 17. listopadu a váže se hned ke dvěma různým letům z 20. století.",
@@ -262,7 +262,7 @@ const POOL_L1: Polozka[] = [
 // ── L2 — spojení dvou faktů v jedné odpovědi ─────────────────────────────
 const POOL_L2: Polozka[] = [
   {
-    q: "V tento den roku 935 zemřel svatý Václav, patron české země, jehož korunu dodnes používáme jako korunovační klenot. O jaký svátek jde a na jaké datum připadá?",
+    q: "V tento den roku 935 zemřel svatý Václav, patron české země, po kterém je pojmenovaná svatováclavská koruna, nejcennější z českých korunovačních klenotů. O jaký svátek jde a na jaké datum připadá?",
     key: "Den české státnosti, 28. září",
     d: [
       { value: "Den vzniku samostatného československého státu, 28. října", why: "Vznik Československa v roce 1918 nemá se svatým Václavem nic společného. Svátek spojený se svatým Václavem je Den české státnosti, 28. září." },
@@ -295,7 +295,7 @@ const POOL_L2: Polozka[] = [
     d: [
       { value: "Den vzniku samostatného československého státu, 28. října", why: "Ten svátek připomíná vznik Československa v roce 1918, ne studentské demonstrace. Svátek spojený s Národní třídou je Den boje za svobodu a demokracii, 17. listopadu." },
       { value: "Den boje za svobodu a demokracii, 28. října", why: "Název svátku je správně, ale datum patří jinému svátku. Den boje za svobodu a demokracii připadá na 17. listopadu." },
-      { value: "Den vítězství, 8. května", why: "Ten svátek připomíná konec druhé světové války, ne studentské demonstrace. Svátek spojený s Národní třídou je Den boje za svobodu a demokracii, 17. listopadu." },
+      { value: "Den vítězství, 8. května", why: "Ten svátek připomíná konec druhé světové války v Evropě, ne studentské demonstrace. Svátek spojený s Národní třídou je Den boje za svobodu a demokracii, 17. listopadu." },
     ],
     hints: [
       "Přemýšlej, ve kterém podzimním měsíci se odehrály obě události, na které se svíčky pokládají.",
@@ -307,9 +307,9 @@ const POOL_L2: Polozka[] = [
     q: "V tento den roku 1945 umlkly v Evropě zbraně a skončila druhá světová válka. O jaký svátek jde a na jaké datum připadá?",
     key: "Den vítězství, 8. května",
     d: [
-      { value: "Den boje za svobodu a demokracii, 17. listopadu", why: "Ten svátek připomíná studentské demonstrace 20. století, ne konec druhé světové války. Konec druhé světové války si připomínáme jako Den vítězství, 8. května." },
+      { value: "Den boje za svobodu a demokracii, 17. listopadu", why: "Ten svátek připomíná studentské demonstrace 20. století, ne konec druhé světové války v Evropě. Konec druhé světové války v Evropě si připomínáme jako Den vítězství, 8. května." },
       { value: "Den vítězství, 5. července", why: "Název svátku je správně, ale datum patří jinému svátku, Dni slovanských věrozvěstů. Den vítězství připadá na 8. května." },
-      { value: "Den vzniku samostatného československého státu, 28. října", why: "Ten svátek připomíná vznik Československa v roce 1918, ne konec druhé světové války. Konec druhé světové války si připomínáme 8. května." },
+      { value: "Den vzniku samostatného československého státu, 28. října", why: "Ten svátek připomíná vznik Československa v roce 1918, ne konec druhé světové války v Evropě. Konec druhé světové války v Evropě si připomínáme 8. května." },
     ],
     hints: [
       "Přemýšlej, ve kterém ročním období roku 1945 v Evropě skončila druhá světová válka.",
@@ -434,12 +434,12 @@ const POOL_L2: Polozka[] = [
 // ── L3 — přenos: scénář bez přímého jmenování, nebo jediný pravdivý výrok ──
 const POOL_L3: Polozka[] = [
   {
-    q: "Každý rok koncem září si lidé připomínají svatého Václava jako symbol české státnosti — jeho svatováclavská koruna se dodnes používá při korunovačních klenotech. O jaký svátek jde?",
+    q: "Každý rok koncem září si lidé připomínají svatého Václava jako symbol české státnosti — po něm je pojmenovaná svatováclavská koruna, nejcennější z českých korunovačních klenotů. O jaký svátek jde?",
     key: "Den české státnosti",
     d: [
       { value: "Den vzniku samostatného československého státu", why: "Ten svátek si lidé připomínají o měsíc později, v říjnu, a souvisí se vznikem Československa v roce 1918, ne se svatým Václavem. Svátek spojený se svatým Václavem je Den české státnosti." },
-      { value: "Den boje za svobodu a demokracii", why: "Ten svátek připomíná studentské demonstrace 20. století, ne svatého Václava a jeho korunu. Svátek spojený se svatým Václavem je Den české státnosti." },
-      { value: "Den vítězství", why: "Ten svátek připomíná konec druhé světové války, ne svatého Václava. Svátek spojený se svatým Václavem je Den české státnosti." },
+      { value: "Den boje za svobodu a demokracii", why: "Ten svátek připomíná studentské demonstrace 20. století, ne svatého Václava. Svátek spojený se svatým Václavem je Den české státnosti." },
+      { value: "Den vítězství", why: "Ten svátek připomíná konec druhé světové války v Evropě, ne svatého Václava. Svátek spojený se svatým Václavem je Den české státnosti." },
     ],
     hints: [
       "Přemýšlej, kterou historickou osobnost popis připomíná a v jakém ročním období se svátek slaví.",
@@ -479,9 +479,9 @@ const POOL_L3: Polozka[] = [
     q: "Lidé si připomínají chvíli, kdy po letech těžkých bojů v Evropě konečně umlkly zbraně a skončilo utrpení druhé světové války. O jaký svátek jde?",
     key: "Den vítězství",
     d: [
-      { value: "Den boje za svobodu a demokracii", why: "Ten svátek připomíná studentské demonstrace z let 1939 a 1989, ne konec druhé světové války v roce 1945. Popsaná situace odpovídá Dni vítězství." },
-      { value: "Den vzniku samostatného československého státu", why: "Ten svátek připomíná vznik Československa v roce 1918, ne konec druhé světové války v roce 1945. Popsaná situace odpovídá Dni vítězství." },
-      { value: "Den obnovy samostatného českého státu", why: "Ten svátek připomíná vznik samostatné ČR v roce 1993, ne konec druhé světové války. Popsaná situace odpovídá Dni vítězství." },
+      { value: "Den boje za svobodu a demokracii", why: "Ten svátek připomíná studentské demonstrace z let 1939 a 1989, ne konec druhé světové války v Evropě v roce 1945. Popsaná situace odpovídá Dni vítězství." },
+      { value: "Den vzniku samostatného československého státu", why: "Ten svátek připomíná vznik Československa v roce 1918, ne konec druhé světové války v Evropě v roce 1945. Popsaná situace odpovídá Dni vítězství." },
+      { value: "Den obnovy samostatného českého státu", why: "Ten svátek připomíná vznik samostatné ČR v roce 1993, ne konec druhé světové války v Evropě. Popsaná situace odpovídá Dni vítězství." },
     ],
     hints: [
       "Přemýšlej, jaká celoevropská událost z roku 1945 se v popisu líčí.",
@@ -495,7 +495,7 @@ const POOL_L3: Polozka[] = [
     d: [
       { value: "Den upálení mistra Jana Husa", why: "Ten svátek připomíná kazatele upáleného v Kostnici v roce 1415, ne příchod bratrů ze Soluně na Velkou Moravu. Popsaná situace odpovídá Dni slovanských věrozvěstů Cyrila a Metoděje." },
       { value: "Den české státnosti", why: "Ten svátek je spojen se svatým Václavem, ne s příchodem bratrů ze Soluně. Popsaná situace odpovídá Dni slovanských věrozvěstů Cyrila a Metoděje." },
-      { value: "Den vítězství", why: "Ten svátek připomíná konec druhé světové války, ne příchod bratrů ze Soluně na Velkou Moravu. Popsaná situace odpovídá Dni slovanských věrozvěstů Cyrila a Metoděje." },
+      { value: "Den vítězství", why: "Ten svátek připomíná konec druhé světové války v Evropě, ne příchod bratrů ze Soluně na Velkou Moravu. Popsaná situace odpovídá Dni slovanských věrozvěstů Cyrila a Metoděje." },
     ],
     hints: [
       "Přemýšlej, odkud bratři přišli a co přesně na Velkou Moravu přinesli.",

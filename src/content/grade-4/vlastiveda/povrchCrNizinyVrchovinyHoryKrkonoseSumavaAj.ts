@@ -20,7 +20,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Jak se jmenuje nejvyšší hora Česka?", "Sněžka", [
     { value: "Praděd", why: "Praděd je nejvyšší hora Moravy a Jeseníků, ale nižší než Sněžka." },
     { value: "Lysá hora", why: "Lysá hora je nejvyšší v Beskydech, ale nižší než Sněžka." },
-    { value: "Plechý", why: "Plechý je nejvyšší hora Šumavy, ale nižší než Sněžka." },
+    { value: "Plechý", why: "Plechý je nejvyšší hora české části Šumavy, ale nižší než Sněžka." },
   ], {
     hints: ["Nejvyšší hora Česka leží v Krkonoších.", "Její jméno připomíná sníh, který na ní leží dlouho do jara. Stojí na hranici s Polskem."],
     explanation: "Nejvyšší horou Česka je Sněžka v Krkonoších (1 603 m). Leží na hranici s Polskem.",
@@ -81,7 +81,7 @@ const POOL_L1: PracticeTask[] = [
     hints: ["Na druhé straně Krušných hor leží Drážďany.", "Krušné hory tvoří dlouhý hřbet na hranici s Německem, nad Karlovými Vary a Ústím nad Labem."],
     explanation: "Krušné hory leží na severozápadě Čech a tvoří hranici s Německem. Nejvyšší horou je Klínovec (1 244 m).",
   }),
-  choice("Jak se jmenuje nejvyšší hora Šumavy?", "Plechý", [
+  choice("Jak se jmenuje nejvyšší hora české části Šumavy?", "Plechý", [
     { value: "Praděd", why: "Praděd je v Jeseníkách." },
     { value: "Klínovec", why: "Klínovec je v Krušných horách." },
     { value: "Sněžka", why: "Sněžka je v Krkonoších." },

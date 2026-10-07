@@ -367,7 +367,7 @@ const EXTRA_L1: PracticeTask[] = [
 ];
 const EXTRA_L2: PracticeTask[] = [
   {
-    question: "Seřaď přemyslovské krále od nejstaršího po nejmladšího.",
+    question: "Seřaď tyto přemyslovské vládce od nejstaršího po nejmladšího.",
     correctAnswer: "order",
     items: ["Sv. Václav zavražděn (935)","Přemysl Otakar I. – dědičné království (1212)","Václav II. – pražský groš (1300)","Václav III. zavražděn (1306)"],
     hints: ["Kdo z nich byl posledním Přemyslovcem?", "Pražský groš dal razit Václav II. roku 1300 a jeho syn Václav III. byl zavražděn o šest let později. Svatý Václav a Přemysl Otakar I. žili mnohem dřív."],

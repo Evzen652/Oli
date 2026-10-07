@@ -328,7 +328,7 @@ const POOL_L2: PracticeTask[] = [
     [
       { o: "150", why: "Číslo 150 přivolá hasiče, žádný požár tu ale není." },
       { o: "155", why: "Číslo 155 přivolá záchrannou službu ke zraněným." },
-      { o: "156", why: "Číslo 156 patří městské policii; krádež vyšetřuje státní policie na jiné lince." },
+      { o: "1188", why: "1188 je informační linka, ne tísňové číslo. Při krádeži voláš policii." },
     ],
     [
       "Děje se něco protiprávního — někdo bere cizí majetek.",

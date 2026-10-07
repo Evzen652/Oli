@@ -87,6 +87,7 @@ const VLASTNOSTI_LATKY = [
   { nazev: "teplota tání", proc: "látka taje při své teplotě bez ohledu na to, jak velký kus roztavíš" },
   { nazev: "barva", proc: "barvu má látka sama, ne až konkrétní výrobek z ní" },
 ];
+const KOVY_S_VLASTNI_BARVOU = new Set(["zlato", "bronz", "hliník", "železo"]);
 const VLASTNOSTI_TELESA = [
   { nazev: "hmotnost", proc: "hmotnost závisí na tom, kolik látky v tělese je, takže větší kus váží víc" },
   { nazev: "objem", proc: "objem je, kolik místa těleso zabírá, a ten má každé těleso jiný" },
@@ -180,7 +181,11 @@ function genL3(): PracticeTask {
   const latka = pick(SPOLECNE_LATKY);
   const [a, b] = shuffle(DVOJICE.filter((d) => d.latka === latka)).slice(0, 2);
   const [prvni, druhe] = [a.teleso, b.teleso].sort((p, q) => p.localeCompare(q, "cs"));
-  const spravna = pick(VLASTNOSTI_LATKY);
+  // „Barva" jako vlastnost látky platí jen u kovů s vlastní barvou. Plast,
+  // guma, papír, dřevo, sklo, porcelán i pálená hlína se barví, natírají
+  // nebo glazují — pneumatika je černá, gumička béžová. Do 2026-10-08 byla
+  // „barva" klíčem i u nich (věcná kontrola obsahu).
+  const spravna = pick(VLASTNOSTI_LATKY.filter((v) => v.nazev !== "barva" || KOVY_S_VLASTNI_BARVOU.has(latka)));
   const chybne = shuffle(VLASTNOSTI_TELESA).slice(0, 3);
 
   return task(

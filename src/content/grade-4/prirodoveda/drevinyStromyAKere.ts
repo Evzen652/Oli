@@ -106,7 +106,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Bez černý má na jaře bílé voňavé okolíky, ze kterých se dělá sirup, a na podzim černé bobule. Syrové se nejedí, jen tepelně upravené.",
   }),
   choice("Který keř dává jedlé bobule a pěstuje se na zahradách?", "Rybíz", [
-    { value: "Zimolez", why: "Plody zimolezu v přírodě jsou jedovaté." },
+    { value: "Brslen", why: "Plody brslenu jsou jedovaté — na zahradách se pěstuje jen pro okrasu." },
     { value: "Tis", why: "Tis je jedovatý." },
     { value: "Šeřík", why: "Šeřík jedlé plody nemá." },
   ], {
