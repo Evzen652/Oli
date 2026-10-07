@@ -696,9 +696,9 @@ const L3_PREVOD: Prevod[] = [
   {
     metafora: "Babiččina zahrada je zelený koberec.",
     simile: "Tráva v babiččině zahradě je hustá jako koberec.",
-    jinaMetafora: "Babiččina zahrada je pravý ráj.",
+    jinaMetafora: "Zahrada u babičky je pravý ráj.",
     zosobneni: "Babiččina zahrada si v létě hraje se sluncem.",
-    bezObrazu: "Babiččina zahrada má rozlohu asi sto metrů čtverečních.",
+    bezObrazu: "Zahrada u babičky má rozlohu asi sto metrů čtverečních.",
   },
   {
     metafora: "Chlapcovy oči jsou dvě hvězdy.",

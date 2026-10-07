@@ -144,8 +144,8 @@ const POOL_L1: Polozka[] = [
     q: "Co znamená „plánovaný nákup“?",
     key: "promyšlené rozhodnutí, kterému předchází srovnávání nebo čekání kvůli rozhodování",
     d: [
-      { value: "nákup, který proběhne co nejrychleji u pokladny", why: "Rychlost placení u pokladny o ničem nerozhoduje. Plánovaný nákup poznáš podle toho, co mu předcházelo — srovnávání a rozmyšlení." },
-      { value: "nákup podle toho, co se právě zalíbí v obchodě", why: "Rozhodnutí podle toho, co se právě zalíbí, je typické pro impulzivní nákup. Plánovaný nákup předchází srovnávání nebo čekání spojené s rozhodováním." },
+      { value: "rychlé rozhodnutí u pokladny, aby nákup proběhl co nejdřív", why: "Rychlost placení u pokladny o ničem nerozhoduje. Plánovaný nákup poznáš podle toho, co mu předcházelo — srovnávání a rozmyšlení." },
+      { value: "rozhodnutí koupit to, co se právě zalíbí v obchodě", why: "Rozhodnutí podle toho, co se právě zalíbí, je typické pro impulzivní nákup. Plánovaný nákup předchází srovnávání nebo čekání spojené s rozhodováním." },
       { value: "nákup, který nikdo předem nepromýšlel", why: "To popisuje pravý opak — nákup bez rozmyslu je impulzivní. Plánovaný nákup je naopak promyšlený předem." },
     ],
     hints: [
@@ -158,9 +158,9 @@ const POOL_L1: Polozka[] = [
     q: "Co znamená „impulzivní nákup“?",
     key: "rozhodnutí koupit něco bez rozmyslu, pod vlivem okamžité chuti nebo nálady",
     d: [
-      { value: "nákup po dlouhém srovnávání různých obchodů", why: "Dlouhé srovnávání je znak plánovaného nákupu. Impulzivní nákup je naopak rozhodnutí bez rozmyslu." },
+      { value: "rozhodnutí koupit něco až po dlouhém srovnávání různých obchodů", why: "Dlouhé srovnávání je znak plánovaného nákupu. Impulzivní nákup je naopak rozhodnutí bez rozmyslu." },
       { value: "nákup, na který rodina předem šetřila", why: "Předchozí šetření ukazuje na plánovaný nákup. Impulzivní nákup vzniká bez rozmyslu, na počkání." },
-      { value: "nákup naplánovaný předem v rodinném rozpočtu", why: "Zahrnutí do rozpočtu předem je znak plánovaného nákupu. Impulzivní nákup se naopak stane bez rozmyslu." },
+      { value: "rozhodnutí naplánované předem v rodinném rozpočtu", why: "Zahrnutí do rozpočtu předem je znak plánovaného nákupu. Impulzivní nákup se naopak stane bez rozmyslu." },
     ],
     hints: [
       "Přemýšlej, jestli tomuhle nákupu předchází rozmýšlení, nebo se stane spíš na počkání.",
@@ -200,8 +200,8 @@ const POOL_L1: Polozka[] = [
     q: "Co patří mezi rodinné výdaje?",
     key: "placení účtu za vodu a elektřinu",
     d: [
-      { value: "peníze, které rodič vydělá v práci", why: "Vydělané peníze jsou příjem, přibývají do rodiny. Výdaj je platba, při které peníze naopak odcházejí, třeba za vodu a elektřinu." },
-      { value: "peníze uspořené na společném účtu", why: "Uspořené peníze rodině pořád patří. Výdaj je platba, kterou peníze z rozpočtu skutečně opustí, jako platba za energie." },
+      { value: "výplata, kterou rodič dostane za svou práci", why: "Vydělané peníze jsou příjem, přibývají do rodiny. Výdaj je platba, při které peníze naopak odcházejí, třeba za vodu a elektřinu." },
+      { value: "ukládání peněz na společný spořicí účet", why: "Uspořené peníze rodině pořád patří. Výdaj je platba, kterou peníze z rozpočtu skutečně opustí, jako platba za energie." },
       { value: "peníze, které dítě dostane jako dárek", why: "Dárek je pro dítě příjem, peníze mu přibydou. Výdaj je platba, při které peníze z rozpočtu odcházejí." },
     ],
     hints: [
@@ -228,8 +228,8 @@ const POOL_L1: Polozka[] = [
     q: "Proč je pro dítě užitečné dostávat kapesné?",
     key: "učí se díky němu samo hospodařit s penězi",
     d: [
-      { value: "aby mělo víc peněz než jeho kamarádi", why: "Kapesné neslouží k porovnávání s kamarády. Jeho smyslem je, aby se dítě naučilo samo s penězi hospodařit." },
-      { value: "aby za něj rodiče nemuseli nic platit", why: "Rodiče kapesným neplatí nezbytné výdaje rodiny, to zůstává na nich. Kapesné dítěti pomáhá naučit se hospodařit." },
+      { value: "má díky němu víc peněz než jeho kamarádi", why: "Kapesné neslouží k porovnávání s kamarády. Jeho smyslem je, aby se dítě naučilo samo s penězi hospodařit." },
+      { value: "rodiče za něj pak už nemusí nic platit", why: "Rodiče kapesným neplatí nezbytné výdaje rodiny, to zůstává na nich. Kapesné dítěti pomáhá naučit se hospodařit." },
       { value: "aby mohlo peníze kdykoliv utrácet bez rozmyslu", why: "Kapesné naopak učí přemýšlet, na co peníze použít, ne utrácet bez rozmyslu. Jeho smyslem je naučit se hospodařit." },
     ],
     hints: [

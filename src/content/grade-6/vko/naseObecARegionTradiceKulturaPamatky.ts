@@ -497,9 +497,9 @@ const POOL_L3: Polozka[] = [
     q: "Ve smyšlené obci Krásná Lhota se každý rok v září koná slavnost sklizně, kterou znají jen obyvatelé okolních vesnic. O mnoho měsíců později, 1. května, mají po celé republice volno školy i úřady. Čím se tyhle dvě události od sebe zásadně liší?",
     key: "slavnost sklizně je zvyk, 1. květen je zákonný svátek",
     d: [
-      { value: "obojí je zvyk jen pro okolí Krásné Lhoty", why: "1. květen je stanovený zákonem pro celou republiku, to není zvyk jedné obce nebo regionu." },
+      { value: "slavnost sklizně i 1. květen jsou zvyky jen pro okolí Krásné Lhoty", why: "1. květen je stanovený zákonem pro celou republiku, to není zvyk jedné obce nebo regionu." },
       { value: "obojí platí zákonem pro celou republiku", why: "Slavnost sklizně znají jen obyvatelé okolí, to je typický znak místního zvyku, ne celostátně stanoveného dne." },
-      { value: "obojí se řídí stejným zákonem pro celou zemi", why: "Jen 1. květen je daný zákonem pro celou zemi. Slavnost sklizně je dobrovolný místní zvyk, který zákon neupravuje." },
+      { value: "slavnost sklizně i 1. květen se řídí stejným zákonem pro celou zemi", why: "Jen 1. květen je daný zákonem pro celou zemi. Slavnost sklizně je dobrovolný místní zvyk, který zákon neupravuje." },
     ],
     hints: [
       "U obou událostí se ptej stejně: kdo je zná a kdo podle nich má volno — jen okolí jedné obce, nebo celá republika?",

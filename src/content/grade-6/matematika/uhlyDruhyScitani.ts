@@ -517,7 +517,15 @@ function genL3Inverze(): PracticeTask | null {
     dis.push({ value: uhel(a + b), why: `Úhly jsi sečetl. Hledáš ale úhel, který s ${uhel(a)} dá dohromady ${uhel(b)}, takže musíš odčítat.` });
   }
   if (mb + 100 - ma <= 59) dis.push({ value: surovy(db - da - 1, mb + 100 - ma), why: `${SETINY} Půjčuje se 1° = 60′.` });
-  return uloha(`Který úhel musíš přičíst k ${uhel(a)}, aby vznikl tupý úhel ${uhel(b)}?`, uhel(klic), shuffle(dis), {
+  // Dvě nejčastější chyby nahoře mají o 1° víc než klíč, takže klíč býval
+  // JEDINÝ s nižším počtem stupňů a šel vybrat bez počítání (2026-10-07,
+  // `check:options`). Tahle chyba má stupně stejné jako klíč a jde do
+  // nabídky vždy (`buildChoiceTask` bere první tři různé).
+  const stejneStupne: Distractor = {
+    value: surovy(db - da - 1, ma - mb),
+    why: `Půjčený stupeň máš správně, ale minuty jsi odečetl obráceně (${cis(ma)}′ − ${cis(mb)}′). Po půjčení máš ${cis(mb + 60)}′ a od nich se odečítá ${cis(ma)}′.`,
+  };
+  return uloha(`Který úhel musíš přičíst k ${uhel(a)}, aby vznikl tupý úhel ${uhel(b)}?`, uhel(klic), [stejneStupne, ...shuffle(dis)], {
     hints: [
       "Hledáš chybějící sčítanec: od výsledného úhlu odečti ten, který už máš.",
       `Od ${uhel(b)} odečti ${uhel(a)}: stupně od stupňů, minuty od minut. Když minut nestačí, půjč si 1° = 60′. Nakonec udělej zkoušku sčítáním.`,

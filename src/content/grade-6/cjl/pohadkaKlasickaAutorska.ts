@@ -66,8 +66,8 @@ const L1_ITEMS: L1Item[] = [
     correct: "Konkrétní známý spisovatel si celý příběh sám vymyslel a napsal.",
     distractors: [
       { value: "Autor pohádku jen zapsal tak, jak ji předtím slyšel vyprávět od jiných lidí.", why: "To dělá sběratel, ne autor. Autor si příběh sám vymyslel." },
-      { value: "Autor je člověk, který pohádku jako první přeložil do češtiny.", why: "Překlad z jiného jazyka není totéž jako vlastní vymyšlený příběh." },
-      { value: "Autor je kdokoli, kdo pohádku dětem večer vypráví.", why: "Kdokoli může pohádku vyprávět dál, ale autorem je jen ten, kdo si ji sám vymyslel." },
+      { value: "Jde o člověka, který pohádku jako první přeložil do češtiny.", why: "Překlad z jiného jazyka není totéž jako vlastní vymyšlený příběh." },
+      { value: "Kdokoli, kdo pohádku dětem večer vypráví, je její autor.", why: "Kdokoli může pohádku vyprávět dál, ale autorem je jen ten, kdo si ji sám vymyslel." },
     ],
     hints: [
       "Autor je ten, kdo příběh sám vytvořil — nikdo ho podle stejného vyprávění neopakoval před ním.",
@@ -177,8 +177,8 @@ const L1_ITEMS: L1Item[] = [
     question: "Proč se v lidové pohádce často objevují čísla tři, sedm nebo dvanáct?",
     correct: "Jsou to kouzelná čísla — jejich opakování je jeden z ustálených znaků lidové pohádky.",
     distractors: [
-      { value: "Protože si to tak vymyslel jeden konkrétní spisovatel a všichni ho pak opisovali.", why: "Kouzelná čísla nejsou nápad jednoho autora, jde o ustálený znak celé lidové tradice." },
-      { value: "Protože lidová pohádka musí mít přesně tolik postav.", why: "Žádné takové pravidlo neexistuje. Kouzelné číslo se sice často objeví i u počtu postav (tři synové, dvanáct měsíčků), ale stejně tak u počtu úkolů, přání nebo dní cesty — povinný počet postav to není." },
+      { value: "Vymyslel si to jeden konkrétní spisovatel a všichni ho pak opisovali.", why: "Kouzelná čísla nejsou nápad jednoho autora, jde o ustálený znak celé lidové tradice." },
+      { value: "Lidová pohádka musí mít přesně tolik postav, jinak by to nebyla pohádka.", why: "Žádné takové pravidlo neexistuje. Kouzelné číslo se sice často objeví i u počtu postav (tři synové, dvanáct měsíčků), ale stejně tak u počtu úkolů, přání nebo dní cesty — povinný počet postav to není." },
       { value: "Protože jde o matematické úlohy schované v textu pohádky.", why: "V pohádce nejde o matematiku, ale o tradiční, symbolicky opakovaná čísla." },
     ],
     hints: [
@@ -570,9 +570,9 @@ const L3A: SmisenaUkazka[] = [
     text: "Kouzelnice v modré zástěře uměla přeměnit cokoli v cokoli, ale jen třikrát denně. Bydlela v bytě nad pekařstvím a nejradši měnila stará kola na jízdní kola pro děti ze sídliště. Vypravěč vážným hlasem tvrdil, že tohle je nejobyčejnější povolání v celém městě.",
     option: "Moderní prostředí (byt nad pekařstvím, sídliště) a ironie vypravěče.",
     vysvetleni: "Rozhoduje moderní prostředí (byt nad pekařstvím, sídliště) a ironický tón vypravěče — takové rysy lidová pohádka nemá, proto jde o autorskou pohádku, i když se v ní objevuje kouzlo a číslo tři.",
-    d1: "Kouzelnice umí kouzlit, podobně jako mnohé kouzelné postavy ve starých lidových pohádkách.",
+    d1: "Hlavní postava umí kouzlit, podobně jako mnohé kouzelné postavy ve starých lidových pohádkách.",
     d2: "Kouzelnice kouzlí přesně třikrát denně.",
-    d3: "Kouzelnice pomáhá dětem ze sídliště novými koly.",
+    d3: "Dětem ze sídliště pomáhá kouzelnice novými koly.",
   },
 ];
 

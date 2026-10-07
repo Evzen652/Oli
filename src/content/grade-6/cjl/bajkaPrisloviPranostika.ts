@@ -491,9 +491,9 @@ const L3C_ITEMS: PravdaItem[] = [
     q: "Co znamená, že se pranostika někdy „nesplní“?",
     correct: "Pranostiky vycházejí z dlouhodobých zkušeností, ale konkrétní rok se od nich může odchýlit — nejsou to jisté předpovědi.",
     distractors: [
-      { value: "Znamená to, že pranostika je vědecky dokázaný fakt, který musí platit vždy.", why: "Pranostika naopak vědecky dokázaný fakt není a nemusí platit vždy — je to zkušenost z minulosti." },
+      { value: "Pranostika je vědecky dokázaný fakt, a proto musí platit každý rok bez jediné výjimky, ať se děje cokoli.", why: "Pranostika naopak vědecky dokázaný fakt není a nemusí platit vždy — je to zkušenost z minulosti." },
       { value: "Znamená to, že taková pranostika je úplně vymyšlená a nemá se používat.", why: "I pranostika, která se v konkrétním roce nesplní, může vycházet z opakovaného dlouhodobého pozorování." },
-      { value: "Znamená to, že se počasí toho dne řídí pranostikou automaticky.", why: "Počasí se pranostikou neřídí — je to naopak lidský popis toho, jaké počasí obvykle bývá." },
+      { value: "Počasí se toho dne podle pranostiky řídí automaticky — příroda se jí musí přizpůsobit každý rok.", why: "Počasí se pranostikou neřídí — je to naopak lidský popis toho, jaké počasí obvykle bývá." },
     ],
   },
   {
