@@ -643,7 +643,7 @@ const ROZHODNUTI_L3: Fakt[] = [
     [
       ["jen kokosové palmy, jiné plodiny tam nerostou", "Kokosové palmy jsou typické pro atoly. Sopečná půda je úrodná a hodí se pro mnoho plodin."],
       ["pšenici na rozlehlých polích", "Hornatý ostrov nemá místo na rozlehlá pole."],
-      ["chovat ovce na suché stepi", "Na sopečném ostrově prší, suchá step tam není."],
+      ["trávu pro ovce na suché stepi", "Na sopečném ostrově prší, suchá step tam není."],
     ],
     "Nejdřív urči, o jaký typ ostrova jde. Pak se zeptej, jaká je tam půda a kolik vody.",
     "Z lávy vzniká půda bohatá na živiny a hory zachytávají déšť. Které plodiny se hodí do vlhka a na dobrou půdu?",

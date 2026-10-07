@@ -177,8 +177,8 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Kolem poledne je Slunce nejvýš a paprsky dopadají nejstrměji, takže nejvíc pálí a mohou spálit kůži. Proto se doporučuje stín, pokrývka hlavy a opalovací krém.",
   }),
   choice("Jak lidé využívají sluneční energii?", "Vyrábějí z ní elektřinu a ohřívají vodu", [
-    { value: "Svítí s ní v noci bez baterií", why: "V noci Slunce nesvítí. Energii by museli předem uložit do baterií." },
-    { value: "Hasí s ní požáry v lese", why: "Sluneční energie oheň neuhasí." },
+    { value: "S její pomocí se v noci svítí bez baterií", why: "V noci Slunce nesvítí. Energii by museli předem uložit do baterií." },
+    { value: "S její pomocí se hasí požáry v lese", why: "Sluneční energie oheň neuhasí." },
     { value: "Vyrábějí z ní uhlí pod zemí", why: "Uhlí vzniklo z pravěkých rostlin, dnes se ze slunce nevyrábí." },
   ], {
     hints: ["Co je na střechách některých domů?", "Na střechách bývají dva druhy desek: jedny vyrábějí proud, druhé dávají teplou vodu do koupelny. Co z toho plyne?"],

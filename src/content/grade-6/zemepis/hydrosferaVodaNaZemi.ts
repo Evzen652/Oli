@@ -580,7 +580,7 @@ const BANKA_L3: Polozka[] = [
     ds: [
       ["Nic se nezmění, jezero si vodu doplní z dešťů nad hladinou.", "Déšť nad hladinou úbytek nevyrovná. Velké jezero drží hladinu hlavně díky tomu, co do něj přiteče — a toho teď přitéká míň."],
       ["Hladina stoupne, protože se voda z polí vrátí zpátky do jezera.", "Většinu vody na poli spotřebují rostliny nebo se vypaří. Zpátky se vrátí jen zlomek."],
-      ["Vyschne během jediné sezóny, protože přítok se úplně zastavil.", "Odběr část vody v řece ponechá. Jezero proto mizí postupně, ne během jedné sezóny."],
+      ["Vyschne během jediné sezóny, protože se přítok úplně zastavil.", "Odběr část vody v řece ponechá. Jezero proto mizí postupně, ne během jedné sezóny."],
     ],
     h: [
       "Jezero je jako vana: něco do ní přitéká, něco se z ní ztrácí. Co se stane, když přítok ubereš?",
@@ -594,7 +594,7 @@ const BANKA_L3: Polozka[] = [
     ds: [
       ["V jílu pod pískem, protože jíl vodu nasákne a udrží ji.", "Jíl vodu sice nasákne, ale dál ji nepustí a zpátky ji nevydá. Čerpat se dá jen z písku nad ním, kde voda volně protéká mezerami mezi zrnky."],
       ["Pod jílem, kam voda oběma vrstvami propadne až dolů.", "Skrz jíl voda neprojde. Zastaví se na jeho povrchu."],
-      ["Nikde, protože v takových vrstvách se voda vůbec neudrží.", "Hrubá hornina vodu velmi dobře drží v mezerách mezi zrnky. Proto se z ní čerpá."],
+      ["Nikde, protože se v takových vrstvách voda vůbec neudrží.", "Hrubá hornina vodu velmi dobře drží v mezerách mezi zrnky. Proto se z ní čerpá."],
     ],
     h: [
       "Rozděl si obě vrstvy podle toho, jestli jimi voda projde, nebo ne. Kde se její cesta zastaví?",
@@ -691,8 +691,8 @@ const BANKA_L3: Polozka[] = [
     key: "V jedné bílý slaný povlak, ve druhé skoro nic.",
     ds: [
       ["V obou bílý slaný povlak, protože v každé vodě je sůl.", "Dešťová voda je sladká. Sůl zůstala v moři už při vypařování."],
-      ["V obou skoro nic, protože sůl se vypaří spolu s vodou.", "Sůl se nevypařuje. Do vzduchu se zvedne pouze voda."],
-      ["V jedné zůstane voda, protože slaná voda se nevypařuje.", "Vypařuje se i slaná voda. Vypaří se z ní ale právě jen ta voda."],
+      ["V obou skoro nic, protože se sůl vypaří spolu s vodou.", "Sůl se nevypařuje. Do vzduchu se zvedne pouze voda."],
+      ["V jedné zůstane voda, protože se slaná voda nevypařuje.", "Vypařuje se i slaná voda. Vypaří se z ní ale právě jen ta voda."],
     ],
     h: [
       "Rozmysli si zvlášť, co je v každé sklenici rozpuštěno a jestli se to dokáže vypařit.",

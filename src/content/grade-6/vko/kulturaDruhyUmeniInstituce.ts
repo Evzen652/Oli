@@ -271,7 +271,7 @@ function genL2(): PracticeTask | null {
 const MASA_ITEMS: string[] = [
   "Televizní stanice odvysílala pořad, který ve stejný večer sledovaly statisíce diváků po celé zemi.",
   "Zpěvačka vydala píseň, kterou si přes internet pustily miliony lidí po celém světě.",
-  "Film měl premiéru v kinech po celé republice a ve stejném týdnu ho vidělo statisíce diváků.",
+  "Film měl premiéru v kinech po celé republice a ve stejném týdnu ho viděly statisíce diváků.",
   "Video na internetu si za pár dní pustily miliony lidí z celého světa.",
   "Rozhlasová stanice vysílala zprávy, které ve stejnou chvíli poslouchali posluchači po celé zemi.",
   "Časopis s velkým nákladem otiskl článek, který si ve stejném týdnu přečetly statisíce čtenářů.",

@@ -452,7 +452,7 @@ const BANKA_L2: Polozka[] = [
   },
   {
     q: "Po přívalovém dešti se voda z holého svahu hned valila do údolí, z lesa s mechem přitékala až později. Čím to?",
-    key: "mech vodu nasákne a pouští ji pomalu",
+    key: "mech vodu nasaje a pouští ji pomalu",
     ds: [
       ["mech vodu vede kořeny hluboko do země", FB_KORENY],
       ["mech vodu hned odpaří do vzduchu", "Mech vodu neodpaří najednou. Nasákne ji a pomalu pouští."],
@@ -552,7 +552,7 @@ const BANKA_L3: Polozka[] = [
   ),
   {
     q: "Pod lupou vidíš, že rašeliník má v lístcích mnoho velkých prázdných buněk. Co se stane, když jeho suchý polštář na hodinu položíš do misky s vodou?",
-    key: "nasákne vodu a mnohonásobně ztěžkne",
+    key: "nasaje vodu a mnohonásobně ztěžkne",
     ds: [
       ["zůstane lehký, vodu berou jen kořeny", FB_KORENY],
       ["zůstane suchý, lístky vodu odpuzují", "Lístky rašeliníku vodu neodpuzují. Prázdné buňky se vodou naopak plní."],

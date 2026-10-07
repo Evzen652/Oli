@@ -173,7 +173,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Proč se záhon před setím kypří motykou nebo rýčem?", "Aby do půdy pronikl vzduch a voda", [
     { value: "Aby půda ztvrdla", why: "Kypření půdu dělá měkkou a drobivou, ne tvrdou." },
-    { value: "Aby z ní utekly žížaly", why: "Žížaly jsou v půdě užitečné, nikdo je nevyhání." },
+    { value: "Aby z něj utekly žížaly", why: "Žížaly jsou v půdě užitečné, nikdo je nevyhání." },
     { value: "Aby se semínka ohřála sluncem", why: "Semínka se zasévají do země, ne na slunce. Kypření pomáhá hlavně vzduchu a vodě." },
   ], {
     hints: ["Jaký rozdíl je mezi ušlapanou cestičkou a čerstvě zrytým záhonem?", "Do ušlapané hlíny voda nepronikne a steče po povrchu. Co se změní, když hlínu rozdrobíš na malé hrudky?"],
@@ -246,7 +246,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Kudy teče voda, když zaprší na svahu?", "Brázda shora dolů je jako skluzavka pro vodu. Co udělá brázda, která vede napříč svahem?"],
     explanation: "Voda teče po svahu dolů. Brázdy shora dolů by jí posloužily jako koryta a spláchla by půdu. Brázdy napříč vodu zachytí, ta se vsákne a půda zůstane na poli.",
   }),
-  choice("Proč ve městě s mnoha betonovými plochami po bouřce častěji zaplaví ulice?", "Voda se nevsákne do země a hned odtéká", [
+  choice("Proč voda ve městě s mnoha betonovými plochami po bouřce častěji zaplaví ulice?", "Voda se nevsákne do země a hned odtéká", [
     { value: "Beton vodu přitahuje", why: "Beton vodu nepřitahuje, jen ji nepropustí." },
     { value: "Ve městě prší víc", why: "Ve městě neprší víc. Rozdíl je v tom, kam voda zmizí." },
     { value: "Kanály bývají vždycky ucpané", why: "Kanály to často nestihnou odvést, protože voda se nemá kde vsáknout." },

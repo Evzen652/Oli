@@ -27,7 +27,7 @@ const L1: PracticeTask[] = [
     hints: ["O čem autor mluví pořád dokola?", "Když je něco hlavním tématem, autor se k tomu stále vrací — proto se ta slova opakují."],
     explanation: "Klíčová slova se opakují, protože se k nim autor stále vrací — jsou jádrem tématu.",
   }),
-  choice("Podle čeho klíčová slova v učebnici snadno najdeš?", "jsou tučně, v nadpisu, nebo se opakují", [
+  choice("Podle čeho klíčová slova v učebnici snadno najdeš?", "jsou tučně, v nadpisu nebo se opakují", [
     { value: "jsou vždycky až na konci věty", why: "Místo ve větě o důležitosti nerozhoduje." },
     { value: "jsou vždy v závorce", why: "Závorka o důležitosti nic neříká." },
     { value: "jsou vždy nejkratší", why: "Délka o důležitosti nerozhoduje." },
@@ -59,10 +59,10 @@ const L1: PracticeTask[] = [
     hints: ["Co si z textu máš zapamatovat, i když zapomeneš podrobnosti?", "Téma je, o čem text je. To hlavní, co o tom text tvrdí, se dá říct jednou celou větou."],
     explanation: "Hlavní myšlenka je to nejdůležitější, co text o tématu říká — dá se vyjádřit jednou větou.",
   }),
-  choice("Jaký je rozdíl mezi tématem a hlavní myšlenkou?", "téma je o čem, myšlenka je co se o tom říká", [
-    { value: "je to totéž", why: "Téma je kratší — jen o čem text je." },
-    { value: "téma je vždy delší", why: "Téma bývá kratší, jen slovo nebo dvě." },
-    { value: "hlavní myšlenka je vždycky v závorce", why: "Závorka s tím nesouvisí." },
+  choice("Jaký je rozdíl mezi tématem a hlavní myšlenkou?", "téma je to, o čem text je, myšlenka to, co se o něm říká", [
+    { value: "je to totéž, jen se tomu říká dvěma slovy", why: "Téma je kratší — jen o čem text je." },
+    { value: "téma je vždy delší než hlavní myšlenka", why: "Téma bývá kratší, jen slovo nebo dvě." },
+    { value: "hlavní myšlenka je vždycky napsaná v závorce", why: "Závorka s tím nesouvisí." },
   ], {
     hints: ["Který z těch dvou pojmů se dá říct jedním slovem?", "U textu o včelách je jedno z nich „včely“ a druhé celá věta „včely pomáhají rostlinám“. Které je které?"],
     explanation: "Téma říká, o čem text je (včely). Hlavní myšlenka říká, co o tom text tvrdí (včely pomáhají rostlinám).",

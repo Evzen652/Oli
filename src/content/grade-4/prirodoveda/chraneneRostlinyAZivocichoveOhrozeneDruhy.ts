@@ -169,7 +169,7 @@ const POOL_L2: PracticeTask[] = [
   choice("Co dělá záchranná stanice pro zvířata?", "Léčí zraněná zvířata a vrací je do přírody", [
     { value: "Prodává zvířata lidem", why: "Záchranné stanice zvířata neprodávají, léčí je." },
     { value: "Chová zvířata pro zoo", why: "Cílem je vrátit zvíře do přírody, ne do zoo." },
-    { value: "Loví zvířata, kterých je přemnoženo", why: "Záchranná stanice neloví, zachraňuje." },
+    { value: "Loví zvířata, která jsou přemnožená", why: "Záchranná stanice neloví, zachraňuje." },
   ], {
     hints: ["Kam odvezeš sraženého ježka nebo ptáka se zlomeným křídlem?", "V takové stanici zvíře ošetří, vyléčí a pak ho znovu pustí tam, kde žilo."],
     explanation: "Záchranná stanice pečuje o zraněná a osiřelá divoká zvířata. Vyléčí je a pak je vrátí zpět do přírody.",

@@ -67,7 +67,7 @@ const FAKTA: [RegExp, RegExp][] = [
   [/leží město Řím/, /^Tiber$/],
 ];
 const TVRZENI: [RegExp, RegExp][] = [
-  [/Čemu tím chtěli zabránit/, /nezískal natrvalo jediný/],
+  [/Čeho tím chtěli dosáhnout/, /nezískal natrvalo jediný/],
   [/přišli o půdu a odcházeli/, /vojevůdce/],
   [/přestávala fungovat/, /vlastním vojskem na Řím/],
   [/diktátor vládnout nanejvýš/, /nový král/],

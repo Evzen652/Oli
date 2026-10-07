@@ -610,7 +610,7 @@ const SITUACE: Situace[] = [
     spatne: [
       { text: "Pomalu a zřetelně, ale pořád stejným tónem, aby dítě nic nerozptylovalo.", why: "Jednotvárný hlas malé dítě nebaví a nepozná z něj, která postava zrovna mluví." },
       { text: "Výrazně, jiným hlasem pro každou postavu, ale svižně, ať pohádku stihneš.", why: "V rychlém tempu malé dítě nestihne pochopit, co se v pohádce děje." },
-      { text: "Pomalu a výrazně, a v napínavých chvílích co nejvíc zesil svůj hlas.", why: "Náhlý hlasitý hlas může malé dítě vyděsit. Napětí lépe vytvoří ztišení a pauza." },
+      { text: "Pomalu a výrazně a v napínavých chvílích co nejvíc zesil svůj hlas.", why: "Náhlý hlasitý hlas může malé dítě vyděsit. Napětí lépe vytvoří ztišení a pauza." },
     ],
   },
   {

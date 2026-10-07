@@ -63,7 +63,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se dělá na poště?",
     correctAnswer: "Posílají a vyzvedávají se tam dopisy a balíky",
-    options: ["Půjčují se tam knihy", "Vyřizují se tam záležitosti obce", "Posílají a vyzvedávají se tam dopisy a balíky", "Nastupuje a vystupuje se tam z vlaku"],
+    options: ["Půjčují se tam knihy", "Vyřizují se tam záležitosti obce", "Posílají a vyzvedávají se tam dopisy a balíky", "Nastupuje se tam do vlaku a vystupuje z něj"],
     emoji: "📮",
     hints: [
       "Přemýšlej, kam bys šel, kdybys chtěl někomu poslat pohled.",
@@ -72,7 +72,7 @@ const POOL_L1: PracticeTask[] = [
     optionFeedback: {
       "Půjčují se tam knihy": "Knihy se půjčují v knihovně.",
       "Vyřizují se tam záležitosti obce": "Záležitosti obce se vyřizují na radnici.",
-      "Nastupuje a vystupuje se tam z vlaku": "Na vlak se jde na nádraží.",
+      "Nastupuje se tam do vlaku a vystupuje z něj": "Na vlak se jde na nádraží.",
     },
     solutionSteps: ["Na poště se odesílají a vyzvedávají dopisy a balíky."],
   },
@@ -200,8 +200,8 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co se dělá na nádraží?",
-    correctAnswer: "Nastupuje a vystupuje se tam z vlaku",
-    options: ["Posílají a vyzvedávají se tam dopisy a balíky", "Děti si tam venku hrají", "Nastupuje a vystupuje se tam z vlaku", "Lidé se tam modlí a scházejí na bohoslužby"],
+    correctAnswer: "Nastupuje se tam do vlaku a vystupuje z něj",
+    options: ["Posílají a vyzvedávají se tam dopisy a balíky", "Děti si tam venku hrají", "Nastupuje se tam do vlaku a vystupuje z něj", "Lidé se tam modlí a scházejí na bohoslužby"],
     emoji: "🚉",
     hints: [
       "Přemýšlej, kam jdeš, když s rodinou jedete na výlet po kolejích.",
@@ -217,7 +217,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se dělá na hřišti?",
     correctAnswer: "Děti si tam venku hrají",
-    options: ["Cvičí se tam sportovci uvnitř budovy", "Naučíš se tam plavat", "Nastupuje a vystupuje se tam z vlaku", "Děti si tam venku hrají"],
+    options: ["Cvičí se tam sportovci uvnitř budovy", "Naučíš se tam plavat", "Nastupuje se tam do vlaku a vystupuje z něj", "Děti si tam venku hrají"],
     emoji: "🛝",
     hints: [
       "Přemýšlej, kam jdeš odpoledne ven na houpačky a prolézačky.",
@@ -226,7 +226,7 @@ const POOL_L1: PracticeTask[] = [
     optionFeedback: {
       "Cvičí se tam sportovci uvnitř budovy": "Uvnitř budovy se cvičí v tělocvičně, hřiště je venku.",
       "Naučíš se tam plavat": "Plavat se učí v bazénu.",
-      "Nastupuje a vystupuje se tam z vlaku": "Z vlaku se vystupuje na nádraží.",
+      "Nastupuje se tam do vlaku a vystupuje z něj": "Z vlaku se vystupuje na nádraží.",
     },
     solutionSteps: ["Na hřišti si děti venku hrají, houpou se a lezou po prolézačkách."],
   },

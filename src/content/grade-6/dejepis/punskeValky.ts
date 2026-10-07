@@ -570,7 +570,7 @@ const L3: Uloha[] = [
   },
   {
     q: "Co by se nejspíš stalo, kdyby Řím po první punské válce neovládal moře?",
-    key: "Hannibal mohl připlout do Itálie a nemusel pochodovat přes Alpy",
+    key: "Hannibal by mohl připlout do Itálie a nemusel by pochodovat přes Alpy",
     d: [
       ["Kartágo by nikdy nemohlo založit své osady v severní Africe", "Kartágo založili Féničané dávno před punskými válkami. Na tom by římské loďstvo nic nezměnilo."],
       ["Řím by stejně zvítězil u Kann a válka by skončila o dost dřív", "U Kann Řím nezvítězil, prohrál. Bez vlády nad mořem by na tom byl ještě hůř."],

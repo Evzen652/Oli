@@ -452,7 +452,7 @@ const L2_C: Polozka[] = [
     key: "vyrábí živiny fotosyntézou",
     ds: [
       ["nese klas s výtrusnicemi", "Klas s výtrusnicemi nese jarní hnědá lodyha. Letní lodyha klas nemá."],
-      ["nese semena ve šiškách", "Přeslička nemá semena ani šišky. Výtrusy nese jarní hnědá lodyha v klasu."],
+      ["nese semena v šiškách", "Přeslička nemá semena ani šišky. Výtrusy nese jarní hnědá lodyha v klasu."],
       ["chrání jarní lodyhu před mrazem", "Jarní lodyha v létě už nežije. Letní lodyha má jiný úkol, který souvisí se zelenou barvou."],
     ],
     h: [

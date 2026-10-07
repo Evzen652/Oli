@@ -487,7 +487,7 @@ const CTIVA: Ctivo[] = [
     },
     plati: {
       q: "Které tvrzení podle textu platí?",
-      a: "Káti polévka chutnala.",
+      a: "Kátě polévka chutnala.",
       d: [
         ["Matějovi polévka chutnala.", "Matěj ji vůbec nejedl."],
         ["Káťa polévku nejedla.", "Káťa si ji dokonce přidala."],
@@ -508,7 +508,7 @@ const CTIVA: Ctivo[] = [
       e: "Text neodpovídá na všechno. Co v něm není, to se z něj nedá vyčíst — ani odhadem.",
     },
     vyvod: {
-      q: "Podle čeho poznáš, že Káti polévka chutnala?",
+      q: "Podle čeho poznáš, že Kátě polévka chutnala?",
       a: "Přidala si dvakrát.",
       d: [
         ["Jela k babičce.", "K babičce jely obě děti, i ten, kdo polévku nejedl."],

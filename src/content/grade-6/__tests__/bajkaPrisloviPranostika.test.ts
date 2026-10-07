@@ -45,7 +45,7 @@ const LABEL_TO_UTVAR: Record<string, "bajka" | "prislovi" | "pranostika" | "poha
 const PRISLOVI_VYZNAM: { text: string; vyznam: string }[] = [
   { text: "Kdo jinému jámu kopá, sám do ní padá.", vyznam: "Kdo chce druhému člověku úmyslně ublížit, nakonec často uškodí sám sobě." },
   { text: "Bez práce nejsou koláče.", vyznam: "Kdo chce něčeho dosáhnout, musí se nejdřív snažit a pracovat." },
-  { text: "Lepší vrabec v hrsti než holub na střeše.", vyznam: "Je lepší mít jistou menší věc, než riskovat kvůli nejisté větší věci." },
+  { text: "Lepší vrabec v hrsti než holub na střeše.", vyznam: "Je lepší mít jistou menší věc než riskovat kvůli nejisté větší věci." },
   { text: "Tichá voda břehy mele.", vyznam: "Kdo navenek působí klidně a tiše, může být uvnitř silný nebo mít velký vliv, i když to není na první pohled vidět." },
   { text: "Jablko nepadá daleko od stromu.", vyznam: "Děti se povahou často podobají svým rodičům." },
   { text: "Dvakrát měř, jednou řež.", vyznam: "Než se do něčeho pustíš, dobře si to rozmysli a ověř — udělanou chybu už pak nevrátíš." },

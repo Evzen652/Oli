@@ -259,7 +259,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Proč dodržovat zákon, i když s ním člověk nesouhlasí?", "Zákon se dá změnit, ale ne porušovat", [
     { value: "Protože zákony nikdy nejsou špatné", why: "Zákony špatné být mohou. Mění se ale podle pravidel, ne porušováním." },
-    { value: "Kdo nesouhlasí, nemusí je dodržovat", why: "Kdyby každý dodržoval jen to, co se mu líbí, nefungovala by společnost." },
+    { value: "Kdo nesouhlasí, nemusí ho dodržovat", why: "Kdyby každý dodržoval jen to, co se mu líbí, nefungovala by společnost." },
     { value: "Zákony dodržovat nemusí nikdo", why: "Zákony musí dodržovat všichni." },
   ], {
     hints: ["Co by se stalo, kdyby každý dodržoval jen pravidla, která se mu líbí?", "Když se zákon lidem nelíbí, mohou volit jiné zástupce, psát petice a pravidlo upravit. Porušit ho ale nesmějí."],

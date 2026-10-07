@@ -192,7 +192,7 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   t(
     "Kdy podle pověsti vyjedou Blaničtí rytíři z hory?",
-    "Když bude české zemi v největší nouzi",
+    "Když bude česká země v největší nouzi",
     [
       ["Každý rok na Vánoce", "Rytíři nevyjíždějí pravidelně — čekají na jedinou výjimečnou chvíli."],
       ["Jakmile se probudí Krakonoš", "Krakonoš je z jiné pověsti a žije v Krkonoších. Rytíře neprobouzí."],

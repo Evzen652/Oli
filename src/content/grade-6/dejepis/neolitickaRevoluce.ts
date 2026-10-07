@@ -587,7 +587,7 @@ const L3: Polozka[] = [
   },
   {
     q: "Proč museli zemědělci na rozdíl od lovců zůstávat na jednom místě?",
-    key: "Protože pole a stáda vyžadovaly péči po celý rok.",
+    key: "Protože pole a stáda vyžadovala péči po celý rok.",
     d: [
       ["Protože si nejdřív postavili domy a pak hledali pole.", "Pořadí je obrácené. Domy si lidé stavěli u polí, protože u nich museli zůstat."],
       ["Protože broušené kamenné sekery nešly přenášet.", "Sekeru člověk snadno unesl. Zemědělce drželo na místě pole a stádo."],

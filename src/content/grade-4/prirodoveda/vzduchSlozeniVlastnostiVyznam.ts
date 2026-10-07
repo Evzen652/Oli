@@ -257,7 +257,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Co oheň potřebuje ze vzduchu?", "Kolem uhlíků je vzduch, ze kterého oheň kyslík už spotřeboval. Co se změní, když k nim fouknutím doženeš čerstvý?"],
     explanation: "Oheň potřebuje kyslík. Foukáním doženeš k uhlíkům čerstvý vzduch a víc kyslíku, a tak oheň znovu vzplane. Proto se používá i měch.",
   }),
-  choice("Proč se hasicí přístroje často plní oxidem uhličitým?", "Oxid uhličitý vytlačí od ohně kyslík, a ten zhasne", [
+  choice("Proč se hasicí přístroje často plní oxidem uhličitým?", "Oxid uhličitý vytlačí od ohně kyslík a oheň zhasne", [
     { value: "Oxid uhličitý hoří lépe", why: "Oxid uhličitý nehoří, naopak oheň dusí." },
     { value: "Oxid uhličitý oheň rozdrtí", why: "Plyn oheň nedrtí. Zamezí přístupu kyslíku." },
     { value: "Oxid uhličitý přinese k ohni vodu, která ho uhasí", why: "Hasicí přístroj s tímto plynem vodu neobsahuje." },
@@ -321,7 +321,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Jak poznáš něco, co nevidíš?", "Vzduch sice nevidíš, ale když fouká, cítíš ho na tváři, a když foukáš do gumového pytlíku, nafoukne se. Co to dokazuje?"],
     explanation: "Vzduch nevidíme, ale cítíme ho jako vítr, nafoukne balónek a vytlačí vodu z ponořené láhve. To dokazuje, že je kolem nás a zabírá místo.",
   }),
-  choice("Proč se v přeplněné třídě se zavřenými okny začne špatně soustředit?", "Ubývá kyslíku a přibývá vydýchaného vzduchu", [
+  choice("Proč se děti v přeplněné třídě se zavřenými okny začnou špatně soustředit?", "Ubývá kyslíku a přibývá vydýchaného vzduchu", [
     { value: "Přibývá kyslíku", why: "Lidé kyslík spotřebovávají, takže ho ubývá." },
     { value: "Lidé do místnosti vydechují dusík navíc", why: "Dusíku vydechujeme stejně, kolik vdechneme." },
     { value: "Stěny pohlcují vzduch", why: "Stěny vzduch nepohlcují. Mění ho dýchání lidí." },

@@ -192,7 +192,7 @@ const BANKA_L1: Fakt[] = [
     explanation: "Největší ostrov Arktidy — a zároveň největší ostrov světa — je Grónsko. Leží mezi Severním ledovým a Atlantským oceánem. Jeho vnitrozemí pokrývá silný pevninský ledovec, pobřežní pás zůstává bez ledu a právě tam lidé žijí. Politicky je Grónsko součástí Dánského království, i když má vlastní vládu.",
   },
   {
-    q: "Čím je Grónsko?",
+    q: "Co je Grónsko?",
     key: "největší ostrov světa",
     d: [
       ["samostatný světadíl", "Světadíl je jeden z velkých celků souše jako Evropa nebo Asie — Grónsko mezi ně nepatří. Zeměpisně se počítá k Severní Americe, i když je opravdu velké."],
@@ -836,7 +836,7 @@ const BANKA_L3: Fakt[] = [
     d: [
       ["Mořský led pod vesnicí roztál a vesnice klesla o kus níž.", "Vesnice stojí na pevnině, ne na mořském ledu. Propadá se půda, na níž je postavená."],
       ["Ledovec z hor se nasunul pod domy a nadzvedl je.", "V severosibiřské nížině žádné horské ledovce nejsou. Příčina je v podloží pod samotnou vesnicí."],
-      ["Časté zemětřesení, protože tundra leží na okraji desky.", "Sever Sibiře patří mezi klidné oblasti bez častých zemětřesení. Domy se naklánějí kvůli podloží."],
+      ["Častá zemětřesení, protože tundra leží na okraji desky.", "Sever Sibiře patří mezi klidné oblasti bez častých zemětřesení. Domy se naklánějí kvůli podloží."],
     ],
     hints: [
       "Na čem ta vesnice stojí a co se s takovým podložím děje, když se otepluje?",

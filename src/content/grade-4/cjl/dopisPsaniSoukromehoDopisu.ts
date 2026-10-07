@@ -146,7 +146,7 @@ const L2: PracticeTask[] = [
   choice("Který závěr se hodí do dopisu babičce?", "Posílám pusu, tvoje Anička", [
     { value: "S úctou Anna Nováková", why: "„S úctou“ a celé jméno jsou úřední, babičce píšeme vřele." },
     { value: "Na shledanou, vedení školy", why: "Tak se podepisuje škola, ne vnučka." },
-    { value: "S pozdravem, Vaše žákyně", why: "Takhle by se podepsala žákyně učitelce." },
+    { value: "S pozdravem Vaše žákyně", why: "Takhle by se podepsala žákyně učitelce." },
   ], {
     hints: ["Jak se loučíš s babičkou, když od ní odjíždíš?", "Blízkým se loučíme vřele a podepisujeme se tak, jak nám říkají doma, třeba s „tvoje/tvůj“."],
     explanation: "Babičce se hodí vřelé rozloučení a podpis, jakým ji zdravíme doma: Posílám pusu, tvoje Anička.",

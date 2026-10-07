@@ -618,7 +618,7 @@ const BANKA_L2: Fakt[] = [
     explanation: "Od rovníku k obratníku Raka srážek ubývá. Kolem rovníku je deštný les, dál na sever savana s obdobím sucha a u obratníku poušť.",
   },
   {
-    q: "Vydáš se z Sahary od obratníku Raka na jih k rovníku. Jak se bude měnit krajina?",
+    q: "Vydáš se ze Sahary od obratníku Raka na jih k rovníku. Jak se bude měnit krajina?",
     key: "Nejdřív savana a dál k rovníku deštný les.",
     d: [
       ["Nejdřív deštný les a dál k rovníku savana.", "Pořadí je obrácené. Sahara je nejsušší a k rovníku srážek přibývá, takže nejvlhčí les je až u rovníku."],
@@ -637,7 +637,7 @@ const BANKA_L2: Fakt[] = [
     d: [
       ["Od rovníku k obratníkům přibývá srážek, a tak se mění vegetace.", "Srážky se mění opačným směrem: nejvíc jich spadne u rovníku a k obratníkům ubývá."],
       ["Od rovníku k obratníkům prudce klesá teplota, a tak se mění vegetace.", "Teplota se od rovníku k obratníkům mění jen málo, všude je horko. Hlavní roli hrají srážky."],
-      ["Pásy vymezily lidé podle toho, kde a jak hospodaří.", "Přírodní oblasti vymezuje podnebí, ne lidé. Lidé se naopak přizpůsobují tomu, co v oblasti roste."],
+      ["Pásy vymezili lidé podle toho, kde a jak hospodaří.", "Přírodní oblasti vymezuje podnebí, ne lidé. Lidé se naopak přizpůsobují tomu, co v oblasti roste."],
     ],
     hints: [
       "Pásy vznikají z toho, co se s krajinou mění od rovníku k obratníku. Zeptej se, který podnební údaj se mění nejvíc.",
@@ -918,7 +918,7 @@ const PRICINY_L3: Fakt[] = [
     q: "Na jižním okraji Sahary, v Sahelu (úzký pás suché savany), se poušť rok od roku rozšiřuje. Co je hlavní příčinou?",
     key: "Dlouhá sucha spolu s nadměrnou pastvou a kácením keřů a stromů.",
     d: [
-      ["Vítr přenáší písek z Sahary dál na jih a poušť se šíří jen kvůli němu.", "Vítr písek přenáší, ale to není celé vysvětlení. Hlavní roli hraje to, že lidé s krajinou zacházejí špatně: pasou příliš mnoho dobytka a kácejí keře."],
+      ["Vítr přenáší písek ze Sahary dál na jih a poušť se šíří jen kvůli němu.", "Vítr písek přenáší, ale to není celé vysvětlení. Hlavní roli hraje to, že lidé s krajinou zacházejí špatně: pasou příliš mnoho dobytka a kácejí keře."],
       ["Kácení deštného lesa u rovníku, na jehož místě pak vzniká poušť.", "Deštný les leží hodně daleko od Sahelu a jeho kácení Saharu nerozšiřuje. Poušť se šíří v Sahelu kvůli suchu a špatnému hospodaření tam."],
       ["Časté silné deště, které odplavují úrodnou půdu z okraje pouště.", "V Sahelu prší málo a sucha jsou dlouhá. Příčinou je nedostatek dešťů a špatné zacházení s krajinou, ne příliš mnoho deště."],
     ],
@@ -930,7 +930,7 @@ const PRICINY_L3: Fakt[] = [
   },
   {
     q: "Farmáři vykácejí kus deštného lesa a založí pole. Za pár let úroda klesne a půda zchudne. Proč?",
-    key: "Živiny jsou hlavně ve stromech a listí; bez lesa je dešť vyplaví.",
+    key: "Živiny jsou hlavně ve stromech a listí; bez lesa je déšť vyplaví.",
     d: [
       ["Bez lesa výrazně ubude srážek a půda kvůli suchu ztratí úrodnost.", "Srážky po vykácení nezmizí, na rovníku dál prší skoro denně. Půda zchudne, protože déšť vyplaví živiny, které dřív držely stromy."],
       ["Na holém poli je příliš mnoho slunce, které plodiny vysuší a spálí.", "Slunce plodinám neškodí, rostliny ho potřebují. Půda chudne, protože déšť vymývá živiny."],

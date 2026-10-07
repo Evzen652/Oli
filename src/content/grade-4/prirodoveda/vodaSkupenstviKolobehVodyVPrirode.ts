@@ -267,7 +267,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Proč se okna v kuchyni při vaření zamlží?", "Pára z hrnce se srazí na studeném skle", [
     { value: "Sklo se horkou vodou zahřeje a zbělá", why: "Sklo se horkem nebarví. Zamlžení tvoří drobné kapky." },
-    { value: "Usadí se na něm kouř", why: "Kouř by nechal šedou vrstvu. Zamlžení jsou kapky vody." },
+    { value: "Usadí se na nich kouř", why: "Kouř by nechal šedou vrstvu. Zamlžení jsou kapky vody." },
     { value: "Venku prší", why: "Déšť by byl na vnější straně. Kuchyňské okno se mlží zevnitř." },
   ], {
     hints: ["Z hrnce stoupá pára. Kde se v kuchyni ochladí nejvíc?", "Okno je studené od venkovního vzduchu. Co se stane s párou, když narazí na studený povrch? Stejně se orosí láhev z lednice."],

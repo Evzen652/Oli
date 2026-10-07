@@ -117,7 +117,7 @@ const FAKTA: [RegExp, (key: string) => boolean][] = [
   [/leží severní polární kruh/, (k) => k === "66,5° s. š."],
   [/leží severní pól/, (k) => k === "90° s. š."],
   [/Který ostrov je v Arktidě největší/, (k) => k === "Grónsko"],
-  [/^Čím je Grónsko/, (k) => k === "největší ostrov světa"],
+  [/^Co je Grónsko/, (k) => k === "největší ostrov světa"],
   [/Ke kterému světadílu se Grónsko/, (k) => k === "k Severní Americe"],
   [/Pevniny kterých tří světadílů/, (k) => k === "Evropa, Asie a Severní Amerika"],
   [/arktické části Severní Ameriky a v Grónsku/, (k) => k === "Inuité"],

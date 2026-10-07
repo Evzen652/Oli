@@ -294,7 +294,7 @@ function zkratkaL2(p: ZkrPolozka): PracticeTask | null {
     { value: ZKR_ODVOZ, why: `„${p.word}“ nevzniklo příponou ani předponou z jiného slova, ale zkrácením spojení „${p.expansion}“.` },
   ];
   return choice(
-    `Slovo ${p.word} vzniklo zkrácením spojení ${p.expansion}. Čím ${p.word} je?`,
+    `Slovo ${p.word} vzniklo zkrácením spojení ${p.expansion}. Co je ${p.word}?`,
     correct,
     distraktory,
     {

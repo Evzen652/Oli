@@ -259,7 +259,7 @@ const L3: PracticeTask[] = [
   }),
   choice("Někdo neznámý volá a ptá se, jestli jsi doma sám nebo sama. Co uděláš?", "neprozradím to a zavolám dospělého", [
     { value: "řeknu, že ano, a kde bydlím", why: "Cizímu člověku to nikdy neříkej." },
-    { value: "odpovím na všechno, co se ptá", why: "Na takové otázky cizím lidem neodpovídáme." },
+    { value: "odpovím na všechno, na co se ptá", why: "Na takové otázky cizím lidem neodpovídáme." },
     { value: "pozvu ho k nám", why: "Cizí lidi domů nezveme." },
   ], {
     hints: ["Je bezpečné říct cizímu, že jsi doma bez dospělého?", "O tom, kdo je doma a kde bydlíš, cizím lidem do telefonu nic neříkáme. Když je ti hovor divný, zavolej dospělého."],

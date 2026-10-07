@@ -171,7 +171,7 @@ function ukolMelodieVety(item: VetaMelodieL1): PracticeTask | null {
 
 // ── L1c — pojmová otázka: na které slabice je český přízvuk ─────────────────
 const L1C_VARIANTY = [
-  "Na kterou slabiku padá v češtině hlavní slovní přízvuk?",
+  "Na které slabice leží v češtině hlavní slovní přízvuk?",
   "Kde je v českém slově vždy hlavní přízvuk, ať je slovo krátké, nebo dlouhé?",
   "Podle pravidla o českém přízvuku: na které slabice slova vždy leží?",
   "Čeština má pro přízvuk slova pevné pravidlo. Na které slabice přízvuk vždy je?",

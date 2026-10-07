@@ -559,7 +559,7 @@ const BANKA_L2: Fakt[] = [
   },
   {
     q: "Jak vzniká korálový útes?",
-    key: "vápenité schránky odumřelých polypů",
+    key: "z vápenitých schránek odumřelých polypů",
     d: [
       ["láva se pod vodou zastaví a ztuhne", "Tak vznikají sopečné ostrovy. Útes nenarostl ze sopky."],
       ["moře naplaví písek a kameny z pouště", "Naplavený písek tvoří pláže a mělčiny, ne pevnou stavbu z živých organismů."],
@@ -869,7 +869,7 @@ const BANKA_L3: Fakt[] = [
     explanation: "Nový útes vznikne v teplém mělkém moři u tropického pobřeží: jen tam se sejde teplo, světlo a čistá slaná voda. Ostatní místa splňují jen část podmínek — kalné ústí řeky zakryje světlo, chladné moře je příliš studené a hluboká voda je tmavá.",
   },
   {
-    q: "Úkol: potápěči hledají nově vzniklý útes. V jakém prostředí ho nejspíš najdou?",
+    q: "Úkol: potápěči hledají nově vzniklý útes. Jaké prostředí to nejspíš bude?",
     key: "průzračná mělká laguna kolem tropického ostrova",
     d: [
       ["průzračná hluboká voda daleko od břehu", "Průzračná voda nestačí. Hluboko se světlo nedostane až ke dnu."],

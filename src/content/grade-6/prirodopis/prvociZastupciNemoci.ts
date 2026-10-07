@@ -140,7 +140,7 @@ const L1: Fakt[] = [
     d: [
       ["z tisíců buněk", "Prvok není malé zvířátko. Mnoho buněk mají živočichové, prvok je jednobuněčný."],
       ["ze dvou buněk", "Při dělení vzniknou dva noví prvoci, každý z nich je ale zase jen jedna buňka."],
-      ["z žádné, nemá buňky", "Buněčnou stavbu nemají viry. Prvok je buňka s jádrem."],
+      ["ze žádné, nemá buňky", "Buněčnou stavbu nemají viry. Prvok je buňka s jádrem."],
     ],
     h: [
       "Prvok patří mezi jednobuněčné organismy. Co z toho názvu plyne?",

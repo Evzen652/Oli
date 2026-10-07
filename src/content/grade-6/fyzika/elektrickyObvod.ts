@@ -745,7 +745,7 @@ const PROUD: Polozka[] = [
         why: "Žárovka spotřebovává energii, ne proud. Za ní je proud stejně velký jako před ní.",
       },
       {
-        value: "Za první žárovkou větší, protože ji rozproudila.",
+        value: "Za první žárovkou větší, protože ho rozproudila.",
         why: "Nic se nerozproudí. Žárovka proud nepřidává.",
       },
       {

@@ -611,7 +611,7 @@ const POOL_L3: PracticeTask[] = [
       "Poslechnout kamaráda a přeběhnout, protože je nás víc",
       "Přeběhnout, protože přechod chodce vždy ochrání",
       "Počkat na zelenou pro chodce",
-      "Počkat jen já a nechat kamarády jít",
+      "Počkat jen sám a nechat kamarády jít",
     ],
     emoji: "🚦",
     hints: [
@@ -623,7 +623,7 @@ const POOL_L3: PracticeTask[] = [
     optionFeedback: {
       "Poslechnout kamaráda a přeběhnout, protože je nás víc": "Skupina chodců auto nezastaví. Červená platí pro všechny.",
       "Přeběhnout, protože přechod chodce vždy ochrání": "Na červenou tě přechod nechrání, protože auta mají zelenou a jedou.",
-      "Počkat jen já a nechat kamarády jít": "Sám se zachováš správně, ale kamarády bys měl zastavit, protože by byli v nebezpečí.",
+      "Počkat jen sám a nechat kamarády jít": "Sám se zachováš správně, ale kamarády bys měl zastavit, protože by byli v nebezpečí.",
     },
   },
   {

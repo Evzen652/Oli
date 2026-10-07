@@ -105,7 +105,7 @@ function solve(t: PracticeTask): Solved | null {
     return { kind: "L2-rodina", expected: kompozita[0] };
   }
   // L2(c) — zkratka vs zkratkové slovo
-  if ((m = q.match(/^Slovo (\S+) vzniklo zkrácením spojení (.+)\. Čím \S+ je\?$/))) {
+  if ((m = q.match(/^Slovo (\S+) vzniklo zkrácením spojení (.+)\. Co je \S+\?$/))) {
     return { kind: "L2-zkratka", expected: klasifikuj(m[1]) ?? NEZNAME };
   }
   // L3(c) — změna významu: cílové slovo musí být v nezávislém seznamu

@@ -272,7 +272,7 @@ const STAVBA: Pribeh[] = [
     vety: [
       "Do třídy přišel po Vánocích nový spolužák Filip, který ve škole ještě nikoho neznal.",
       "O přestávce si ale všiml, že si z něj dva kluci ze třídy dělají legraci kvůli jeho výslovnosti.",
-      "Stál sám uprostřed chodby a nevěděl, jestli se má bránit nebo raději mlčet.",
+      "Stál sám uprostřed chodby a nevěděl, jestli se má bránit, nebo raději mlčet.",
       "Vtom se ho ale zastala Karolína a hlasitě řekla, že si z nikoho legraci dělat nebudou.",
       "Od té chvíle Filip s Karolínou o přestávkách sedávali spolu a brzy z nich byli kamarádi.",
     ],

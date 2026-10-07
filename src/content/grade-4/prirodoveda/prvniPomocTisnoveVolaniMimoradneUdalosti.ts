@@ -70,9 +70,9 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Popáleninu chladíme studenou tekoucí vodou deset až dvacet minut. Voda odvede teplo a zmírní bolest. Led, máslo ani pasta se nepoužívají.",
   }),
   choice("Co uděláš s odřeným kolenem?", "Opláchneš ranku a přelepíš náplastí", [
-    { value: "Necháš ji být a jdeš dál hrát", why: "Do neošetřené ranky se může dostat špína a zanítit se." },
-    { value: "Přiložíš na ni kostku ledu", why: "Led se hodí na otok, ne na odřeninu. Ranku je potřeba vyčistit." },
-    { value: "Potřeš ji mastným krémem", why: "Mastný krém ranku nevyčistí. Nejdřív opláchnout, pak zakrýt." },
+    { value: "Necháš ho být a jdeš dál hrát", why: "Do neošetřené ranky se může dostat špína a zanítit se." },
+    { value: "Přiložíš na něj kostku ledu", why: "Led se hodí na otok, ne na odřeninu. Ranku je potřeba vyčistit." },
+    { value: "Potřeš ho mastným krémem", why: "Mastný krém ranku nevyčistí. Nejdřív opláchnout, pak zakrýt." },
   ], {
     hints: ["Odřenina je špinavá od země. Co s tím?", "Nejdřív z ní smyj písek a špínu, pak ji zakryj, aby se do ní nic nedostalo."],
     explanation: "Odřeninu opláchneme čistou vodou, aby v ní nezůstala špína, a přelepíme náplastí. Tak se ranka nezanítí a rychle se zahojí.",

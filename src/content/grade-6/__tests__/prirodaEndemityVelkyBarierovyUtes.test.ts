@@ -173,7 +173,7 @@ const FAKTA: Pravidlo[] = [
   [/velmi málo srážek/, (o) => /pouště a polopouště/.test(o)],
   [/Jak se zachrání před nepřítelem/, (o) => /uteče/.test(o)],
   [/přesto ho řadíme mezi savce/, (o) => /srst/.test(o) && /kojí/.test(o)],
-  [/Jak vzniká korálový útes/, (o) => /vápenité schránky/.test(o)],
+  [/Jak vzniká korálový útes/, (o) => /vápenit(é|ých) schrán/.test(o)],
   // L3
   [/^Zpráva/, (o) => /oteplila/.test(o)],
   [/bahno a hnojiva|půda s hnojivy z pobřežních plantáží/, (o) => /kalná voda ubírá světlo/.test(o)],

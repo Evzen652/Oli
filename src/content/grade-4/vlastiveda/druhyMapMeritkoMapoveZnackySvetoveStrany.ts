@@ -295,7 +295,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Kam teče voda, když ji vyliješ na kopci?", "Vrstevnice ti řeknou, kde je výš a kde níž. Kudy tedy potok poteče?"],
     explanation: "Voda teče vždy z vyšších míst do nižších. Podle vrstevnic poznáš, kde je výš, a tedy i kterým směrem potok teče.",
   }),
-  choice("Jsi v lese bez kompasu. Kde je poledne a vidíš slunce. Kterým směrem je jih?", "Směrem ke slunci", [
+  choice("Jsi v lese bez kompasu. Je poledne a vidíš slunce. Kterým směrem je jih?", "Směrem ke slunci", [
     { value: "Opačně než slunce", why: "Opačně než polední slunce je sever." },
     { value: "Po levé ruce od slunce", why: "V poledne je slunce přímo na jihu, ne vlevo od něj." },
     { value: "Nedá se to určit", why: "V poledne se to určit dá — slunce je na jihu." },
@@ -311,7 +311,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Kolik metrů je 25 000 cm?", "25 000 cm je 250 m. Hrad je 2 cm od nádraží, tedy dvakrát tolik."],
     explanation: "Při měřítku 1 : 25 000 je 1 cm 25 000 cm, tedy 250 m. Dva centimetry jsou 2 × 250 m = 500 m.",
   }),
-  choice("Proč je na mapě měřítko 1 : 10 000 vidět každá ulice, a na 1 : 1 000 000 ne?", "Mapa 1 : 10 000 je zmenšená mnohem méně", [
+  choice("Proč je na mapě s měřítkem 1 : 10 000 vidět každá ulice a na mapě 1 : 1 000 000 ne?", "Mapa 1 : 10 000 je zmenšená mnohem méně", [
     { value: "Mapa 1 : 1 000 000 je starší", why: "Stáří mapy s tím nesouvisí. Rozhoduje zmenšení." },
     { value: "Ulice se kreslí jen na malé mapy", why: "Ulice se kreslí tam, kde se vejdou — na málo zmenšené mapy." },
     { value: "Mapa 1 : 1 000 000 nemá legendu", why: "Legendu mají obě. Rozdíl je ve zmenšení." },

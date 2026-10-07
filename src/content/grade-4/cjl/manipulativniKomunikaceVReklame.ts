@@ -188,7 +188,7 @@ const L3: PracticeTask[] = [
     hints: ["Kdo ti řekne pravdu — ten, kdo prodává, nebo ten, kdo výrobek používá?", "Nejlepší zdroj je ten, kdo z prodeje nic nemá: zákazníci, kteří výrobek už mají, nebo nezávislé testy."],
     explanation: "Zkušenosti lidí, kteří výrobek mají, jsou nestrannější než reklama nebo výrobce.",
   }),
-  choice("Reklama říká „Doporučuje 9 z 10 zubařů“. Na co se zeptáš?", "Kolik zubařů se ptali a kdo je vybral?", [
+  choice("Reklama říká „Doporučuje 9 z 10 zubařů“. Na co se zeptáš?", "Kolika zubařů se ptali a kdo je vybral?", [
     { value: "Jakou barvu má pasta?", why: "Barva s doporučením nesouvisí." },
     { value: "Kolik stojí návštěva zubaře?", why: "S reklamou na pastu to nesouvisí." },
     { value: "Proč je pasta v tubě?", why: "Tuba o doporučení nic neřekne." },

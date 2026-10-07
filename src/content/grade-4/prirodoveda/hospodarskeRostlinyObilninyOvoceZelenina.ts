@@ -279,7 +279,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Proč se brambory skladují ve tmě?", "Na světle se v slupce brambory tvoří látka, která škodí zdraví. Proto se zelená místa vykrajují."],
     explanation: "Když brambory leží na světle, zezelenají a vytvoří se v nich jedovatá látka. Zelená místa se musí vykrojit, proto se brambory skladují ve tmě.",
   }),
-  choice("Proč jsou banány v obchodě často ještě zelené?", "Sklízejí se nezralé, aby cestou nezkazily", [
+  choice("Proč jsou banány v obchodě často ještě zelené?", "Sklízejí se nezralé, aby se cestou nezkazily", [
     { value: "Zelené banány jsou zdravější", why: "O zdraví nejde. Banány dozrávají cestou a v obchodě." },
     { value: "V tropech jsou banány vždycky zelené", why: "V tropech banány na rostlině zežloutnou taky. Trhají se ale dřív." },
     { value: "Obchod je obarví nazeleno", why: "Banány se nebarví. Zelené jsou proto, že ještě nedozrály." },

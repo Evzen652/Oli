@@ -113,32 +113,38 @@ const L1: PracticeTask[] = [
   }),
 ];
 
-interface Vzkaz { komu: string; kdo: string; co: string; kdoMa: string; podpis: string; cas: string }
+/**
+ * `zena` = volající je rodu ženského („volala paní učitelka", „volala
+ * knihovna"). Do 2026-10-07 šablona psala „volal" u všech — „Mami, volal
+ * paní učitelka" stálo i v klíči šesti vzkazů.
+ */
+interface Vzkaz { komu: string; kdo: string; co: string; kdoMa: string; podpis: string; cas: string; zena?: boolean }
 const VZKAZY: Vzkaz[] = [
-  { komu: "Mami", kdo: "paní Nováková", co: "máš jí zavolat zpátky", kdoMa: "maminka", podpis: "Petr", cas: "16:30" },
+  { komu: "Mami", kdo: "paní Nováková", co: "máš jí zavolat zpátky", kdoMa: "maminka", podpis: "Petr", cas: "16:30", zena: true },
   { komu: "Tati", kdo: "děda", co: "přijede v sobotu vlakem v deset", kdoMa: "tatínek", podpis: "Eva", cas: "15:10" },
   { komu: "Mami", kdo: "trenér", co: "zítřejší trénink se ruší", kdoMa: "maminka", podpis: "Jakub", cas: "17:00" },
   { komu: "Tati", kdo: "pan doktor", co: "máš přijít ve čtvrtek v osm", kdoMa: "tatínek", podpis: "Lenka", cas: "11:45" },
   { komu: "Mami", kdo: "soused", co: "má u sebe tvůj balík", kdoMa: "maminka", podpis: "Tom", cas: "14:20" },
-  { komu: "Babi", kdo: "teta Jana", co: "oslava bude v neděli ve tři", kdoMa: "babička", podpis: "Ema", cas: "18:05" },
-  { komu: "Mami", kdo: "paní učitelka", co: "výlet začíná zítra v osm u školy", kdoMa: "maminka", podpis: "Ondra", cas: "13:50" },
+  { komu: "Babi", kdo: "teta Jana", co: "oslava bude v neděli ve tři", kdoMa: "babička", podpis: "Ema", cas: "18:05", zena: true },
+  { komu: "Mami", kdo: "paní učitelka", co: "výlet začíná zítra v osm u školy", kdoMa: "maminka", podpis: "Ondra", cas: "13:50", zena: true },
   { komu: "Tati", kdo: "strýc Karel", co: "vrátí ti vrtačku v pondělí", kdoMa: "tatínek", podpis: "Anna", cas: "16:00" },
-  { komu: "Mami", kdo: "knihovna", co: "rezervovaná kniha je připravená", kdoMa: "maminka", podpis: "Šimon", cas: "12:30" },
+  { komu: "Mami", kdo: "knihovna", co: "rezervovaná kniha je připravená", kdoMa: "maminka", podpis: "Šimon", cas: "12:30", zena: true },
   { komu: "Tati", kdo: "pan Veselý z práce", co: "porada bude až v úterý", kdoMa: "tatínek", podpis: "Klára", cas: "19:15" },
-  { komu: "Mami", kdo: "kadeřnice", co: "tvůj termín se posouvá na pátek", kdoMa: "maminka", podpis: "Vojta", cas: "10:40" },
+  { komu: "Mami", kdo: "kadeřnice", co: "tvůj termín se posouvá na pátek", kdoMa: "maminka", podpis: "Vojta", cas: "10:40", zena: true },
   { komu: "Babi", kdo: "pan Černý", co: "přiveze dříví ve středu", kdoMa: "babička", podpis: "Marek", cas: "17:30" },
-  { komu: "Tati", kdo: "paní ze školy", co: "máš podepsat přihlášku na tábor", kdoMa: "tatínek", podpis: "Nela", cas: "14:00" },
+  { komu: "Tati", kdo: "paní ze školy", co: "máš podepsat přihlášku na tábor", kdoMa: "tatínek", podpis: "Nela", cas: "14:00", zena: true },
 ];
 
 function vzkazUloha(v: Vzkaz): PracticeTask {
-  const cely = `${v.komu}, volal ${v.kdo}: ${v.co}. ${v.podpis}, ${v.cas}`;
-  return choice(`Který vzkaz je nejlepší? (Volal ${v.kdo}, ${v.co}.)`, cely, [
+  const volal = v.zena ? "volala" : "volal";
+  const cely = `${v.komu}, ${volal} ${v.kdo}: ${v.co}. ${v.podpis}, ${v.cas}`;
+  return choice(`Který vzkaz je nejlepší? (${v.zena ? "Volala" : "Volal"} ${v.kdo}, ${v.co}.)`, cely, [
     { value: `${v.komu}, někdo ti volal a něco chtěl, zavolej mu. ${v.podpis}, ${v.cas}`, why: "Chybí, kdo volal a co chtěl." },
-    { value: `${v.komu}, volal ${v.kdo}, ale nevím proč. ${v.podpis}, ${v.cas}`, why: "Chybí, co volající chtěl nebo co se má udělat." },
-    { value: `${v.komu}, volal ${v.kdo}: ${v.co}.`, why: "Chybí podpis a čas — nevíš, kdo vzkaz psal a kdy to bylo." },
+    { value: `${v.komu}, ${volal} ${v.kdo}, ale nevím proč. ${v.podpis}, ${v.cas}`, why: "Chybí, co volající chtěl nebo co se má udělat." },
+    { value: `${v.komu}, ${volal} ${v.kdo}: ${v.co}.`, why: "Chybí podpis a čas — nevíš, kdo vzkaz psal a kdy to bylo." },
   ], {
     hints: [
-      `Co všechno musí ${v.kdoMa} poznat ze vzkazu o tom, že volal ${v.kdo}?`,
+      `Co všechno musí ${v.kdoMa} poznat ze vzkazu o tom, že ${volal} ${v.kdo}?`,
       "Dobrý vzkaz říká, kdo volal a co chtěl nebo co se má udělat, a je podepsaný i s časem, aby bylo jasné, kdy to bylo.",
     ],
     explanation: `Úplný vzkaz: ${cely} — je v něm kdo volal, co chtěl, podpis i čas.`,

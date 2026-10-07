@@ -47,7 +47,7 @@ function markFirst(syll: string[]): string {
 
 // L1c — pojmová otázka, fixní odpověď.
 const L1C_OTAZKY = [
-  "Na kterou slabiku padá v češtině hlavní slovní přízvuk?",
+  "Na které slabice leží v češtině hlavní slovní přízvuk?",
   "Kde je v českém slově vždy hlavní přízvuk, ať je slovo krátké, nebo dlouhé?",
   "Podle pravidla o českém přízvuku: na které slabice slova vždy leží?",
   "Čeština má pro přízvuk slova pevné pravidlo. Na které slabice přízvuk vždy je?",

@@ -551,10 +551,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Na začátku jara ještě může přijít chladno, ale kterým směrem se počasí celkově mění?",
-    correctAnswer: "Postupně se otepluje a dní přibývá světla",
+    correctAnswer: "Postupně se otepluje a dny se prodlužují",
     options: [
       "Postupně se ochlazuje a dny se zkracují",
-      "Postupně se otepluje a dní přibývá světla",
+      "Postupně se otepluje a dny se prodlužují",
       "Počasí se vůbec nemění, zůstává jako v zimě",
       "Padá čím dál víc sněhu",
     ],

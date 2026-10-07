@@ -103,7 +103,7 @@ export const POOL_L1: Polozka[] = [
     explanation: "Šroubatka tvoří nevětvená zelená vlákna z buněk seřazených za sebou. V každé buňce je chloroplast stočený do šroubovice. Jednobuněčná je zelenivka, větvená vlákna má žabí vlas a hnědou stélku chaluha.",
   },
   {
-    q: "Ze kolika buněk se skládá tělo zelenivky?",
+    q: "Z kolika buněk se skládá tělo zelenivky?",
     correct: "Z jedné buňky",
     distractors: [
       { value: "Z dlouhé řady buněk ve vlákně", why: "Vlákno z řady buněk tvoří šroubatka nebo žabí vlas. Zelenivka je jednobuněčná." },

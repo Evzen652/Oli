@@ -61,7 +61,7 @@ const L1: PracticeTask[] = [
   choice("V jakém čase obvykle převyprávíme příběh?", "v minulém", [
     { value: "v budoucím", why: "Příběh se už stal." },
     { value: "v žádném", why: "Slovesa mají vždy čas." },
-    { value: "v každé větě jiném", why: "Střídání časů mate." },
+    { value: "v každé větě v jiném", why: "Střídání časů mate." },
   ], { hints: ["Vyprávíš, co se stalo, nebo co se stane?", "Převyprávěný příběh už proběhl: šel, našel, vrátil se."], explanation: "Příběh obvykle převyprávíme v minulém čase." }),
   choice("Nevzpomeneš si na přesné slovo z textu. Co uděláš?", "řeknu to jinými slovy", [
     { value: "přestanu vyprávět", why: "Nemusíš — stačí to říct jinak." },
@@ -79,7 +79,7 @@ const L2: PracticeTask[] = [
   choice("Text: „Kotě Micka vylezlo na vysokou jabloň. Nemohlo slézt a mňoukalo. Tatínek přinesl žebřík a kotě snesl dolů.“ Které převyprávění je nejlepší?", "Kotě uvízlo na stromě a tatínek ho snesl po žebříku.", [
     { value: "Tatínek má doma dlouhý hliníkový žebřík.", why: "To v textu není a není to hlavní." },
     { value: "Kotě spadlo do studny a hasiči ho vytáhli.", why: "To se v textu nestalo." },
-    { value: "Micka je kotě, které má ráda mléko a spí.", why: "O tom text není." },
+    { value: "Micka je kotě, které má rádo mléko a spí.", why: "O tom text není." },
   ], { hints: ["Co se kotěti stalo a kdo mu pomohl?", "Dobré převyprávění řekne problém i řešení, a to vlastními slovy."], explanation: "Kotě uvízlo na stromě a tatínek ho zachránil — to je celý děj." }),
   choice("Text: „Honza zapomněl doma svačinu. O přestávce měl hlad. Kamarád Petr se s ním rozdělil o rohlík.“ O čem text hlavně je?", "o kamarádovi, který se rozdělil o svačinu", [
     { value: "o tom, jak se doma peče rohlík", why: "O pečení text není." },

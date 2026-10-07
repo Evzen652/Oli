@@ -297,7 +297,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Labe opouští Česko u Děčína a teče na sever přes Německo do Severního moře.",
   }),
   choice("Morava teče z Česka na jih, Odra na sever. Co z toho plyne?", "Obě řeky skončí v jiném moři", [
-    { value: "Obě doteče do stejného moře", why: "Neteče. Morava skončí v Černém moři, Odra v Baltském." },
+    { value: "Obě dotečou do stejného moře", why: "Neteče. Morava skončí v Černém moři, Odra v Baltském." },
     { value: "Obě řeky tečou do Vltavy", why: "Morava ani Odra se do Vltavy nevlévají." },
     { value: "Obě řeky pramení v Praze", why: "Morava pramení na Králickém Sněžníku a Odra v Oderských vrších." },
   ], {

@@ -531,8 +531,8 @@ const POOL_L3: Polozka[] = [
     key: "příjmem, protože jemu peníze přibyly",
     d: [
       { value: "také výdajem, protože jde o jednu a tutéž platbu", why: "Jedna a tatáž platba může být z pohledu jednoho člověka výdaj a z pohledu druhého příjem zároveň — rozhoduje, čí rozpočet zrovna sledujeme. Kryštofovi peníze přibyly, pro něj je to příjem." },
-      { value: "kapesné, protože jde o peníze pro dítě", why: "Kapesné je pravidelná menší částka, kterou dítě dostává na vlastní hospodaření. Tady jde o jednorázový dárek k narozeninám, ne o kapesné — pro Kryštofa je to příjem." },
-      { value: "spoření, protože maminka peníze pro syna dala stranou", why: "Spoření znamená, že si někdo sám odkládá peníze stranou na později. Maminka mu je rovnou dala, neuložila je stranou na později — Kryštofovi jen přibyly, je to příjem, ne spoření." },
+      { value: "kapesným, protože jde o peníze pro dítě", why: "Kapesné je pravidelná menší částka, kterou dítě dostává na vlastní hospodaření. Tady jde o jednorázový dárek k narozeninám, ne o kapesné — pro Kryštofa je to příjem." },
+      { value: "spořením, protože maminka peníze pro syna dala stranou", why: "Spoření znamená, že si někdo sám odkládá peníze stranou na později. Maminka mu je rovnou dala, neuložila je stranou na později — Kryštofovi jen přibyly, je to příjem, ne spoření." },
     ],
     hints: [
       "Nezaměňuj se — otázka se ptá na Kryštofovo hospodaření, ne na maminčino, i když jde o tutéž platbu.",

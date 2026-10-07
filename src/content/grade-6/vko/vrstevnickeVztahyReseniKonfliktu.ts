@@ -339,7 +339,7 @@ const L2_HRA: (() => PracticeTask)[] = [
     "Domluvit se na společné stavbě, do které přidá nápad každý z nich",
     [
       { value: "Barbora ať nechá rozhodnout jen Jakuba, aby to bylo rychle vyřešené", why: "To je jednostranný ústupek, ne domluva." },
-      { value: "Kdo si hlasitěji řekne o svém nápadu, ten rozhoduje", why: "Rozhodovat podle hlasitosti je prosazování silou." },
+      { value: "Kdo hlasitěji řekne svůj nápad, ten rozhoduje", why: "Rozhodovat podle hlasitosti je prosazování silou." },
       { value: "Přestat stavět a čekat, až přijde někdo, kdo to rozhodne za ně", why: "Čekání na někoho jiného problém neřeší." },
     ],
     {

@@ -308,7 +308,7 @@ const BANKA_L1: Fakt[] = [
     key: "málo členité, s malým počtem zálivů a poloostrovů",
     d: [
       ["velmi členité, samé zálivy a poloostrovy jako v Evropě", "Členité pobřeží má Evropa. Afrika je proti ní kompaktní, s hladkým pobřežím."],
-      ["členité fjordy, které vytvořily ledovce", "Fjordy vznikly v chladných oblastech, kde ledovce hloubily údolí. Na africkém pobřeží žádné ledovce nebyly."],
+      ["členité, s fjordy, které vytvořily ledovce", "Fjordy vznikly v chladných oblastech, kde ledovce hloubily údolí. Na africkém pobřeží žádné ledovce nebyly."],
       ["členité jen na východě, jinde bez jediného zálivu", "Zálivy má Afrika i na západě a na severu, jen jich je celkově málo."],
     ],
     hints: [

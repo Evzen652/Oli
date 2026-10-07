@@ -619,7 +619,7 @@ const BANKA_L3: Fakt[] = [
     d: [
       ["Nic, kakao mohou snadno sníst místo obilí a brambor.", "Kakao není základní potravina, nasytí jen málo. Bez prodeje by rodiny neměly z čeho žít."],
       ["Snadno přejdou na jinou plodinu a nic neztratí.", "Změna plodiny trvá roky a stojí peníze. Kakaovník nese až po několika letech."],
-      ["Vydělají stejně, protože kakao se vždy prodá za stejnou cenu.", "Cena kakaa kolísá podle světového trhu. Když klesne, klesnou i příjmy."],
+      ["Vydělají stejně, protože se kakao vždy prodá za stejnou cenu.", "Cena kakaa kolísá podle světového trhu. Když klesne, klesnou i příjmy."],
     ],
     hints: [
       "Zvaž, co se stane s rodinou, která má jediný zdroj příjmů, když ten najednou zlevní.",
@@ -689,7 +689,7 @@ const BANKA_L3: Fakt[] = [
     d: [
       ["Země B, protože potřebuje víc surovin na výrobu.", "Země B má příjmy z několika zdrojů, takže pokles ceny ropy ji zasáhne mnohem méně."],
       ["Obě stejně, protože ceny všech surovin klesají společně.", "Klesla jen cena ropy. Země B ropu nevyváží, proto ji pokles zasáhne méně."],
-      ["Žádná, protože ropa se prodává za stálou cenu.", "Cena ropy kolísá podle světového trhu. Zadání říká, že klesla."],
+      ["Žádná, protože se ropa prodává za stálou cenu.", "Cena ropy kolísá podle světového trhu. Zadání říká, že klesla."],
     ],
     hints: [
       "Porovnej, na kolika zdrojích příjmů každá země stojí.",

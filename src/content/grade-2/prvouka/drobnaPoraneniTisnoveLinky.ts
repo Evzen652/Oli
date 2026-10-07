@@ -567,12 +567,12 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Číslo 112 funguje v celé Evropě, kdežto 155 hlavně u nás. Proč je dobré 112 znát?",
-    correctAnswer: "Protože jím dovoláš pomoc i v cizí zemi, kde místní čísla neznáš",
+    correctAnswer: "Protože se jím dovoláš pomoci i v cizí zemi, kde místní čísla neznáš",
     options: [
       "Protože 112 je zadarmo jen o víkendu",
       "Protože 112 funguje jen u nás doma",
       "Není k tomu žádný důvod, stačí 155",
-      "Protože jím dovoláš pomoc i v cizí zemi, kde místní čísla neznáš",
+      "Protože se jím dovoláš pomoci i v cizí zemi, kde místní čísla neznáš",
     ],
     emoji: "🌍",
     hints: [

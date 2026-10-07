@@ -576,7 +576,7 @@ const L3: Fakt[] = [
     q: "Kamarád chce přisáté klíště nejdřív potřít olejem, aby se samo pustilo. Proč to není dobrý nápad?",
     key: "přidušené klíště může do rány vypustit víc zárodků",
     d: [
-      ["olej v ranku pálí a kůže se po něm zanítí", "Olej v ranku nepálí. Nebezpečí je v klíštěti: přidušené může do rány vypustit víc zárodků."],
+      ["olej v rance pálí a kůže se po něm zanítí", "Olej v ranku nepálí. Nebezpečí je v klíštěti: přidušené může do rány vypustit víc zárodků."],
       ["olejem se klíště ke kůži přilepí ještě pevněji", "Olej klíště nepřilepí. Nebezpečí je v tom, že přidušené klíště může do rány vypustit víc zárodků."],
       ["olej klíště zabije a mrtvé už nejde vytáhnout", "I mrtvé klíště jde vytáhnout. Nebezpečí je v tom, že přidušené může do rány vypustit víc zárodků."],
     ],

@@ -319,7 +319,7 @@ const PRIBEHY: Pribeh[] = [
     mimoOsnovu: "Odpoledne si pustily pohádku.",
     mimoProc: "Pohádka odpoledne",
     prevypraveni: {
-      klic: "V noci napadl sníh. Děti válely kouli. Dostal mrkev. Maminka je vyfotila.",
+      klic: "V noci napadl sníh. Děti válely kouli. Sněhulák dostal mrkev. Maminka je vyfotila.",
       chyby: [
         [
           "Děti válely kouli. V noci napadl sníh. Dostal mrkev. Maminka je vyfotila.",
@@ -330,7 +330,7 @@ const PRIBEHY: Pribeh[] = [
           "Mrkev místo nosu se tu vůbec nevypráví.",
         ],
         [
-          "V noci napadl sníh. Děti válely kouli. Dostal mrkev. Pak šly na čaj.",
+          "V noci napadl sníh. Děti válely kouli. Sněhulák dostal mrkev. Pak šly na čaj.",
           "Osnova končí fotkou, ne čajem.",
         ],
       ],

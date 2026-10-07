@@ -33,7 +33,7 @@ const has = (o: string, ...re: RegExp[]) => re.every((r) => r.test(o));
 const PRAVIDLA: Pravidlo[] = [
   // ── L3 ──
   { q: /dlouhé stopce/, ok: (o) => has(o, /vítr/, /výtrus/) },
-  { q: /prázdných buněk/, ok: (o) => has(o, /nasákne/, /mnohonásob/) },
+  { q: /prázdných buněk/, ok: (o) => has(o, /nasaje/, /mnohonásob/) },
   { q: /vysává stromu šťávu/, ok: (o) => has(o, /přichycen/, /fotosyntéz/) },
   { q: /ukazuje vždy na sever/, ok: (o) => has(o, /vlhko a stín/) },
   { q: /nové tobolky/, ok: (o) => has(o, /doplaval/) },
@@ -54,7 +54,7 @@ const PRAVIDLA: Pravidlo[] = [
   { q: /zaléval/, ok: (o) => has(o, /lístky/) },
   { q: /nádobku na tenké stopce/, ok: (o) => has(o, /tobolk/, /výtrus/) },
   { q: /pod stromy, ale na slunném/, ok: (o) => has(o, /vlhč/) },
-  { q: /přívalovém/, ok: (o) => has(o, /nasákne/, /pomalu/) },
+  { q: /přívalovém/, ok: (o) => has(o, /nasaje/, /pomalu/) },
   { q: /crčela/, ok: (o) => has(o, /prázdné buňky/) },
   { q: /střeše nebo na zdi/, ok: (o) => has(o, /vlákn/, /dešt/) },
   { q: /parapetu a nezalévat/, ok: (o) => has(o, /vyschne/) },

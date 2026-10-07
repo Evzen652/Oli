@@ -205,8 +205,8 @@ const PROC: { q: string; key: string; d: [string, string][]; hints: [string, str
     explanation: "Dnešní svět vyrostl z minulosti. Kdo ji studuje, chápe, odkud se vzaly dnešní státy, města i zvyky.",
   },
   {
-    q: "Proč má smysl studovat minulost, když ji nemůžeme změnit?", key: "Aby se poučili z chyb i úspěchů předků",
-    d: [["Aby ji nakonec přece jen změnili", "Minulost změnit nejde ani po studiu."], ["Aby nemuseli nic plánovat", "Poznání minulosti plánování neodstraní."], ["Protože je to jen zábava bez užitku", "Studium minulosti má užitek: poučení a pochopení."]],
+    q: "Proč má smysl studovat minulost, když ji nemůžeme změnit?", key: "Abychom se poučili z chyb i úspěchů předků",
+    d: [["Abychom ji nakonec přece jen změnili", "Minulost změnit nejde ani po studiu."], ["Abychom nemuseli nic plánovat", "Poznání minulosti plánování neodstraní."], ["Protože je to jen zábava bez užitku", "Studium minulosti má užitek: poučení a pochopení."]],
     hints: ["Co ti dá, když víš, jak dopadla rozhodnutí lidí před tebou?", "Z úspěchů i omylů předků se dá odnést zkušenost, kterou není nutné platit vlastními chybami."],
     explanation: "Minulost změnit nemůžeme, ale můžeme se z ní poučit — z chyb i z úspěchů lidí, kteří žili před námi.",
   },

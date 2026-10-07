@@ -146,7 +146,7 @@ const L2: PracticeTask[] = [
   uryvek("Tomáš je chytrý, ale bojí se tmy a někdy zalže, aby se vyhnul potížím.", "Jaká je to postava?", "má dobré i slabé stránky", [
     ["je jen dobrá", "Tomáš má i slabé stránky."], ["je jen zlá", "Tomáš je i chytrý."], ["nemá žádné vlastnosti", "Úryvek vyjmenovává několik vlastností."],
   ], ["Kolik vlastností úryvek vyjmenuje a jaké jsou?", "Najdi v úryvku dobrou vlastnost a pak ty slabší. Jsou tam obojí."], "Tomáš je chytrý, ale bojí se a lže — má dobré i slabé stránky."),
-  choice("Ve kterém popisu jsou jen vlastnosti vzhledu?", "Vysoký muž s šedivým vousem.", [
+  choice("Ve kterém popisu jsou jen vlastnosti vzhledu?", "Vysoký muž se šedivým vousem.", [
     { value: "Klidný a moudrý stařec.", why: "Klid a moudrost jsou povaha." },
     { value: "Muž, který rád pomáhá.", why: "Ochota je povaha." },
     { value: "Muž, který nikdy nelže.", why: "Poctivost je povaha." },
@@ -295,7 +295,7 @@ const L3: PracticeTask[] = [
   choice("Máš popsat svou oblíbenou postavu z knihy. Co do popisu dáš?", "vzhled, povahu a co v příběhu dělá", [
     { value: "jen jméno", why: "Jméno postavu nepopíše." },
     { value: "jen barvu oblečení", why: "To je jen malá část vzhledu." },
-    { value: "vzhled a povahu, co v příběhu dělá ne", why: "Postavu poznáš hlavně podle činů. Do popisu patří i to, co dělá." },
+    { value: "vzhled a povahu, ale ne to, co v příběhu dělá", why: "Postavu poznáš hlavně podle činů. Do popisu patří i to, co dělá." },
   ], {
     hints: ["Co by kamarád potřeboval vědět, aby si postavu představil?", "Úplný popis postavy řekne, jak vypadá, jakou má povahu a jakou úlohu má v celém ději — tak si ji kamarád představí."],
     explanation: "Do popisu postavy patří vzhled, povaha a to, co v příběhu dělá.",

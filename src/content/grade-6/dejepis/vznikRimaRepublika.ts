@@ -631,7 +631,7 @@ const L3: Uloha[] = [
   trvani("Spartakovo povstání vypuklo roku 73 př. n. l. Kolik let nato zemřel Julius Caesar rukou spiklenců (44 př. n. l.)?", UD[4], UD[6], false),
   trvani("Kolik let uplynulo od zničení Kartága (146 př. n. l.) do chvíle, kdy Caesar přešel s vojskem Rubikon (49 př. n. l.)?", UD[3], UD[5], false),
   {
-    q: "Po zkušenosti s posledním králem začali Římané volit dva nejvyšší úředníky na jediný rok. Čemu tím chtěli zabránit?",
+    q: "Po zkušenosti s posledním králem začali Římané volit dva nejvyšší úředníky na jediný rok. Čeho tím chtěli dosáhnout?",
     key: "Aby moc nezískal natrvalo jediný člověk",
     d: [
       ["Aby měli dost velitelů na válku s Kartágem", "Punské války přišly až o víc než dvě stě let později. Dva úředníci na rok byli odpovědí na zkušenost s králem."],

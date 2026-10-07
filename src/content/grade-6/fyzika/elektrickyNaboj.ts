@@ -221,7 +221,7 @@ const MECHANISMUS: Polozka[] = [
     klic: "Pořád nulový — přebytek na jednom je přesně tak velký jako nedostatek na druhém.",
     chybne: [
       {
-        value: "Záporný, protože balonek se nabil silněji.",
+        value: "Záporný, protože se balonek nabil silněji.",
         why: "Obě tělesa se nabijí stejně silně. Co jednomu přibude, to druhému přesně tolik chybí.",
       },
       {

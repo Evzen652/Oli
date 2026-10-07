@@ -202,7 +202,7 @@ const POOL_L1: Polozka[] = [
     explanation: "Den obnovy samostatného českého státu, kdy v roce 1993 vznikla samostatná Česká republika, se slaví 1. ledna.",
   },
   {
-    q: "Kým byl T. G. Masaryk?",
+    q: "Kdo byl T. G. Masaryk?",
     key: "první prezident Československa",
     d: [
       { value: "král Československa", why: "Československo nikdy krále nemělo, byla to republika v čele s prezidentem. T. G. Masaryk byl první prezident Československa." },

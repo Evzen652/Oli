@@ -183,7 +183,7 @@ const POOL_L2: PracticeTask[] = [
   choice("Proč se v horách stavějí lyžařská střediska?", "Je tam dlouho sníh a jsou tam svahy", [
     { value: "Hory jsou blízko velkých měst", why: "Hory bývají od měst daleko. Důvodem je sníh." },
     { value: "Na horách je nejtepleji", why: "Na horách je naopak chladněji, a proto tam leží sníh." },
-    { value: "V nížinách jsou lyžování zakázané", why: "Není to zakázané, jen v nížinách chybí svahy a sníh." },
+    { value: "V nížinách je lyžování zakázané", why: "Není to zakázané, jen v nížinách chybí svahy a sníh." },
   ], {
     hints: ["Co potřebuješ k lyžování?", "Na lyžování je potřeba sníh, který dlouho vydrží, a kopec, ze kterého se sjíždí. Kde je obojí?"],
     explanation: "V horách je chladněji, sníh vydrží dlouho do jara a jsou tam svahy. Proto jsou lyžařská střediska v Krkonoších, na Šumavě nebo v Jeseníkách.",
