@@ -180,6 +180,12 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   `EXPLAIN`, takže `INPUT_CAPTURE` je z dětského UI nedosažitelný. Cesta
   je mrtvý kód (CLAUDE.md ji vede jako „odchází"). Bod `parovani` „utržená
   věta" ze `SESSION_HANDOFF` §4 je vyřízený opravou z 13. 9.
+- ✅ **Serverová kopie anonymního pokroku ověřená** (klientská strana):
+  `anon-server-record.test.ts` — po splnění úkolu odejde právě jedno
+  `record` s tématem, ročníkem, ořezaným skóre a tokenem z localStorage;
+  výpadek serveru localStorage neshodí. Obráceně ověřeno.
+- ⚠️ **`types.ts` nepřegenerován:** Supabase MCP tady míří na jiný projekt
+  (`woruujaoqewlmygmbmat`), ne na `uusaczibimqvaazpaopy`. Zbývá CLI s PAT.
 
 ### Session 2026-10-07 — poslední realizovatelná mezera v obsahu 2.–6. ročníku
 

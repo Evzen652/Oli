@@ -899,10 +899,10 @@ Otevření 7. ročníku by oslabilo rodičovskou bránu — hlídá `parent-gate
 
 ### 🟠 Drobnější
 
-- **`src/integrations/supabase/types.ts` je zastaralý** (přegenerovaný
+- ⚠️ (7. 10.: Supabase MCP v tomhle prostředí míří na JINÝ projekt, `woruujaoqewlmygmbmat` — typy z něj negenerovat; zbývá CLI s PAT, to je na Evženovi) **`src/integrations/supabase/types.ts` je zastaralý** (přegenerovaný
   25. 8.). Přegeneruj, ne edituj — příkaz je v `CLAUDE.md`. Očekávej nové
   nullability chyby.
-- **Dopsat ověření serverové kopie anonymního pokroku** — `serverRecordTask`
+- ✅ (7. 10., klientská strana — `anon-server-record.test.ts`; zápis na ostrý server se záměrně netestuje) **Dopsat ověření serverové kopie anonymního pokroku** — `serverRecordTask`
   v `anonProgress.ts` existuje, ale že se zápis provede, ověřené není.
 - **Dvě češtinové karty mají tentýž obrázek** („Příbuzná vyjmenovaná"
   a „Pravidla rozhovoru", 3. ročník). Projít mapování napříč předměty.
