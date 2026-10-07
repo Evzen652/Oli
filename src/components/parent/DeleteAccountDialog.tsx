@@ -14,24 +14,13 @@ import { AlertTriangle, Loader2 } from "lucide-react";
 import { PROVOZOVATEL, chybi } from "@/content/legal";
 import { pad } from "@/lib/czechGrammar";
 import type { Child } from "@/hooks/useChildren";
+import { funkceNedostupna } from "@/lib/edgeFunctions";
 
 /** Slovo, které musí rodič opsat. Krátké, ale ne omylem napsatelné. */
 const POTVRZENI = "SMAZAT";
 
-/**
- * Znamená tahle chyba, že edge funkce vůbec neběží?
- *
- * Rozdíl je zásadní, a proto to stojí zvlášť a je to otestované: při
- * nedostupné funkci víme jistě, že se NIC nesmazalo, a musíme to říct
- * naplno. U ostatních chyb (500 uprostřed mazání) jistotu nemáme, takže
- * nesmíme tvrdit ani „smazáno", ani „nic se nestalo".
- */
-export function funkceNedostupna(error: unknown): boolean {
-  if (!error) return false;
-  const e = error as { message?: string; context?: { status?: number } };
-  if (e.context?.status === 404) return true;
-  return /Failed to (send a request|fetch)/i.test(e.message ?? "");
-}
+// Rozpoznání nenasazené funkce je sdílené s mazáním dítěte (`useChildren`).
+export { funkceNedostupna } from "@/lib/edgeFunctions";
 
 interface Props {
   /** Záměrně NE `children`: ten název má v Reactu vlastní význam a tady jde

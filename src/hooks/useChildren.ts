@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { generatePairingCode } from "@/lib/pairingCode";
+import { funkceNedostupna } from "@/lib/edgeFunctions";
 
 export interface Child {
   id: string;
@@ -88,12 +89,32 @@ export function useChildren() {
     await fetchChildren();
   }, [fetchChildren]);
 
+  /**
+   * Smaže dítě i s jeho přihlašovacím účtem a všemi daty (edge funkce
+   * `delete-child`). Přímé `children.delete()` z klienta nestačilo: účet
+   * dítěte v auth (s jeho jménem) a úrovně v `student_skill_level` zůstávaly,
+   * přestože dialog slibuje, že se smaže všechno.
+   *
+   * Dokud funkce nasazená není (404 / nedostupná), smaže se jako dřív aspoň
+   * řádek dítěte — jinak by nasazení webu před nasazením funkce rodičům
+   * mazání dítěte úplně rozbilo.
+   */
   const deleteChild = useCallback(async (childId: string) => {
-    const { error } = await supabase
-      .from("children")
-      .delete()
-      .eq("id", childId);
-    if (error) throw error;
+    const { data, error } = await supabase.functions.invoke("delete-child", {
+      body: { childId, confirm: "SMAZAT" },
+    });
+    if (error && funkceNedostupna(error)) {
+      console.warn("[deleteChild] delete-child není nasazená — mažu jen řádek dítěte");
+      const { error: rowError } = await supabase
+        .from("children")
+        .delete()
+        .eq("id", childId);
+      if (rowError) throw rowError;
+    } else if (error) {
+      throw error;
+    } else if (data && typeof data === "object" && "error" in data) {
+      throw new Error(String((data as { error: unknown }).error));
+    }
     await fetchChildren();
   }, [fetchChildren]);
 
