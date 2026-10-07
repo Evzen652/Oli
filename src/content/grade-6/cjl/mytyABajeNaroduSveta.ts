@@ -417,7 +417,7 @@ const UKAZKY_ZANR: Ukazka2[] = [
   { zanr: "báje", text: "Vládce bohů prý svírá v ruce blesky a metá je na zem, kdykoli se na někoho rozhněvá — proto se blýská a hřmí." },
   { zanr: "báje", text: "Podle starého vyprávění bohyně jara každý rok na chvíli odchází do podsvětí, a proto na zemi nastává studené a temné roční období." },
   { zanr: "báje", text: "Bůh slunce prý každý den projíždí po obloze na ohnivém voze a tím vzniká den; v noci se vrací jinou cestou zpátky." },
-  { zanr: "báje", text: "Hrdina, napůl člověk a napůl bůh, podle vyprávění splnil řadu takřka nemožných úkolů, a z jeho vítězství prý zůstala na obloze souhvězdí, která lidé vidí dodnes." },
+  { zanr: "báje", text: "Hrdina, napůl člověk a napůl bůh, podle vyprávění splnil řadu takřka nemožných úkolů a z jeho vítězství prý zůstala na obloze souhvězdí, která lidé vidí dodnes." },
   { zanr: "báje", text: "Podle starého vyprávění se bůh moře rozzuřil, udeřil trojzubcem do vln a vyvolal obrovskou bouři, která potopila lodě." },
   { zanr: "báje", text: "Bůh ohně prý ukoval lidem první kovové nástroje hluboko pod horou, ze které proto někdy stoupá dým a žhne láva." },
   { zanr: "báje", text: "Podle dávného vyprávění bohyně měsíce každou noc vyjíždí na stříbrném voze po obloze, a proto měsíc putuje z jedné strany nebe na druhou." },

@@ -148,7 +148,7 @@ const L3: PracticeTask[] = [
     { value: "Vážení rodiče,", why: "To je oslovení, ne zakončení." },
     { value: "Omlouvám se za nepřítomnost.", why: "To patří do omluvenky." },
   ], { hints: ["Jak se podepisuješ, když píšeš kamarádce?", "Kamarádce tykáme — zakončení může být srdečné, s křestním jménem."], explanation: "Kamarádce napíšeme srdečné zakončení a křestní jméno." }),
-  choice("Škola chce dát vědět všem rodičům, že v pátek se neučí. Co napíše?", "oznámení", [
+  choice("Škola chce dát vědět všem rodičům, že se v pátek neučí. Co napíše?", "oznámení", [
     { value: "vzkaz", why: "Vzkaz je pro jednoho člověka." },
     { value: "pozvánku", why: "Nikoho na nic nezve." },
     { value: "omluvenku", why: "Omluvenku píšou rodiče." },

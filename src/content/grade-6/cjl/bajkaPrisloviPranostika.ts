@@ -417,7 +417,7 @@ const L3B_SITUACE: { text: string; moral: Moral }[] = [
   { text: "Honza odkládal trénink na poslední týden před závodem a pořád si říkal, že to ještě v klidu stihne. Když ten týden přišel, na trénink už nezbyl čas a Honza se na start postavil úplně nepřipravený.", moral: "priprava" },
   { text: "Spolužák Adamovi pořád říkal, jak skvěle hraje na kytaru, a přesvědčoval ho, ať mu půjčí svoje sluchátka. Adam mu je nakonec půjčil a spolužák mu je pak vůbec nevrátil.", moral: "lichotnik" },
   { text: "Nikola byla ve třídě nejrychlejší běžkyně a všem to připomínala, ale na trénink chodila jen málokdy. Pomalejší spolužačka, která trénovala pravidelně, ji na závodě nakonec předběhla.", moral: "vytrvalost" },
-  { text: "Starší kluk chtěl mladšímu spolužákovi sebrat svačinu, a když ten řekl, že si nic špatného neudělal, starší si stejně vymyslel nějaký důvod a svačinu mu vzal.", moral: "sila" },
+  { text: "Starší kluk chtěl mladšímu spolužákovi sebrat svačinu, a když ten řekl, že nic špatného neudělal, starší si stejně vymyslel nějaký důvod a svačinu mu vzal.", moral: "sila" },
   { text: "Do skupinového projektu Filip skoro nic nepřidal, ale na prezentaci mluvil, jako by celou práci udělal on sám. Spolužáci to učiteli řekli a Filip dostal horší známku než ostatní.", moral: "cizi" },
   { text: "Radek měl doma dost sladkostí, ale na školním výletě chtěl navíc i cizí svačinu spolužáka. Při hádce o ni upustil vlastní jídlo do bahna a nakonec neměl nic.", moral: "chamtivost" },
   { text: "Týden před písemkou si Tereza řekla, že se to stihne naučit za poslední den. Ten den ale onemocněla a na test vůbec nebyla připravená.", moral: "priprava" },

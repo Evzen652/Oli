@@ -554,7 +554,7 @@ export const POOL_L3: Polozka[] = [
     explanation: "Antibiotika nepomohla, původce se množí jen v cizích buňkách a je vidět až elektronovým mikroskopem. Všechno ukazuje na vir, který nemá vlastní buňku. Vyšší dávka antibiotik by nepomohla.",
   },
   {
-    q: "Vědci podali pacientům s neznámou nemocí antibiotika a za pár dní se uzdravili. Původce pod mikroskopem vypadal jako buňka bez jádra. Co nemoc nejspíš způsobil?",
+    q: "Vědci podali pacientům s neznámou nemocí antibiotika a za pár dní se uzdravili. Původce pod mikroskopem vypadal jako buňka bez jádra. Co nemoc nejspíš způsobilo?",
     correct: "Nějaká bakterie",
     distractors: [
       { value: "Nějaký virus", why: "Na viry antibiotika nepůsobí a vir nemá buňku. Buňka bez jádra, na kterou antibiotika zabrala, je bakterie." },

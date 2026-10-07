@@ -411,7 +411,7 @@ const POOL_L2: Uloha[] = [
     explanation: "U Actia (31 př. n. l.) prohrál Marcus Antonius, spojenec a partner Kleopatry. Caesar, Brutus i Pompeius byli v té době mrtví.",
   },
   {
-    q: "Senátor, kterého Caesar považoval za přítele, a přesto se postavil do čela spiknutí. Kdo to byl?",
+    q: "Senátor, kterého Caesar považoval za přítele, ale který se přesto postavil do čela spiknutí. Kdo to byl?",
     key: "Brutus",
     d: [
       ["Antonius", "Antonius byl Caesarovi věrný. Po vraždě spiklence pronásledoval a pomstil ho."],

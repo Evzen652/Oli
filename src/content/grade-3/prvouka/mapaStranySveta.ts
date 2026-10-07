@@ -484,7 +484,7 @@ const POOL_L3: PracticeTask[] = [
     "Zelená barva prozradí, že jde o nížinu. Směr prozradí poloha: u dolního okraje mapy je vždy jih, takže nížina leží na jih od středu mapy.",
   ),
   t(
-    "Mapa má měřítko 1:100 000. Co ti tohle měřítko NEŘEKNE, a musíš to hledat jinde?",
+    "Mapa má měřítko 1:100 000. Co ti tohle měřítko NEŘEKNE a musíš to hledat jinde?",
     "Co znamenají značky a barvy na mapě",
     [
       ["Jak daleko jsou od sebe dvě místa", "Právě tohle měřítko umožní spočítat, takže to není to chybějící."],

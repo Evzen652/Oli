@@ -100,7 +100,7 @@ const L1_SOUCAST: Polozka[] = [
     explanation: "Vakuola je velký měchýřek s buněčnou šťávou. Tlačí zevnitř na stěnu, a proto je rostlinná buňka napjatá a pevná. Cytoplazma buňku vyplňuje, stěna ji zpevňuje zvenku.",
   },
   {
-    q: "Která součást buňky získává z živin energii při buněčném dýchání?",
+    q: "Která součást buňky získává ze živin energii při buněčném dýchání?",
     correct: MITO,
     distractors: [
       { value: CHLORO, why: "Chloroplasty pomocí světla živiny vyrábějí. Energii z živin uvolňují mitochondrie." },

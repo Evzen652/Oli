@@ -545,7 +545,7 @@ const BANKA_L3: Polozka[] = [
     ex: "Tobolka obsahuje výtrusy a ty roznáší vítr. Z vysoké stopky je vítr zachytí snáz a odnese je dál od mateřské rostliny.",
   },
   urceni(
-    "Bělavě zelený mech z podmáčené louky: když ho zmáčkneš, vyteče z něj hodně vody, a spodní část je hnědá a odumřelá. Co to je?",
+    "Bělavě zelený mech z podmáčené louky: když ho zmáčkneš, vyteče z něj hodně vody a spodní část je hnědá a odumřelá. Co to je?",
     "rašeliník",
     ["Začni barvou a tím, jak rostlinka drží vodu. Pak zvaž, kde roste.", "Všimni si barvy, množství vody a toho, co se děje se spodní částí. Který mech dole odumírá a nahoře roste?"],
     "Bělavá barva, velká nasákavost a odumírající spodní část jsou znaky rašeliníku.",

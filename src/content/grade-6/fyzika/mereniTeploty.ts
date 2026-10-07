@@ -185,7 +185,7 @@ function genL3(): PracticeTask {
     const drop = d * h;
     const result = s - drop; // typicky pod nulu
     return task(
-      `Teplota klesala o ${d} °C každou hodinu. Začínalo na ${tC(s)}. Jaká bude teplota po ${h} hodinách?`,
+      `Teplota klesala o ${d} °C každou hodinu. Začínala na ${tC(s)}. Jaká bude teplota po ${h} hodinách?`,
       tC(result),
       [
         {

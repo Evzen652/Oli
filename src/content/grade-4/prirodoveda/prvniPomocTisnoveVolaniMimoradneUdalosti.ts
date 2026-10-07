@@ -193,7 +193,7 @@ const POOL_L2: PracticeTask[] = [
     hints: ["Nevíš, co mu je. Kdo to pozná?", "Pomoc zavoláš sám telefonem a zároveň požádáš o pomoc někoho dospělého kolem."],
     explanation: "Když někdo leží a nehýbe se, zavoláme 155 a upozorníme dospělé kolem. Pomoci může i dítě — tím, že nepřejde bez povšimnutí.",
   }),
-  choice("Kamaráda štípla včela do krku a začíná mu otékat. Co uděláš?", "Okamžitě voláš 155", [
+  choice("Kamaráda štípla včela do krku a krk mu začíná otékat. Co uděláš?", "Okamžitě voláš 155", [
     { value: "Dáš mu napít studené vody", why: "Pití otok nezastaví. Otok v krku může zablokovat dýchání." },
     { value: "Přiložíš mu obklad a čekáš", why: "Čekání je nebezpečné. Otok v krku potřebuje lékaře hned." },
     { value: "Necháš to být, otok splaskne", why: "Otok v krku může zhoršit dýchání. Je to vážné." },

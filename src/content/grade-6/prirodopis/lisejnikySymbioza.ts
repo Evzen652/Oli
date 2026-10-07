@@ -763,7 +763,7 @@ function l3RustStari(): PracticeTask | null {
   const cm = pick([3, 4, 5, 6, 8]);
   const kde = pick(["na staré zdi hradu", "na kamenném mostě", "na starém náhrobku"]);
   return choice(
-    `Na výletě si ${o.jm} všiml${o.a} lišejníku ${kde}, který měřil jen asi ${cm} cm. Co se dá říct o jeho stáří?`,
+    `Na výletě si ${o.jm} ${kde} všiml${o.a} lišejníku, který měřil jen asi ${cm} cm. Co se dá říct o jeho stáří?`,
     "může být starý mnoho let, protože roste velmi pomalu",
     [
       { value: "je starý jen pár dní, protože roste rychle jako plíseň", why: FB_PLISEN },

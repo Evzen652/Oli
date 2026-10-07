@@ -224,7 +224,7 @@ const POOL_L1: Polozka[] = [
 // ── L2 — aplikace/porovnání v konkrétní situaci ─────────────────────────
 const POOL_L2: Polozka[] = [
   {
-    q: "Chodník před panem Novákovým domem je rozbitý a potřebuje opravit. Kdo se o takovou opravu obvykle stará?",
+    q: "Chodník před panem Novákovým domem je rozbitý a potřebuje opravu. Kdo se o takovou opravu obvykle stará?",
     key: "obec (obecní úřad)",
     d: [
       { value: "kraj (krajský úřad)", why: "Kraj se stará o věci širšího dosahu, jako jsou silnice mezi obcemi — oprava jednoho chodníku patří na nižší úroveň." },
@@ -466,7 +466,7 @@ const POOL_L3: Polozka[] = [
     explanation: "Chodník u jednoho domu je věc jedné obce, řeší ho obecní úřad Lipové. Silnice spojující tři města přesahuje jednu obec, tu řeší kraj.",
   },
   {
-    q: "Ve vymyšlené horské obci Javorná žije jen pár desítek lidí a nemá vlastní střední školu. Když se rodina rozhoduje, kam přihlásit patnáctileté dítě na střední školu, na koho by se měla ohledně sítě středních škol v okolí obrátit?",
+    q: "Ve vymyšlené horské obci Javorná žije jen pár desítek lidí a obec nemá vlastní střední školu. Když se rodina rozhoduje, kam přihlásit patnáctileté dítě na střední školu, na koho by se měla ohledně sítě středních škol v okolí obrátit?",
     key: "na kraj, protože síť středních škol v okolí řeší vyšší úroveň veřejné správy",
     d: [
       { value: "na obecní úřad Javorné, protože ten vyřizuje běžnou agendu jednotlivých obyvatel obce", why: "Malá obec bez vlastní střední školy neřídí síť středních škol v okolí, to je záležitost širšího dosahu." },

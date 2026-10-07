@@ -22,7 +22,7 @@ function shuffle<T>(arr: T[]): T[] {
 
 const POOL_L1: PracticeTask[] = [
   {
-    question: "Seřaď panovníky Lucemburků od nejstaršího po nejnovější.",
+    question: "Seřaď panovníky Lucemburků od nejstaršího po nejmladšího.",
     correctAnswer: "order",
     items: ["Jan Lucemburský", "Karel IV.", "Václav IV."],
     hints: ["Karel IV. byl synem Jana Lucemburského.", "Václav IV. vládl po svém otci Karlovi IV."],
@@ -36,7 +36,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Jan Lucemburský nastolil dynastii roku 1310. Jeho syn Karel IV. se stal českým králem 1347 a vládl až do své smrti roku 1378.",
   },
   {
-    question: "Seřaď kariéru Karla IV. od nejstarší po nejnovější.",
+    question: "Seřaď události z kariéry Karla IV. od nejstarší po nejnovější.",
     correctAnswer: "order",
     items: ["Karel IV. – český král (1347)", "Karel IV. – císař Svaté říše římské (1355)", "Karel IV. zemřel (1378)"],
     hints: ["Nejdřív byl Karel českým králem, teprve pak císařem.", "Císařem se stal roku 1355."],
@@ -57,7 +57,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Jan Lucemburský vládl od roku 1310. Jeho syn Karel IV. se stal císařem 1355. Po Karlově smrti roku 1378 nastoupil na trůn jeho syn Václav IV.",
   },
   {
-    question: "Seřaď kariéru Karla IV. od nejstarší po nejnovější.",
+    question: "Seřaď události z kariéry Karla IV. od nejstarší po nejnovější.",
     correctAnswer: "order",
     items: ["Karel IV. – český král (1347)", "Karlova univerzita v Praze (1348)", "Karel IV. – císař (1355)"],
     hints: ["Nejdřív se stal králem, pak založil univerzitu.", "Císařem se stal až roku 1355."],
@@ -78,14 +78,14 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Jan Lucemburský přišel do Čech roku 1310. Jeho syn Karel IV. založil roku 1348 Karlovu univerzitu a roku 1357 nechal zahájit stavbu Karlova mostu.",
   },
   {
-    question: "Seřaď panovníky od nejstaršího po nejnovější.",
+    question: "Seřaď panovníky od nejstaršího po nejmladšího.",
     correctAnswer: "order",
     items: ["Jan Lucemburský (1310–1346)", "Karel IV. (1346–1378)", "Václav IV. (od 1378)"],
     hints: ["Roky vlády napovídají pořadí.", "Václav IV. nastoupil roku 1378."],
     explanation: "Jan Lucemburský vládl v Čechách 1310–1346. Po něm nastoupil jeho syn Karel IV. (1346–1378), Otec vlasti. Třetím byl Karlův syn Václav IV.",
   },
   {
-    question: "Seřaď kariéru Karla IV. od nejstarší po nejnovější.",
+    question: "Seřaď události z kariéry Karla IV. od nejstarší po nejnovější.",
     correctAnswer: "order",
     items: ["Karel IV. – český král (1347)", "Karel IV. – císař (1355)", "Zlatá bula (1356)"],
     hints: ["Nejdřív král, pak císař, pak zákon Zlatá bula.", "Zlatá bula je z roku 1356 — nejpozdější."],

@@ -674,7 +674,7 @@ const L3: Uloha[] = [
     steps: ["Sesazený poslední císař bez nástupce → rok 476.", "Rok 476 = hranice starověk / středověk."],
   },
   {
-    q: "Spolužák tvrdí: „Západořímská říše padla, protože prohrála Punské války.“ Proč jeho vysvětlení nesedí?",
+    q: "Spolužák tvrdí: „Západořímská říše padla, protože prohrála punské války.“ Proč jeho vysvětlení nesedí?",
     key: "Punské války Řím vyhrál, a to o víc než šest set let dřív",
     d: [
       ["Punské války Řím prohrál, ale až dlouho po roce 476", "Punské války proběhly ve 3. a 2. století př. n. l. a Řím v nich porazil Kartágo."],

@@ -583,7 +583,7 @@ const L3: Uloha[] = [
     explanation: "Hannibal šel přes Alpy jen proto, že moře ovládal Řím. Kdyby Řím moře neovládal, mohl Hannibal přeplout s vojskem přímo do Itálie a ušetřit si dlouhý pochod, v němž ztratil mnoho mužů i slonů.",
   },
   {
-    q: "Provincie bylo dobyté území mimo Itálii a první římskou provincií se stala Sicílie. Proč Řím o tento ostrov s Kartágem bojoval?",
+    q: "Provincií se nazývalo dobyté území mimo Itálii a první římskou provincií se stala Sicílie. Proč Řím o tento ostrov s Kartágem bojoval?",
     key: "Protože leží hned u Itálie a byla bohatá na obilí",
     d: [
       ["Protože na ní leželo Kartágo, hlavní město soupeře", "Kartágo leželo v severní Africe, ne na Sicílii. O ostrov se vedl spor, protože ležel mezi oběma soupeři."],
@@ -625,7 +625,7 @@ const L3: Uloha[] = [
     explanation: "Před punskými válkami vládlo západnímu Středomoří Kartágo. Porážkou Kartága Řím odstranil hlavního námořního soupeře. Když postupně ovládl celé pobřeží, začali Římané moři říkat naše moře.",
   },
   {
-    q: "Kartágo i Athény byly silné na moři, Řím i Sparta hlavně na souši. Co museli Řím i Sparta udělat, aby svého soupeře porazili?",
+    q: "Kartágo i Athény byly silné na moři, Řím i Sparta hlavně na souši. Co musely Řím i Sparta udělat, aby svého soupeře porazili?",
     key: "Postavit si silné loďstvo a porazit soupeře i na moři",
     d: [
       ["Vyhnout se moři a vyhrát jen bitvami na souši", "Námořní mocnost se jen na souši porazit nedala. Řím vyhrál 1. punskou válku až bitvami na moři a Sparta rozhodla válku s Athénami také loďstvem."],

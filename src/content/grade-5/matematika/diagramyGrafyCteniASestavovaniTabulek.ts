@@ -21,17 +21,20 @@ interface Tema {
   nejvicTvrzeni: (k: string) => string;
 }
 
+// Součet: „za celý týden" / „ve všech pěti měsících" platilo jen pro 5 položek,
+// `data()` ale losuje 4 nebo 5 (pondělí–čtvrtek pak nebyl „celý týden").
+// Opraveno 2026-10-07 na „uvedené dny/měsíce".
 const TEMATA: Tema[] = [
   {
     nadpis: "Prodané zmrzliny", popisky: ["pondělí", "úterý", "středa", "čtvrtek", "pátek"], kde: ["v pondělí", "v úterý", "ve středu", "ve čtvrtek", "v pátek"],
     kolik: (k) => `Kolik zmrzlin se prodalo ${k}?`, nejvic: "Kdy se prodalo nejvíc zmrzlin?",
-    rozdil: (a, b) => `O kolik zmrzlin víc se prodalo ${a} než ${b}?`, celkem: "Kolik zmrzlin se prodalo za celý týden?", prumer: "Kolik zmrzlin se prodalo průměrně za den?",
+    rozdil: (a, b) => `O kolik zmrzlin víc se prodalo ${a} než ${b}?`, celkem: "Kolik zmrzlin se prodalo za všechny uvedené dny dohromady?", prumer: "Kolik zmrzlin se prodalo průměrně za den?",
     vic: (a, b) => `${a[0].toUpperCase()}${a.slice(1)} se prodalo víc zmrzlin než ${b}.`, nejvicTvrzeni: (k) => `Nejvíc zmrzlin se prodalo ${k}.`,
   },
   {
     nadpis: "Slunečné dny v měsíci", popisky: ["březen", "duben", "květen", "červen", "září"], kde: ["v březnu", "v dubnu", "v květnu", "v červnu", "v září"],
     kolik: (k) => `Kolik slunečných dní bylo ${k}?`, nejvic: "Ve kterém měsíci bylo nejvíc slunečných dní?",
-    rozdil: (a, b) => `O kolik slunečných dní víc bylo ${a} než ${b}?`, celkem: "Kolik slunečných dní bylo ve všech pěti měsících dohromady?", prumer: "Kolik slunečných dní bylo průměrně za měsíc?",
+    rozdil: (a, b) => `O kolik slunečných dní víc bylo ${a} než ${b}?`, celkem: "Kolik slunečných dní bylo ve všech uvedených měsících dohromady?", prumer: "Kolik slunečných dní bylo průměrně za měsíc?",
     vic: (a, b) => `${a[0].toUpperCase()}${a.slice(1)} bylo víc slunečných dní než ${b}.`, nejvicTvrzeni: (k) => `Nejvíc slunečných dní bylo ${k}.`,
   },
   {
@@ -43,7 +46,7 @@ const TEMATA: Tema[] = [
   {
     nadpis: "Návštěvníci knihovny", popisky: ["pondělí", "úterý", "středa", "čtvrtek", "pátek"], kde: ["v pondělí", "v úterý", "ve středu", "ve čtvrtek", "v pátek"],
     kolik: (k) => `Kolik návštěvníků přišlo do knihovny ${k}?`, nejvic: "Kdy přišlo do knihovny nejvíc návštěvníků?",
-    rozdil: (a, b) => `O kolik návštěvníků víc přišlo ${a} než ${b}?`, celkem: "Kolik návštěvníků přišlo za celý týden?", prumer: "Kolik návštěvníků přišlo průměrně za den?",
+    rozdil: (a, b) => `O kolik návštěvníků víc přišlo ${a} než ${b}?`, celkem: "Kolik návštěvníků přišlo za všechny uvedené dny dohromady?", prumer: "Kolik návštěvníků přišlo průměrně za den?",
     vic: (a, b) => `${a[0].toUpperCase()}${a.slice(1)} přišlo víc návštěvníků než ${b}.`, nejvicTvrzeni: (k) => `Nejvíc návštěvníků přišlo ${k}.`,
   },
 ];

@@ -48,7 +48,7 @@ const PRAVIDLA_L1: Pravidlo[] = [
   { name: "chlapec dítě tety", test: (t) => /^Jak se říká chlapci, který je dítětem tvé tety\?/.test(t.question), kmen: /^bratranec$/ },
   { name: "dívka dítě strýce", test: (t) => /^Jak se říká dívce, která je dítětem tvého strýce\?/.test(t.question), kmen: /^sestřenice$/ },
   { name: "bratr nebo sestra jedním slovem", test: (t) => /^Jak se říká tvému bratrovi nebo tvé sestře/.test(t.question), kmen: /^sourozenec$/ },
-  { name: "otec a matka společně", test: (t) => /^Jak se říkají společně otec a matka\?/.test(t.question), kmen: /^rodiče$/ },
+  { name: "otec a matka společně", test: (t) => /^Jak se společně říká otci a matce\?/.test(t.question), kmen: /^rodiče$/ },
   { name: "rodiče rodičů", test: (t) => /^Jak se říká rodičům tvých rodičů\?/.test(t.question), kmen: /^prarodiče$/ },
   { name: "matka otce/matky", test: (t) => /^Do jaké skupiny příbuzných patří matka tvého otce nebo matka tvé matky\?/.test(t.question), kmen: /^prarodiče$/ },
 ];

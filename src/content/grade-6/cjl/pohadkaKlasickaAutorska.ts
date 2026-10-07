@@ -724,7 +724,7 @@ interface SrovnaniAB {
 
 const L3C: SrovnaniAB[] = [
   {
-    a: "Kdysi dávno žila v hlubokém lese chaloupka, ve které bydlela zlá čarodějnice. Kdo k ní zabloudil, už se nikdy nevrátil domů, dokud ho nezachránil statečný myslivec.",
+    a: "Kdysi dávno stála v hlubokém lese chaloupka, ve které bydlela zlá čarodějnice. Kdo k ní zabloudil, už se nikdy nevrátil domů, dokud ho nezachránil statečný myslivec.",
     b: "V panelovém domě na sídlišti bydlela čarodějnice, která si místo košťete kupovala jízdenky na tramvaj. Sousedé si na ni pořád stěžovali, že jim mate navigaci v mobilu.",
     option: "Ukázka B — odehrává se v současném městském prostředí.",
     vysvetleni: "Ukázka B je autorská pohádka, protože se odehrává v současném městském prostředí (panelák, tramvaj, mobil), které lidová pohádka nemá.",

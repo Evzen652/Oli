@@ -24,7 +24,7 @@ const PARTS: Cast[] = ["úvod", "zápletka", "vyvrcholení", "obrat", "závěr"]
 const SOLVER_STAVBA: Record<string, [string, string, string, string, string]> = {
   "tabor": [
       "První den letního tábora u rybníka si Tomáš vybral místo v chatce hned vedle svého kamaráda Honzy.",
-      "Druhý den ráno ale zjistil, že mu z batohu zmizela baterka, bez které se do lesa nesměl.",
+      "Druhý den ráno ale zjistil, že mu z batohu zmizela baterka, bez které nesměl do lesa.",
       "Srdce mu bušilo, když prohledával poslední tmavý kout chatky a baterku pořád nikde neviděl.",
       "Vtom do chatky nahlédl vedoucí tábora s Tomášovou baterkou v ruce – večer si ji půjčil, aby ji přes noc nabil, a zapomněl mu to říct.",
       "Od té chvíle si Tomáš baterku vždycky večer sám zkontroloval, než šel spát.",

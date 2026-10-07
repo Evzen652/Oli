@@ -465,7 +465,7 @@ const SITUACE: Situace[] = [
     emoji: "🍲",
   },
   {
-    kdy: "Ve tramvaji chceš projít k východu. Co řekneš pánovi, který stojí v cestě?",
+    kdy: "V tramvaji chceš projít k východu. Co řekneš pánovi, který stojí v cestě?",
     klic: "Promiňte, můžu projít?",
     funkce2: ["Běžte mi prosím z cesty.", "To je rozkaz s přilepeným „prosím“. Slušnější je omluvit se a zeptat se."],
     tykani: ["Promiň, můžu projít?", "Cizímu dospělému vykáme: „promiňte“, ne „promiň“."],

@@ -85,7 +85,7 @@ const CLAIMS: [RegExp, RegExp][] = [
   [/tichý konec/, /odznaky/],
   [/jezdci z východu/, /^Konec 4\. století, jezdci byli Hunové$/],
   [/nového už nikdo nezvolil/, /konec starověku/],
-  [/Punské války/, /vyhrál/],
+  [/punské války/i, /vyhrál/],
 ];
 
 function solve(t: PracticeTask): { kind: string; ok: boolean; why: string } | null {

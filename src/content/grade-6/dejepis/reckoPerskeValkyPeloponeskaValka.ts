@@ -397,7 +397,7 @@ const L2: Uloha[] = [
     explanation: "Vojsko Dáreia I. porazili Athéňané roku 490 př. n. l. u Marathónu. Thermopyly, Salamína a Plataje patří k druhé výpravě, kterou vedl Xerxés.",
   },
   {
-    q: "Ve přeplněném městě za hradbami vypukl mor a zemřel na něj i Periklés. Ke které válce ta událost patří?",
+    q: "V přeplněném městě za hradbami vypukl mor a zemřel na něj i Periklés. Ke které válce ta událost patří?",
     key: VALKY_FB.pel,
     d: [
       [VALKY_FB.perske, "V perských válkách Periklés ještě Athény nevedl. Mor přišel až ve válce Athén se Spartou."],
@@ -691,7 +691,7 @@ const L3: Uloha[] = [
       "Kde byli Athéňané, když vypukla nemoc? Mysli na Periklův plán obrany.",
       "Periklés nechal lidi z Attiky přejít do města, protože okolí pustošilo spartské vojsko. Jak se šíří nemoc tam, kde je lidí mnohem víc než obvykle?",
     ],
-    explanation: "Periklés nechal obyvatele Attiky schovat se za athénské hradby. Ve přeplněném městě se mor rychle šířil a zemřela velká část obyvatel včetně Perikla. To Athény na dlouho oslabilo.",
+    explanation: "Periklés nechal obyvatele Attiky schovat se za athénské hradby. V přeplněném městě se mor rychle šířil a zemřela velká část obyvatel včetně Perikla. To Athény na dlouho oslabilo.",
   },
   {
     q: "Které tvrzení vysvětluje, proč Sparta v peloponéské válce potřebovala peníze od Persie?",

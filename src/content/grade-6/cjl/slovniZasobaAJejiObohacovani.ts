@@ -203,7 +203,7 @@ const VETY_ODVOZ: VetaOdvoz[] = [
   { word: "hasič", base: "hasit", sentence: "Tomáš chce být hasičem.", suffix: "-ič" },
   { word: "zpěvák", base: "zpěv", sentence: "Kamarád zpívá ve sboru a chce být zpěvákem.", suffix: "-ák" },
   { word: "plavec", base: "plavat", sentence: "Nejlepší plavec ve třídě je Marek.", suffix: "-ec" },
-  { word: "řidič", base: "řídit", sentence: "Autobus nám dnes vezl jiný řidič.", suffix: "-ič" },
+  { word: "řidič", base: "řídit", sentence: "Autobus dnes řídil jiný řidič.", suffix: "-ič" },
   { word: "prodavač", base: "prodávat", sentence: "V pekárně nám poradil milý prodavač.", suffix: "-ač" },
   { word: "malíř", base: "malovat", sentence: "Obrázek na chodbě namaloval malíř z devítky.", suffix: "-íř" },
 ];

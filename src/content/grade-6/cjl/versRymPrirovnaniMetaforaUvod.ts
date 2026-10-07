@@ -343,7 +343,7 @@ const L2A_BANK: Ctyrversi[] = [
     v: [
       "Ráno vstalo slunce nad zahradou,",
       "kohout zakokrhal hned za vraty.",
-      "Babička otevřela okno do dvora,",
+      "Babička otevřela okno do dvora",
       "a pustila dovnitř čerstvý vzduch.",
     ],
   },
@@ -442,7 +442,7 @@ const L2A_BANK: Ctyrversi[] = [
     v: [
       "Na zahradě rozkvetlo jarní kvítí,",
       "za obzorem se modrá klidné moře,",
-      "slunce hřeje na kamenném dvoře,",
+      "slunce hřeje na kamenném dvoře",
       "a všude kolem vesele svítí.",
     ],
   },
@@ -451,7 +451,7 @@ const L2A_BANK: Ctyrversi[] = [
     v: [
       "Na návsi stál starý strom,",
       "pod ním si hrálo hodně dětí.",
-      "Sluníčko svítilo celý den,",
+      "Sluníčko svítilo celý den",
       "a nikdo nikam nepospíchal.",
     ],
   },
@@ -924,7 +924,7 @@ const L3_RYMOBRAZ: RymObraz[] = [
     figureType: "metafora",
   },
   {
-    verse: ["Ta stará deka je měkká jako kočka,", "a pod ní spí kocour, mhouří ospalá očka."],
+    verse: ["Ta stará deka je měkká jako kočka", "a pod ní spí kocour, mhouří ospalá očka."],
     scheme: SDRUZENY_AA,
     distractorScheme: "bez rýmu",
     figureLine: 1,

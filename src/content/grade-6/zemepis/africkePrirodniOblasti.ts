@@ -846,7 +846,7 @@ const POPISY_L3: Popis[] = [
   },
   {
     o: "L",
-    q: "Lidé tu sbírají lesní plody, loví a na malých mýtinách pěstují kakaovníky; stezky se za pár měsíců zarostou. O jakou oblast Afriky jde?",
+    q: "Lidé tu sbírají lesní plody, loví a na malých mýtinách pěstují kakaovníky; stezky za pár měsíců zarostou. O jakou oblast Afriky jde?",
     hints: [
       "Všimni si, co lidé v oblasti dělají a co se děje se stezkami. Zeptej se, jaká krajina tak rychle zarůstá.",
       "Stezky, které se za pár měsíců zarostou, ukazují na velmi rychlý růst, a to je možné jen tam, kde je stále teplo a dost vody. Kakaovníky potřebují také vlhko a teplo.",

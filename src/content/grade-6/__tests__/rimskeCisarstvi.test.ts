@@ -41,7 +41,7 @@ const PERSON_RULES: [RegExp, string, string?][] = [
   [/Přišel jsem, viděl jsem/, "veni"],
   [/adoptoval .* než dostal čestné jméno/, "adoptovan", "Octavianus"],
   [/Kleopatřin spojenec, kterého Octavianus porazil/, "actium-porazen"],
-  [/považoval za přítele, a přesto/, "pritel-zradce"],
+  [/považoval za přítele, ale který se přesto/, "pritel-zradce"],
 ];
 
 /** Neosobní fakta L1: znění → vzor jediné správné možnosti (nezávisle zapsaný fakt). */

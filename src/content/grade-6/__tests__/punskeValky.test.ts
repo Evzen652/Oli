@@ -295,6 +295,6 @@ describe("Punské války — gradace a L3", () => {
 
   it("L1 je dotaz jménem, L3 příčina / důsledek / výrok / srovnání", () => {
     for (const t of topic.generator(1)) expect(/^(Kdo|Který|Kde|Jak|Kterého|O který|Čím)/.test(t.question), t.question).toBe(true);
-    for (const t of topic.generator(3)) expect(/^(Proč|Co by|Které tvrzení|Čím se|Cato|Roku|Provincie|Kartágo i)/.test(t.question), t.question).toBe(true);
+    for (const t of topic.generator(3)) expect(/^(Proč|Co by|Které tvrzení|Čím se|Cato|Roku|Provincií se nazývalo|Kartágo i)/.test(t.question), t.question).toBe(true);
   });
 });

@@ -286,7 +286,7 @@ const POOL_L1: Polozka[] = [
     explanation: "Bratr nebo sestra se jedním slovem nazývá sourozenec.",
   },
   {
-    q: "Jak se říkají společně otec a matka?",
+    q: "Jak se společně říká otci a matce?",
     key: "rodiče",
     d: ["prarodiče", "sourozenec", "teta"],
     hints: [

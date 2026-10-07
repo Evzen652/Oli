@@ -480,7 +480,7 @@ const L2: Ctení[] = [
 const L3: Ctení[] = [
   {
     text:
-      "Ondra se učí hrát na housle už půl roku. Ze začátku mu to vůbec nešlo a pouzdro s houslemi často zůstávalo celý týden zavřené. Paní učitelka mu jednou řekla, že i ona se jako malá dlouho trápila, než jí to začalo jít. Na ta slova si Ondra vzpomněl pokaždé, když ho cvičení přestalo bavit. Po několika dalších měsících každodenního cvičení zahrál na školním koncertě celou skladbu bez jediné chyby.",
+      "Ondra se učí hrát na housle už půl roku. Ze začátku mu to vůbec nešlo a pouzdro s houslemi často zůstávalo celý týden zavřené. Paní učitelka mu jednou řekla, že se i ona jako malá dlouho trápila, než jí to začalo jít. Na ta slova si Ondra vzpomněl pokaždé, když ho cvičení přestalo bavit. Po několika dalších měsících každodenního cvičení zahrál na školním koncertě celou skladbu bez jediné chyby.",
     otazky: [
       {
         q: "Které ponaučení z příběhu vyplývá?",

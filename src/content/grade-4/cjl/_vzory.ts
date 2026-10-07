@@ -20,7 +20,10 @@ export function tvarUlohy(
   vzor: string,
   tvarVzoru: string,
 ): PracticeTask {
-  return choice(`Jaký tvar má slovo „${slovo}“ v ${pad}?`, spravne,
+  // „ve 2./3./4. pádě" — předložka se řídí vysloveným číslovkou (ve druhém,
+  // ve třetím, ve čtvrtém). Do 2026-10-07 tu stálo vždy „v".
+  const v = /^[234]\./.test(pad) ? "ve" : "v";
+  return choice(`Jaký tvar má slovo „${slovo}“ ${v} ${pad}?`, spravne,
     spatne.map((t) => ({ value: t.form, why: `„${t.form}“ je ${t.pad}.` })) as [
       { value: string; why: string }, { value: string; why: string }, { value: string; why: string },
     ], {

@@ -221,7 +221,7 @@ const L2: PracticeTask[] = [
 ];
 
 const L3: PracticeTask[] = [
-  choice("Píšeš e-mail s žádostí o prodloužení výpůjčky v knihovně. Co do něj nepatří?", "smajlíky a hovorové zkratky", [
+  choice("Píšeš e-mail se žádostí o prodloužení výpůjčky v knihovně. Co do něj nepatří?", "smajlíky a hovorové zkratky", [
     { value: "oslovení na začátku a pozdrav", why: "Oslovení a pozdrav do e-mailu patří." },
     { value: "název knihy", why: "Knihovna potřebuje vědět, o kterou knihu jde." },
     { value: "tvoje jméno", why: "Knihovna musí vědět, kdo žádá." },

@@ -66,7 +66,7 @@ const L1: PracticeTask[] = [
     { value: "žádné strany nejsou kolmé", why: "Obdélník má čtyři pravé úhly." },
     { value: "všechny strany se protínají v jednom bodě", why: "Protější strany se nikdy neprotnou." },
   ], { hints: ["Podívej se na list papíru: jaké rohy má a jak vedou okraje naproti sobě?", "Obdélník má čtyři pravé rohy; okraje naproti sobě se nikdy nesetkají."], explanation: "V obdélníku jsou protější strany rovnoběžné a sousední na sebe kolmé." }),
-  choice("Dvě silnice se kříží pod pravým úhlem. Jak o nich řekneš?", "jsou na sebe kolmé", [
+  choice("Dvě silnice se kříží pod pravým úhlem. Co o nich řekneš?", "jsou na sebe kolmé", [
     { value: "jsou rovnoběžné", why: "Rovnoběžky se nekříží." },
     { value: "jsou shodné", why: "Shodnost se týká velikosti." },
     { value: "jsou souměrné", why: "Souměrnost je něco jiného." },

@@ -393,7 +393,7 @@ const POOL_L3: PracticeTask[] = [
     "Tolerance znamená přijmout, že je někdo jiný. Respekt jde o krok dál — aktivně bereme v úvahu jeho potřeby a názory, například se ptáme a bereme vážně odpovědi.",
   ),
   t(
-    "Kamarád chce hrát jinou hru než ty. Hledáte řešení, které bude fér pro oba. Jak se takové řešení jmenuje, A co k jeho nalezení POTŘEBUJETE nejdřív udělat?",
+    "Kamarád chce hrát jinou hru než ty. Hledáte řešení, které bude fér pro oba. Jak se takové řešení jmenuje a co k jeho nalezení POTŘEBUJETE nejdřív udělat?",
     "Kompromis — nejdřív si musíme navzájem naslouchat",
     [
       ["Násilí — nejdřív musí jeden ustoupit násilím", "Vynucené ustoupení není fér řešení, ale přemožení slabšího."],
@@ -429,7 +429,7 @@ const POOL_L3: PracticeTask[] = [
     "Když třída společně tvoří pravidlo, jde o spolupráci. Přijetí výsledku hlasování, i když nevyhrál váš nápad, je projevem respektu k rozhodnutí většiny.",
   ),
   t(
-    "Kamarád ti řekl ošklivé slovo jednou v afektu a hned se omluvil. Jiný den tě spolužák opakovaně bije o přestávkách. Liší se tyto dvě situace, a pokud ano, jak s nimi naložíš?",
+    "Kamarád ti řekl ošklivé slovo jednou v afektu a hned se omluvil. Jiný den tě spolužák opakovaně bije o přestávkách. Liší se tyto dvě situace a pokud ano, jak s nimi naložíš?",
     "Ano — první je konflikt (domluvíme se), druhé je násilí (řeknu dospělému)",
     [
       ["Ne — obě situace jsou stejně vážné a řeším je stejně", "Jedna se stala jednou a skončila omluvou, druhá se opakuje. Stejné rozhodně nejsou."],
@@ -489,7 +489,7 @@ const POOL_L3: PracticeTask[] = [
     "Tolerance a úcta k člověku neznamenají, že musíme souhlasit s nepravdivým tvrzením. Můžeme slušně vysvětlit fakta, aniž bychom se druhému posmívali nebo ho odmítli.",
   ),
   t(
-    "Skupina spolužáků záměrně nezve jednoho kluka do hry a dlouhodobě mu říká, že je hloupý. Je to jen konflikt, a co bys měl udělat?",
+    "Skupina spolužáků záměrně nezve jednoho kluka do hry a dlouhodobě mu říká, že je hloupý. Je to jen konflikt a co bys měl udělat?",
     "Ne, je to psychické násilí (šikana) — je třeba to nahlásit dospělému",
     [
       ["Ano, je to jen běžný konflikt, časem to samo přejde", "Dlouhodobé urážky samy nepřejdou. Konflikt je jedna neshoda, ne měsíce ponižování."],

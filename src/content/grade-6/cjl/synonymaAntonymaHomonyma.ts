@@ -606,7 +606,7 @@ const SYNONYMA_L3B = ["hodný – laskavý", "pomalý – loudavý"];
 const ANTONYMA_L3B = ["silný – slabý", "levný – drahý"];
 const OTAZKA_L3B = [
   "Ve které dvojici jde o HOMONYMA – stejná podoba slova, ale nesouvisející významy?",
-  "Která dvojice slov jsou HOMONYMA (stejně se píšou i vyslovují, ale významy spolu vůbec nesouvisejí)?",
+  "Která dvojice slov tvoří HOMONYMA (stejně se píšou i vyslovují, ale významy spolu vůbec nesouvisejí)?",
   "Vyber dvojici, kde jde o homonyma – slova stejné podoby s nesouvisejícím významem.",
 ];
 

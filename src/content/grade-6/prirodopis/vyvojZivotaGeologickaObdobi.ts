@@ -218,7 +218,7 @@ const L3: Record<Era, Polozka[]> = {
 
 // ── Zadání a nápovědy ────────────────────────────────────────────────────
 const ZADANI: Record<number, string> = {
-  1: "Zařaď každou položku do jedné ze dvou geologických er.",
+  1: "Zařaď každou položku do jedné ze dvou geologických ér.",
   2: "Zařaď každou položku do geologické éry, ve které žila nebo proběhla.",
   3: "Paleontolog popsal tyto nálezy. Urči, ze které éry pocházejí.",
 };

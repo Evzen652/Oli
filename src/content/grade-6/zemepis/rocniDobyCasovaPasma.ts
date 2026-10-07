@@ -40,6 +40,19 @@ import {
 type Tvurce = () => PracticeTask | null;
 
 /** Úloha nesmí obsahovat klíč ve znění — jinak ji vylosujeme znovu. */
+
+/**
+ * „ve 4:00", ale „v 5:00" — předložka se řídí tím, jak se hodina vysloví
+ * (ve dvě, ve tři, ve čtyři, ve dvanáct až ve čtrnáct, ve dvacet…).
+ * Do 2026-10-07 stálo vždy „v".
+ */
+function vCas(h: number): string {
+  const t = cas(h);
+  const hod = Number(t.split(":")[0]);
+  const ve = [2, 3, 4, 12, 13, 14, 20, 21, 22, 23].includes(hod);
+  return `${ve ? "ve" : "v"} ${t}`;
+}
+
 function hlidej(t: PracticeTask | null): PracticeTask | null {
   if (!t) return null;
   if (t.question.includes(t.correctAnswer)) return null;
@@ -582,7 +595,7 @@ function let_(): PracticeTask | null {
   if (new Set(varianty).size !== 4) return null;
   return hlidej(
     choice(
-      `Letadlo vzlétne z místa na ${delka(l1)} v ${cas(h1)} místního času a poletí ${pad(N, "HODINA")} do místa na ${delka(l2)}, kde přistane. Kolik hodin tam bude místního času v okamžiku přistání? Počítej bez letního času.`,
+      `Letadlo vzlétne z místa na ${delka(l1)} ${vCas(h1)} místního času a poletí ${pad(N, "HODINA")} do místa na ${delka(l2)}, kde přistane. Kolik hodin tam bude místního času v okamžiku přistání? Počítej bez letního času.`,
       klic,
       [
         { value: cas(h1 + N - smer * posun), why: "Posun pásem šel opačným směrem. Cíl leží na " + (smer > 0 ? "východ, a tam je později." : "západ, a tam je dříve.") },

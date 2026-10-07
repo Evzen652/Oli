@@ -510,7 +510,7 @@ const L3: U[] = [
     e: "Při fotosyntéze rostlina vyrobí cukr a jako vedlejší produkt uvolní kyslík. Právě ten lidé i zvířata potřebují k dýchání.",
   },
   {
-    q: "Co by se stalo, kdyby včely a další hmyz přestali navštěvovat květy?",
+    q: "Co by se stalo, kdyby včely a další hmyz přestaly navštěvovat květy?",
     a: "Nevznikla by semena ani plody",
     emoji: "🐝",
     d: [

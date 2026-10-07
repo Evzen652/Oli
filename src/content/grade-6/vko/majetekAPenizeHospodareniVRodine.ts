@@ -485,7 +485,7 @@ const POOL_L2: Polozka[] = [
 // ── L3 — analýza a přenos ────────────────────────────────────────────────
 const POOL_L3: Polozka[] = [
   {
-    q: "Jakub si dva týdny dopředu srovnával ceny bot na internetu, počkal na výprodej, a pak u pokladny zaplatil kartou za pár vteřin. I když platba proběhla rychle, jak se tomuhle nákupu říká?",
+    q: "Jakub si dva týdny dopředu srovnával ceny bot na internetu, počkal na výprodej a pak u pokladny zaplatil kartou za pár vteřin. I když platba proběhla rychle, jak se tomuhle nákupu říká?",
     key: "plánovaný nákup",
     d: [
       { value: "impulzivní nákup", why: "Rychlost placení u pokladny o ničem nerozhoduje — impulzivní nákup poznáš podle toho, že mu nepředchází žádné srovnávání ani čekání. Jakub ale dlouho srovnával ceny a čekal na výprodej, proto jde o plánovaný nákup." },
@@ -611,7 +611,7 @@ const POOL_L3: Polozka[] = [
     explanation: "Protože Emil vždy utratí celé kapesné hned, nemá žádnou rezervu z předchozích týdnů. Na mimořádný výdaj dražší než jedno kapesné mu bude peněz chybět.",
   },
   {
-    q: "Rodina sestavila rozpočet a naplánovala si v něm i částku na spoření. Uprostřed měsíce si ale koupili nový gril, který v rozpočtu nebyl, a museli proto částku na spoření snížit. Co se v tomto příběhu stalo se spořením?",
+    q: "Rodina sestavila rozpočet a naplánovala si v něm i částku na spoření. Uprostřed měsíce si ale koupila nový gril, který v rozpočtu nebyl, a musela proto částku na spoření snížit. Co se v tomto příběhu stalo se spořením?",
     key: "Kvůli neplánovanému výdaji na gril bylo míň peněz na spoření, než se plánovalo.",
     d: [
       { value: "Spoření se vůbec nezměnilo, protože nákup grilu spadá do úplně jiné kategorie výdajů.", why: "Peníze v rozpočtu jsou omezené — když se víc utratí na jedné položce, jako je gril, zbyde míň na jinou, jako je spoření." },

@@ -923,7 +923,7 @@ function l3DvePodminky(): PracticeTask | null {
 // (c) proč je Země výjimečná
 const L3_ZEME: Polozka[] = [
   {
-    q: "Proč je právě na Zemi život, když na ostatních planetách Sluneční soustavy ho neznáme?",
+    q: "Proč je právě na Zemi život, když ho na ostatních planetách Sluneční soustavy neznáme?",
     correct: "Protože obíhá v takové vzdálenosti od Slunce, že má kapalnou vodu",
     distractors: [
       { value: "Protože je to ze všech planet Sluneční soustavy ta vůbec největší", why: "Země není největší planeta – největší je Jupiter. Velikost o životě nerozhoduje." },

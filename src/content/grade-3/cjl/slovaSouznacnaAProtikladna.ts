@@ -60,7 +60,7 @@ function synonymum([w, a, past, d1, d2]: Radek): PracticeTask {
 }
 
 function antonymum([w, a, past, d1, d2]: Radek): PracticeTask {
-  return choice(`Které slovo má OPAČNÝ význam jako „${w}“?`, a, [
+  return choice(`Které slovo má OPAČNÝ význam než „${w}“?`, a, [
     { value: past, why: `„${past}“ znamená skoro totéž, ne opak.` },
     { value: d1, why: `„${d1}“ není opak slova „${w}“.` },
     { value: d2, why: `„${d2}“ není opak slova „${w}“.` },
