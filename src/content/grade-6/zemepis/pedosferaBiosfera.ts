@@ -636,7 +636,7 @@ export const POOL_L3: Polozka[] = [
     ],
     hints: [
       "Půda na svahu se netvoří jen tam, kde leží. Přemýšlej i o tom, co s ní dělá tekoucí voda.",
-      "Na vrcholu a na prudkém svahu nemá rozpadlá hornina kde zůstat: pokaždé, když prší, část ho odteče níž. Dole na úpatí se naopak hromadí a bývá tam půda mocná. Vyber možnost, která pracuje s přesunem materiálu po svahu, ne s tím, že by se nestihl vytvořit.",
+      "Na vrcholu a na prudkém svahu nemá rozpadlá hornina kde zůstat: pokaždé, když prší, část jí odteče níž. Dole na úpatí se naopak hromadí a bývá tam půda mocná. Vyber možnost, která pracuje s přesunem materiálu po svahu, ne s tím, že by se nestihl vytvořit.",
     ],
     explanation: "Na hřbetu a na prudkém svahu voda zvětralý materiál stále odnáší dolů, takže se vrstva nestihne vytvořit. Proto je v horách půda tenká a kamenitá, kdežto na úpatí a v nížinách jsou půdy mocné.",
   },

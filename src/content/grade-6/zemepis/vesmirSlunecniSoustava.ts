@@ -537,7 +537,7 @@ function l2Svetlo(): PracticeTask | null {
       ]
       : [
         "Rozliš tělesa, která světlo vyrábějí, od těch, která ho jen odrážejí jako zrcadlo.",
-        "Světlo vyrábí jen obrovské koule žhavých plynů. Všechno ostatní na obloze, co jasně září, jen vrací světlo, které na to dopadá.",
+        "Světlo vyrábějí jen obrovské koule žhavých plynů. Všechno ostatní na obloze, co jasně září, jen vrací světlo, které na to dopadá.",
       ];
     return choice(q, K.value, d, {
       hints,

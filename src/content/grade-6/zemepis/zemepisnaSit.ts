@@ -627,11 +627,11 @@ function genL2Krok(): PracticeTask | null {
   const dis: Distractor[] = [
     {
       value: fmt(s * (absStart + m * krok)),
-      why: `Tohle je posun jen o jednu ${caru}. Rozestup je ${krok}°, takže celý posun je ${n} × ${krok}° = ${posun}°.`,
+      why: `Tohle je posun jen o ${sirkova ? "jednu" : "jeden"} ${caru}. Rozestup je ${krok}°, takže celý posun je ${n} × ${krok}° = ${posun}°.`,
     },
     {
       value: fmt(s * (absStart + m * n)),
-      why: `Tady se připočetl počet čar, ne stupně. Každá ${cara} je o ${krok}° dál, takže se počítá ${n} × ${krok}°.`,
+      why: `Tady se připočetl počet čar, ne stupně. ${sirkova ? "Každá" : "Každý"} ${cara} je o ${krok}° dál, takže se počítá ${n} × ${krok}°.`,
     },
     {
       value: fmt(-s * absCil),
@@ -846,7 +846,7 @@ function genL3Pres180(): PracticeTask | null {
         `Na ${druha} polokouli se délka od 180° zmenšuje: 180° − ${cis(za)}° = ${cis(r)}°, tedy ${delka(cil)}`,
         `Šířka se nemění: ${sirka(f)}`,
       ],
-      explanation: `Poledník 180° odděluje východní a západní délku na opačné straně Země než nultý poledník. Letadlo ho mine po ${cis(kHranici)}° a dalších ${cis(za)}° letí po ${druha} polokouli, kde se délka počítá od nultého poledníku. Proto je délka 180° − ${cis(za)}° = ${cis(r)}°, tedy ${veta(delka(cil))}`,
+      explanation: `Poledník 180° odděluje východní a západní délku na opačné straně Země než nultý poledník. Letadlo ho mine po ${cis(kHranici)}° a ${za >= 2 && za <= 4 ? "další" : "dalších"} ${cis(za)}° letí po ${druha} polokouli, kde se délka počítá od nultého poledníku. Proto je délka 180° − ${cis(za)}° = ${cis(r)}°, tedy ${veta(delka(cil))}`,
     },
   );
 }

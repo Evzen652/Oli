@@ -530,7 +530,7 @@ function l2Potok(): PracticeTask | null {
     : pick(["od severu k jihu", "od jihu k severu"]);
   const pres = `Obě obce leží na opačných březích potoka, takže cesta mezi nimi vede přes potok, ne podél něj. Potok teče ${tok}.`;
   return choice(
-    `Potok (modrá čára) teče ${tok}. Obec ${x.nom} leží ${smer(strana).adv} od potoka, obec ${y.nom} přímo naproti ní ${smer(proti).adv} od něj. Kterým směrem od ${y.gen} leží ${x.nom}?`,
+    `Potok (modrá čára) teče ${tok}. Obec ${x.nom} leží ${smer(strana).adv} od potoka, obec ${y.nom} přímo naproti ${/[aá]$/.test(x.nom) ? "ní" : "němu"} ${smer(proti).adv} od něj. Kterým směrem od ${y.gen} leží ${x.nom}?`,
     smer(strana).na,
     [
       { value: smer(proti).na, why: `To je opačný směr: tak leží ${y.nom} od ${x.gen}.` },
@@ -542,7 +542,7 @@ function l2Potok(): PracticeTask | null {
         `Kde leží ${y.nom} a kde ${x.nom} vzhledem k potoku? Nakresli si potok a obě obce na papír se severem nahoře.`,
         `Cesta od ${y.gen} vede přes potok na druhý břeh, kde leží ${x.nom}. Směr toku potoka tu neurčuje, kam jdeš — rozhoduje, na které straně potoka je každá obec.`,
       ],
-      explanation: `${x.nom} leží ${smer(strana).adv} od potoka a ${y.nom} přímo naproti ní ${smer(proti).adv}. Obce jsou tedy proti sobě přes potok: z ${y.gen} přejdeš potok a jdeš ${smer(strana).na}. Směr toku (${tok}) na tom nic nemění.`,
+      explanation: `${x.nom} leží ${smer(strana).adv} od potoka a ${y.nom} přímo naproti ${/[aá]$/.test(x.nom) ? "ní" : "němu"} ${smer(proti).adv}. Obce jsou tedy proti sobě přes potok: z ${y.gen} přejdeš potok a jdeš ${smer(strana).na}. Směr toku (${tok}) na tom nic nemění.`,
     },
   );
 }

@@ -866,7 +866,7 @@ function genCas(): PracticeTask | null {
     {
       hints: [
         `Nejdřív podle měřítka ${meritko(n)} zjisti skutečnou délku trasy v kilometrech.`,
-        `Pak zjisti, kolikrát se ${cis(v)} km ${p.pohyb} za hodinu vejde do celé trasy. Odpovědí je čas v hodinách, ne vzdálenost — zkontroluj na konci, že odpovídáš na to, na co se otázka ptá.`,
+        `Pak zjisti, kolikrát se ${cis(v)} km ${v <= 4 ? p.pohyb.replace(/ých$/, "é") : p.pohyb} za hodinu ${v <= 4 ? "vejdou" : "vejde"} do celé trasy. Odpovědí je čas v hodinách, ne vzdálenost — zkontroluj na konci, že odpovídáš na to, na co se otázka ptá.`,
       ],
       solutionSteps: [
         ...krokyPrevodu(n, false),

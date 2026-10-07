@@ -103,7 +103,7 @@ function solve(t: PracticeTask): string | RegExp {
   }
   // L2 — obce na opačných březích potoka; zadání musí říct i to, že leží
   // přímo proti sobě, jinak z něj plyne jen jedna složka směru (regex to hlídá)
-  if ((m = q.match(/Obec \S+ leží (\S+) od potoka, obec \S+ přímo naproti ní (\S+) od něj\./))) {
+  if ((m = q.match(/Obec \S+ leží (\S+) od potoka, obec \S+ přímo naproti (?:ní|němu) (\S+) od něj\./))) {
     const u1 = uhelZNazvu(m[1]), u2 = uhelZNazvu(m[2]);
     expect(norm(u1 - u2), "obce nejsou na opačných březích").toBe(180);
     return NAZVY[u1].na;

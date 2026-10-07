@@ -584,7 +584,7 @@ const BANKA_L3: Polozka[] = [
     ],
     h: [
       "Jezero je jako vana: něco do ní přitéká, něco se z ní ztrácí. Co se stane, když přítok ubereš?",
-      "Do jezera míří jediný tok a z hladiny se přitom neustále vypařuje voda. Dokud jsou obě množství v rovnováze, hladina drží na stejné výšce. Jakmile se přísun zmenší, výpar začne převažovat a rovnováha se poruší.",
+      "Do jezera míří jediný tok a z hladiny se přitom neustále vypařuje voda. Dokud jsou obě množství v rovnováze, hladina se drží na stejné výšce. Jakmile se přísun zmenší, výpar začne převažovat a rovnováha se poruší.",
     ],
     ex: "Hladina jezera je výsledkem rovnováhy mezi přítokem a výparem. Odběr vody z jediného zdroje tuto rovnováhu poruší, takže jezero rok po roce ustupuje.",
   },

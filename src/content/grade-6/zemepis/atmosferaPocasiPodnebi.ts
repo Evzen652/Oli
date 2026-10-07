@@ -155,7 +155,7 @@ const BANKA_L1: Fakt[] = [
       "Vzduch se často popisuje jako čtyři pětiny jednoho plynu a jedna pětina druhého. Ptáme se na ten, kterého jsou ty čtyři pětiny.",
       "Plyn, kterého je ve vzduchu nejvíc, je bez barvy a bez zápachu. Dýcháme ho sice pořád, ale tělo si z něj nic nebere — není to tedy ten plyn, který při dýchání spotřebováváme, ani ten, který vydechujeme. Zbylé dvě možnosti jsou ve vzduchu jen v malém a navíc proměnlivém množství, takže je můžeš rovnou vyřadit.",
     ],
-    explanation: "Suchý vzduch tvoří asi 78 % dusíku a asi 21 % kyslíku; na ostatní plyny, hlavně na argon a na oxid uhličitý, připadá necelé jedno procento. Vodní pára se uvádí zvlášť, protože její množství kolísá podle počasí (zhruba 0 až 4 %).",
+    explanation: "Suchý vzduch obsahuje asi 78 % dusíku a asi 21 % kyslíku; na ostatní plyny, hlavně na argon a na oxid uhličitý, připadá necelé jedno procento. Vodní pára se uvádí zvlášť, protože její množství kolísá podle počasí (zhruba 0 až 4 %).",
   },
   {
     q: "Který plyn je v atmosféře druhý nejhojnější?",
@@ -169,7 +169,7 @@ const BANKA_L1: Fakt[] = [
       "Seřaď si plyny podle toho, kolik jich ve vzduchu je: jeden tvoří skoro čtyři pětiny, druhý zhruba pětinu a na zbytek připadá jen malá část. Ptáme se na ten druhý v pořadí.",
       "Plyn, který je ve vzduchu druhý nejhojnější, tvoří asi pětinu vzduchu a živočichové ho spotřebovávají při dýchání, zatímco zelené rostliny ho uvolňují. Vodní pára ani oxid uhličitý to nejsou — ty jsou ve vzduchu jen v malém a navíc proměnlivém množství, takže je můžeš rovnou vyřadit, a zbude ti rozhodnout jen mezi dvěma nejhojnějšími plyny.",
     ],
-    explanation: "Suchý vzduch tvoří asi 78 % dusíku a asi 21 % kyslíku, takže kyslík je druhý nejhojnější. Oxidu uhličitého je jen několik setin procenta a vodní pára je proměnlivá — ani jeden se pětině vzduchu nepřiblíží.",
+    explanation: "Suchý vzduch obsahuje asi 78 % dusíku a asi 21 % kyslíku, takže kyslík je druhý nejhojnější. Oxidu uhličitého je jen několik setin procenta a vodní pára je proměnlivá — ani jeden se pětině vzduchu nepřiblíží.",
   },
   {
     q: "Ve které vrstvě atmosféry se odehrává počasí?",
@@ -312,7 +312,7 @@ function pasL2(): PracticeTask | null {
   const d: Distractor[] = [
     {
       value: `v ${PASY[band].adj} pásu na ${sever ? "jižní" : "severní"} polokouli`,
-      why: `Podnebný pás je určený správně, polokoule ne. V zadání je zeměpisná šířka ${sirka(sever ? lat : -lat)}, a zkratka s. š. znamená severní zeměpisnou šířku, j. š. jižní.`,
+      why: `Podnebný pás je určený správně, polokoule ne. V zadání je zeměpisná šířka ${sirka(sever ? lat : -lat)} a zkratka s. š. znamená severní zeměpisnou šířku, j. š. jižní.`,
     },
     ...pasy
       .filter((p) => p !== band)
@@ -339,7 +339,7 @@ function pasL2(): PracticeTask | null {
           `${HRANICE[band]} Šířka ${cis(lat)}° do tohoto rozmezí patří.`,
           `Zkratka ${sever ? "s. š." : "j. š."} znamená ${pol} polokouli.`,
         ],
-        explanation: `Podnebný pás se určuje podle zeměpisné šířky, protože pásy jdou podél rovnoběžek. ${HRANICE[band]} Šířka ${cis(lat)}° do něj patří, a zkratka ${sever ? "s. š." : "j. š."} říká, že místo leží na ${pol} polokouli.`,
+        explanation: `Podnebný pás se určuje podle zeměpisné šířky, protože pásy jdou podél rovnoběžek. ${HRANICE[band]} Šířka ${cis(lat)}° do něj patří a zkratka ${sever ? "s. š." : "j. š."} říká, že místo leží na ${pol} polokouli.`,
       },
     ),
   );
@@ -469,8 +469,8 @@ function vyskaL2(): PracticeTask | null {
         {
           value: st(r1(tVychozi - smer * pokles)),
           why: nahoru
-            ? "Tahle hodnota vyjde, když se pokles přičte místo odečte. Čím výš, tím je chladněji, takže na vrcholu musí být méně stupňů než na úpatí."
-            : "Tahle hodnota vyjde, když se pokles odečte místo přičte. Směrem dolů teplota naopak stoupá, takže v údolí musí být více stupňů než na vrcholu.",
+            ? "Tahle hodnota vyjde, když se pokles přičte, místo aby se odečetl. Čím výš, tím je chladněji, takže na vrcholu musí být méně stupňů než na úpatí."
+            : "Tahle hodnota vyjde, když se pokles odečte, místo aby se přičetl. Směrem dolů teplota naopak stoupá, takže v údolí musí být více stupňů než na vrcholu.",
         },
         {
           value: st(r1(tVychozi + smer * 0.6)),
@@ -709,7 +709,7 @@ function vnitrozemiL3(): PracticeTask | null {
         },
         {
           value: "Město A leží mnohem výš v horách než město B.",
-          why: "Větší nadmořská výška by v městě A snížila teplotu v zimě i v létě. Tady je ale v létě v obou městech skoro stejně teplo a liší se hlavně zima, což ukazuje na vzdálenost od moře.",
+          why: "Větší nadmořská výška by ve městě A snížila teplotu v zimě i v létě. Tady je ale v létě v obou městech skoro stejně teplo a liší se hlavně zima, což ukazuje na vzdálenost od moře.",
         },
       ],
       {

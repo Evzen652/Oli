@@ -140,7 +140,7 @@ const BANKA_L1: Fakt[] = [
     key: "Severní ledový oceán",
     d: [
       ["Atlantský oceán", "Atlantský oceán k oblasti sahá od jihu, mezi Evropou a Severní Amerikou. Kolem samotného pólu ale leží jiný, nejmenší oceán světa."],
-      ["Tichý oceán", "Tichý oceán se k oblasti dotýká jen úzkým Beringovým průlivem mezi Asií a Amerikou. Prostor kolem pólu vyplňuje jiný oceán."],
+      ["Tichý oceán", "Tichý oceán se oblasti dotýká jen úzkým Beringovým průlivem mezi Asií a Amerikou. Prostor kolem pólu vyplňuje jiný oceán."],
       ["Jižní oceán", "Jižní oceán obklopuje Antarktidu na jižní polokouli. Kolem severního pólu leží oceán s opačným názvem."],
     ],
     hints: [
@@ -540,7 +540,7 @@ const BANKA_L2: Fakt[] = [
     d: [
       ["Do tundry přitéká voda z moře při každém přílivu.", "Příliv zaplavuje jen úzký pruh pobřeží. Podmáčená je přitom i tundra daleko ve vnitrozemí."],
       ["V létě tam padá nejvíc srážek na celé severní polokouli.", "Srážek je v polární oblasti naopak velmi málo. Rozhoduje, kam se voda z tajícího sněhu poděje."],
-      ["Rozmrzlá voda se v chladu skoro vůbec nevypařuje.", "Vypařování je tam opravdu pomalé, ale hlavní příčina je jinde — voda nemůže vsáknout do hloubky."],
+      ["Rozmrzlá voda se v chladu skoro vůbec nevypařuje.", "Vypařování je tam opravdu pomalé, ale hlavní příčina je jinde — voda se nemůže vsáknout do hloubky."],
     ],
     hints: [
       "Voda se vsakuje do půdy. Co se stane, když je půda kousek pod povrchem zmrzlá na kámen?",
@@ -736,7 +736,7 @@ const BANKA_L3: Fakt[] = [
     q: "Část mořského ledu v Arktidě roztála. Proč se tím hladina světového oceánu prakticky nezvedne?",
     key: "Plovoucí led svou vodu v oceánu už zabírá, nová voda nepřibude.",
     d: [
-      ["Hladina stoupne, protože v oceánu přibude voda z roztátého ledu.", "Plovoucí led svou vodu do oceánu zabírá už teď, ještě než roztaje. Hladinu zvedá až voda, která do oceánu přiteče ze souše."],
+      ["Hladina stoupne, protože v oceánu přibude voda z roztátého ledu.", "Plovoucí led už teď vytlačuje tolik vody, kolik z něj po roztátí vznikne. Hladinu zvedá až voda, která do oceánu přiteče ze souše."],
       ["Voda z roztátého ledu se vsákne do mořského dna.", "Mořské dno vodu nepohlcuje. Hladina se nemění z úplně jiného důvodu — ta voda už v oceánu byla."],
       ["Voda z roztátého ledu se v Arktidě hned znovu vypaří.", "Vypařování v chladu je slabé a hladinu by to nevysvětlilo. Rozhoduje, že plovoucí led už v oceánu místo zabírá."],
     ],
@@ -842,7 +842,7 @@ const BANKA_L3: Fakt[] = [
       "Na čem ta vesnice stojí a co se s takovým podložím děje, když se otepluje?",
       "Podloží v tundře drží stavby jen proto, že je zmrzlé, a tedy tvrdé. Zkus domyslet, co se stane s domem, když jeho základy postupně ztratí pevnou oporu a ta se změní v měkkou hmotu.",
     ],
-    explanation: "Stavby v tundře stojí na trvale zmrzlé půdě, která je pevná jen dokud zůstává zmrzlá. Jak se otepluje, rozmrzá do větší hloubky, mění se v měkké bahno a domy, silnice i potrubí se naklánějí a boří. Proto se tam staví na kůlech zapuštěných hluboko do podloží.",
+    explanation: "Stavby v tundře stojí na trvale zmrzlé půdě, která je pevná, jen dokud zůstává zmrzlá. Jak se otepluje, rozmrzá do větší hloubky, mění se v měkké bahno a domy, silnice i potrubí se naklánějí a boří. Proto se tam staví na kůlech zapuštěných hluboko do podloží.",
   },
   {
     q: "Proč bývá uprostřed Grónska mnohem chladněji než na jeho pobřeží?",

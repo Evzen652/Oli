@@ -376,7 +376,7 @@ function vypocetL2(): PracticeTask | null {
           `${dif}° : 15° = ${posun}, časový posun: ${pad(posun, "HODINA")}.`,
           `Cíl leží ${smer > 0 ? "na východ, je tam později" : "na západ, je tam dříve"}: ${posunText(h1, smer * posun)} = ${klic}${den(cil)}.`,
         ],
-        explanation: `Obě místa leží na stejné straně od nultého poledníku, proto se délky odečítají: rozdíl ${dif}° odpovídá ${pad(posun, "HODINA")}. Cílové místo leží ${smer > 0 ? "na východ, a tak je tam později" : "na západ, a tak je tam dříve"}: ${klic}.`,
+        explanation: `Obě místa leží na stejné straně od nultého poledníku, proto se délky odečítají: rozdíl ${dif}° odpovídá ${posun} ${posun === 1 ? "hodině" : "hodinám"}. Cílové místo leží ${smer > 0 ? "na východ, a tak je tam později" : "na západ, a tak je tam dříve"}: ${klic}.`,
       },
     ),
   );
@@ -504,7 +504,7 @@ function opacneStrany(): PracticeTask | null {
       [
         { value: cas(h1 + smer * odect), why: "Tahle možnost vyjde, když se délky odečtou. Místa ale leží na opačných stranách od nultého poledníku, takže se jejich vzdálenosti od něj sčítají." },
         { value: cas(h1 - smer * posun), why: "Posun šel opačným směrem. Slunce vychází dřív na východě, proto je na východ později a na západ dříve." },
-        { value: cas(h1 - smer * odect), why: "Tady se délky odečetly místo sečetly a navíc se čas posunul opačným směrem." },
+        { value: cas(h1 - smer * odect), why: "Tady se délky odečetly, místo aby se sečetly, a navíc se čas posunul opačným směrem." },
         { value: cas(h1 + smer * dif), why: `Tahle možnost vyjde, když se součet ${dif}° vezme rovnou jako počet hodin. Rozdíl stupňů je potřeba ještě vydělit šíří pásma.` },
       ],
       {
@@ -619,7 +619,7 @@ function let_(): PracticeTask | null {
           `V okamžiku odletu je v cíli ${posunText(h1, smer * posun)} = ${cas(odlet)}${den(odlet)}.`,
           `Přistání: ${cas(odlet)} + ${N} h = ${klic}${odlet >= 0 && odlet < 24 ? den(cil) : ""}.`,
         ],
-        explanation: `Časy odletu a přistání je potřeba vztáhnout k jednomu místu. V cíli je o ${pad(posun, "HODINA")} ${smer > 0 ? "později" : "dříve"}, takže v okamžiku odletu tam je ${cas(odlet)}. Po ${N} h letu bude v cíli ${klic}.`,
+        explanation: `Časy odletu a přistání je potřeba vztáhnout k jednomu místu. V cíli je o ${posun === 1 ? "1 hodinu" : pad(posun, "HODINA")} ${smer > 0 ? "později" : "dříve"}, takže v okamžiku odletu tam je ${cas(odlet)}. Po ${N} h letu bude v cíli ${klic}.`,
       },
     ),
   );
@@ -754,7 +754,7 @@ const BANKA_L3: Fakt[] = [
     key: "Osa se naklání do stran, ale rovník zůstává osvětlený vždy z poloviny.",
     d: [
       ["Rovník je ze všech míst na Zemi Slunci nejblíž, a proto je osvětlený stále stejně.", "Vzdálenost od Slunce délku dne neurčuje — kdyby ano, měnil by se den s tím, jak se Země po dráze pohybuje. Rozhoduje, jakou část rovnoběžky protne hranice světla a stínu."],
-      ["Na rovníku se Země otáčí nejrychleji, takže tam den i noc trvají stejně.", "Otočka trvá 24 hodin všude na Zemi stejně, i když se rovník při ní urazí nejdelší dráhu. Délku dne to neovlivní."],
+      ["Na rovníku se Země otáčí nejrychleji, takže tam den i noc trvají stejně.", "Otočka trvá 24 hodin všude na Zemi stejně, i když rovník při ní urazí nejdelší dráhu. Délku dne to neovlivní."],
       ["Nad rovníkem stojí Slunce v poledne vždy kolmo, a tak je den pořád stejný.", "Kolmo nad rovníkem stojí Slunce jen o rovnodennostech. Po zbytek roku je nad obratníkovou stranou, a přesto je den na rovníku dál dvanáctihodinový."],
     ],
     hints: [

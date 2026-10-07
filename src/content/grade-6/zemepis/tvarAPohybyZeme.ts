@@ -291,7 +291,7 @@ export const POOL_L2: Polozka[] = [
     ],
     hints: [
       "Rozmysli si, který pohyb Země trvá jeden den a který jeden rok.",
-      "Den a noc se vystřídají jednou za 24 hodin. Hledej pohyb, který trvá stejně dlouho a natáčí k Slunci pokaždé jinou stranu Země.",
+      "Den a noc se vystřídají jednou za 24 hodin. Hledej pohyb, který trvá stejně dlouho a natáčí ke Slunci pokaždé jinou stranu Země.",
     ],
     explanation: "Země se otáčí kolem své osy, a tak se ke Slunci natáčí postupně různá místa. Na přivrácené straně je den, na odvrácené noc. Jedna otočka trvá asi 24 hodin.",
   },
@@ -695,7 +695,7 @@ function genOtocky(): PracticeTask | null {
           `Kolik dní uplyne za ${pad(n, "TÝDEN")}? Pak si vzpomeň, jak dlouho trvá jedna otočka Země.`,
           "Den a noc dohromady jsou jedna otočka. Počítej otočky po dnech, ne po hodinách ani po polovinách dne, a nakonec si ověř, jestli ti počet otoček vyšel stejný jako počet dní.",
         ],
-        explanation: `Jedna otočka Země kolem osy trvá jeden den. Za ${pad(n, "TÝDEN")} uplyne ${pad(dni, "DEN")}, takže se Země otočí ${cis(dni)}krát.`,
+        explanation: `Jedna otočka Země kolem osy trvá jeden den. Za ${pad(n, "TÝDEN")} ${dni >= 2 && dni <= 4 ? "uplynou" : "uplyne"} ${pad(dni, "DEN")}, takže se Země otočí ${cis(dni)}krát.`,
         solutionSteps: [
           "Jedna otočka kolem osy trvá 1 den.",
           `Počet dní: ${n} · 7 = ${cis(dni)}`,
@@ -719,7 +719,7 @@ function genOtocky(): PracticeTask | null {
         `Nejdřív převeď hodiny na dny: jedna otočka Země trvá ${pad(24, "HODINA")}. Kolik celých dní se do zadané doby vejde?`,
         "Den a noc dohromady jsou jedna otočka, ne dvě. Za každý celý den přibude právě jedna otočka, takže počet otoček vyjde stejný jako počet dní.",
       ],
-      explanation: `Jedna otočka Země kolem osy trvá jeden den, tedy ${pad(24, "HODINA")}. Za ${pad(hod, "HODINA")} uplyne ${pad(k, "DEN")}, takže se Země otočí ${cis(k)}krát.`,
+      explanation: `Jedna otočka Země kolem osy trvá jeden den, tedy ${pad(24, "HODINA")}. Za ${pad(hod, "HODINA")} ${k >= 2 && k <= 4 ? "uplynou" : "uplyne"} ${pad(k, "DEN")}, takže se Země otočí ${cis(k)}krát.`,
       solutionSteps: [
         `Jedna otočka kolem osy trvá 1 den, tedy ${pad(24, "HODINA")}.`,
         `Počet dní: ${cis(hod)} : 24 = ${cis(k)}`,

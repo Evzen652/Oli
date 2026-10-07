@@ -640,7 +640,7 @@ export const POOL_L3: Polozka[] = [
     ],
     hints: [
       "Spoj si informace ze zadání dohromady: činné sopky, časté otřesy a hlavně to, že se táhnou v jedné dlouhé linii. Co na Zemi tvoří takhle dlouhé linie?",
-      "Oba jevy potřebují pohyb v hloubce: magmatu se musí odkud vzít a hornina se musí mít kde posunout. To se děje tam, kde se setkávají dva kusy kamenného obalu — a takové místo nemusí ležet u pobřeží, klidně je i uprostřed oceánu. Právě proto jsou jevy činné po celé délce dlouhého pásu, a ne jen v jediném bodě.",
+      "Oba jevy potřebují pohyb v hloubce: magma se musí mít odkud vzít a hornina se musí mít kde posunout. To se děje tam, kde se setkávají dva kusy kamenného obalu — a takové místo nemusí ležet u pobřeží, klidně je i uprostřed oceánu. Právě proto jsou jevy činné po celé délce dlouhého pásu, a ne jen v jediném bodě.",
     ],
     explanation: "Sopky a otřesy činné po celé délce dlouhé linie ukazují na okraj desky, protože právě okraje desek se táhnou přes tisíce kilometrů. Uprostřed oceánu to bývá hřbet, kde se desky rozestupují — přesně tak vznikl třeba Island. (Řetěz sopek uvnitř desky existuje také, třeba Havaj nad horkou skvrnou, ale činná je tam jen jedna sopka na konci řetězce a zbytek je vyhaslý.)",
   },
