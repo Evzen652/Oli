@@ -117,8 +117,8 @@ const L1_JA_VYROK: (() => PracticeTask)[] = [
     "Věta, ve které popíšu svůj vlastní pocit a přání, ne to, co druhý udělal špatně",
     [
       { value: "Jakákoli věta, která začíná slovem já", why: "Nezáleží na tom, jestli věta začíná slovem já. Pokud v ní hodnotíš nebo obviňuješ druhého, já-výrok to není." },
-      { value: "Věta, kterou řeknu nahlas a důrazně", why: "Já-výrok není o hlasitosti nebo důrazu, ale o tom, že popisuje můj vlastní pocit, ne chování druhého." },
-      { value: "Věta, ve které řeknu kamarádovi, co dělá špatně", why: "To je spíš výtka nebo obvinění. Já-výrok mluví o mém pocitu, ne o tom, co druhý dělá špatně." },
+      { value: "Věta, kterou řeknu kamarádovi nahlas a důrazně, aby si ji opravdu zapamatoval", why: "Já-výrok není o hlasitosti nebo důrazu, ale o tom, že popisuje můj vlastní pocit, ne chování druhého." },
+      { value: "Věta, ve které kamarádovi klidně a slušně řeknu, co přesně dělá špatně", why: "To je spíš výtka nebo obvinění. Já-výrok mluví o mém pocitu, ne o tom, co druhý dělá špatně." },
     ],
     {
       hints: [
@@ -132,9 +132,9 @@ const L1_JA_VYROK: (() => PracticeTask)[] = [
     "Jak je já-výrok postavený?",
     "Popisuje, co cítím a co bych potřeboval, bez obviňování druhého",
     [
-      { value: "Popisuje, co si myslím o chování druhého člověka", why: "To je hodnocení druhého, ne popis vlastního pocitu. Já-výrok mluví o mně, ne o tom, co si myslím o druhém." },
+      { value: "Popisuje, co si myslím o chování druhého člověka a proč mi vadí", why: "To je hodnocení druhého, ne popis vlastního pocitu. Já-výrok mluví o mně, ne o tom, co si myslím o druhém." },
       { value: "Popisuje, čeho se kamarád dopustil", why: "Popis toho, co udělal druhý, je obvinění, ne já-výrok. Já-výrok popisuje můj pocit a potřebu." },
-      { value: "Popisuje, jak by se měl kamarád příště chovat", why: "Radit druhému, jak se má chovat, není já-výrok. Ten mluví jen o mém vlastním pocitu a potřebě." },
+      { value: "Popisuje, jak by se měl kamarád příště chovat, aby se to neopakovalo", why: "Radit druhému, jak se má chovat, není já-výrok. Ten mluví jen o mém vlastním pocitu a potřebě." },
     ],
     {
       hints: [
@@ -185,8 +185,8 @@ const L1_REAKCE: (() => PracticeTask)[] = [
     "Klidně říct, co by ho bavilo, a vyslechnout si i názor kamaráda",
     [
       { value: "Křičet, dokud kamarád neustoupí", why: "Křik nic neřeší a spíš konflikt zhoršuje." },
-      { value: "Mlčet a čekat, až to samo přejde", why: "Mlčení neshodu nevyřeší, jen ji odloží." },
-      { value: "Prosadit si svoje, i kdyby to znamenalo hádku", why: "Prosazovat se za každou cenu znamená nebrat ohled na kamaráda." },
+      { value: "Mlčet, nic neříkat a čekat, až ta neshoda sama od sebe přejde", why: "Mlčení neshodu nevyřeší, jen ji odloží." },
+      { value: "Prosadit si svoji hru, i kdyby to znamenalo pořádnou hádku s kamarádem", why: "Prosazovat se za každou cenu znamená nebrat ohled na kamaráda." },
     ],
     {
       hints: [
@@ -198,11 +198,11 @@ const L1_REAKCE: (() => PracticeTask)[] = [
   ),
   c(
     "Sourozenci se nemohou shodnout, který film pustí. Která reakce je vhodná?",
-    "Říct, co by chtěl dívat, a společně najít řešení, které vyhovuje oběma",
+    "Říct, na co by se chtěl dívat, a společně najít řešení, které vyhovuje oběma",
     [
       { value: "Zvýšit hlas, aby ten druhý ustoupil", why: "Zvyšovat hlas problém neřeší, spíš druhého odradí od domluvy." },
-      { value: "Nechat to být a tvářit se, že je to jedno", why: "Předstírat, že na tom nezáleží, neshodu jen skryje, nevyřeší." },
-      { value: "Trvat na svém filmu, ať to stojí, co to stojí", why: "Trvat na svém bez ohledu na druhého vede k dalšímu konfliktu." },
+      { value: "Nechat to být a tvářit se, že je mu úplně jedno, na co se budou dívat", why: "Předstírat, že na tom nezáleží, neshodu jen skryje, nevyřeší." },
+      { value: "Trvat na svém filmu a nepustit nic jiného, ať to stojí, co to stojí", why: "Trvat na svém bez ohledu na druhého vede k dalšímu konfliktu." },
     ],
     {
       hints: [
@@ -216,9 +216,9 @@ const L1_REAKCE: (() => PracticeTask)[] = [
     "Dva spolužáci se přou o to, kdo bude ve hře na tahu první. Která reakce je vhodná?",
     "Popsat, proč mi na tom záleží, a poslechnout si, proč na tom záleží kamarádovi",
     [
-      { value: "Hádat se čím dál hlasitěji, dokud jeden nevyhraje", why: "Hlasitá hádka spor jen vyostří." },
+      { value: "Hádat se o první tah čím dál hlasitěji, dokud jeden z nich nakonec nevyhraje", why: "Hlasitá hádka spor jen vyostří." },
       { value: "Přestat s kamarádem mluvit a čekat, co udělá on", why: "Odmlčení problém sám nevyřeší." },
-      { value: "Prostě si vzít první tah, i když s tím kamarád nesouhlasí", why: "Prosadit se bez souhlasu druhého konflikt jen prodlouží." },
+      { value: "Prostě si vzít první tah a dál to neřešit, i když s tím kamarád nesouhlasí", why: "Prosadit se bez souhlasu druhého konflikt jen prodlouží." },
     ],
     {
       hints: [
@@ -306,8 +306,8 @@ const L2_HRA: (() => PracticeTask)[] = [
     "Jakub a David se neshodnou, čí je řada na houpačce. Co je nejvhodnější krok?",
     "Domluvit se na tom, jak dlouho se bude každý houpat, aby se vystřídali",
     [
-      { value: "Jakub ať se houpačky rovnou vzdá, aby nebyl spor", why: "Vzdát se bez domluvy je jednostranný ústupek, ne řešení pro oba." },
-      { value: "Kdo se dřív na houpačku pověsí silou, ten vyhrává", why: "Rozhodovat silou je nátlak, ne domluva." },
+      { value: "Jakub ať se houpačky rovnou vzdá a jde si hrát jinam, aby nebyl žádný spor", why: "Vzdát se bez domluvy je jednostranný ústupek, ne řešení pro oba." },
+      { value: "Kdo se dřív na houpačku dostane a silou ji udrží, ten se může houpat", why: "Rozhodovat silou je nátlak, ne domluva." },
       { value: "Oba mlčky čekat, až se ten druhý sám unaví", why: "Čekání beze slova problém neřeší." },
     ],
     {
@@ -358,9 +358,9 @@ const L2_NEDOROZUMENI: (() => PracticeTask)[] = [
     "Petra si myslí, že ji Šimon o přestávce ignoroval, ale ve skutečnosti si jen nevšiml, že přišla. Co je nejvhodnější krok pro Petru?",
     "Říct Šimonovi, že ji mrzelo, že si jí nevšiml, a zeptat se, jak to bylo",
     [
-      { value: "Říct Šimonovi, že je sobec, protože si jí vůbec nevšímá", why: "To je nálepkování a obvinění, ne popis vlastního pocitu." },
+      { value: "Říct Šimonovi, že je sobec, protože si jí o přestávce vůbec nevšímal", why: "To je nálepkování a obvinění, ne popis vlastního pocitu." },
       { value: "Mlčky se na Šimona urazit a nemluvit s ním", why: "Mlčení nedorozumění nevyřeší, jen ho prodlouží." },
-      { value: "Nahlas před ostatními říct, že si jí Šimon nikdy nevšímá", why: "Veřejné obviňování situaci jen zhorší." },
+      { value: "Před ostatními spolužáky nahlas říct, že si jí Šimon schválně nikdy nevšímá", why: "Veřejné obviňování situaci jen zhorší." },
     ],
     {
       hints: [
@@ -375,8 +375,8 @@ const L2_NEDOROZUMENI: (() => PracticeTask)[] = [
     "Říct Anně, že ho mrzelo, že nezareagovala, a zeptat se, jestli ho slyšela",
     [
       { value: "Říct Anně, že je namyšlená, protože ho ignoruje", why: "Nálepka je hodnocení osoby, ne popis vlastního pocitu." },
-      { value: "Přestat Anně příště pozdravit, aby to pocítila taky", why: "Oplácet stejným je pasivní odplata, ne řešení nedorozumění." },
-      { value: "Nahlas si před ostatními stěžovat, jak je Anna neslušná", why: "Veřejná stížnost nedorozumění nevyřeší, jen ho zhorší." },
+      { value: "Přestat Annu zdravit, aby sama pocítila, jaké to je, když někdo neodpoví", why: "Oplácet stejným je pasivní odplata, ne řešení nedorozumění." },
+      { value: "Nahlas si před ostatními stěžovat, jak je Anna neslušná a že nikoho nezdraví", why: "Veřejná stížnost nedorozumění nevyřeší, jen ho zhorší." },
     ],
     {
       hints: [
@@ -391,8 +391,8 @@ const L2_NEDOROZUMENI: (() => PracticeTask)[] = [
     "Říct Adamovi, že ji zamrzelo, že se smál, a zeptat se, čemu se vlastně smál",
     [
       { value: "Říct Adamovi, že je zlý, protože se jí posmívá", why: "To je hodnocení a obvinění druhého, ne popis vlastního pocitu." },
-      { value: "Přestat s Adamem mluvit a čekat, jestli si toho všimne", why: "Mlčení nedorozumění samo nevyřeší." },
-      { value: "Okamžitě mu to hlasitě vrátit stejným posměchem", why: "Odplácet posměchem konflikt jen prohloubí." },
+      { value: "Přestat s Adamem úplně mluvit a čekat, jestli si toho sám od sebe všimne", why: "Mlčení nedorozumění samo nevyřeší." },
+      { value: "Okamžitě mu to před ostatními hlasitě vrátit stejně ošklivým posměchem", why: "Odplácet posměchem konflikt jen prohloubí." },
     ],
     {
       hints: [
@@ -456,11 +456,11 @@ const L2_PUJCENA_VEC: (() => PracticeTask)[] = [
   ),
   c(
     "Nikola zapomněla Davidovi vrátit sešit, který si od něj půjčila. David ho potřebuje na úkol. Co je pro Davida nejvhodnější krok?",
-    "Klidně Nikole říct, že sešit potřebuje, a domluvit se, kdy jí ho vrátí",
+    "Klidně Nikole říct, že sešit potřebuje, a domluvit se, kdy mu ho vrátí",
     [
       { value: "Říct Nikole, že je zapomnětlivá a nespolehlivá", why: "To je hodnocení osoby, ne sdělení potřeby." },
-      { value: "Přestat si s Nikolou o přestávkách povídat", why: "Mlčky se odtáhnout problém s vráceným sešitem nevyřeší." },
-      { value: "Hlasitě jí to vyčítat před ostatními spolužáky", why: "Veřejné vyčítání situaci zhorší." },
+      { value: "Přestat si s Nikolou o přestávkách povídat, dokud mu sešit sama nevrátí", why: "Mlčky se odtáhnout problém s vráceným sešitem nevyřeší." },
+      { value: "Hlasitě jí to vyčítat před ostatními spolužáky, ať všichni vědí, co udělala", why: "Veřejné vyčítání situaci zhorší." },
     ],
     {
       hints: [
@@ -500,9 +500,9 @@ const L3_JA_VYROK: (() => PracticeTask)[] = [
     "Petra řekla Filipovi: „Já myslím, že jsi vážně sobec.“ Co tahle věta doopravdy je?",
     "Skrytá výtka – jen vypadá jako já-výrok, ale ve skutečnosti hodnotí Filipa",
     [
-      { value: "Skutečný já-výrok, protože začíná slovem já", why: "Slovo já na začátku samo o sobě já-výrok nedělá. Věta hodnotí Filipa (je sobec), takže je to skrytá výtka." },
+      { value: "Skutečný já-výrok, protože věta začíná slovem já a mluví o Petře", why: "Slovo já na začátku samo o sobě já-výrok nedělá. Věta hodnotí Filipa (je sobec), takže je to skrytá výtka." },
       { value: "Kompromis, protože Petra řekla svůj názor", why: "Kompromis je společné řešení sporu s ústupkem na obou stranách, ne vyjádření názoru o druhém." },
-      { value: "Aktivní naslouchání, protože Petra mluví o svých pocitech", why: "Věta nepopisuje Petřin pocit, ale hodnotí Filipa jako sobeckého." },
+      { value: "Aktivní naslouchání, protože Petra Filipovi popisuje, jak se kvůli němu cítí", why: "Věta nepopisuje Petřin pocit, ale hodnotí Filipa jako sobeckého." },
     ],
     {
       hints: [
@@ -565,8 +565,8 @@ const L3_JA_VYROK: (() => PracticeTask)[] = [
     "Skutečný já-výrok – popisuje Jakubův pocit a přání, ne Terezinu vinu",
     [
       { value: "Skrytá výtka, protože zmiňuje, že si nerozuměli", why: "Zmínit, co se stalo, a popsat vlastní pocit není hodnocení druhého." },
-      { value: "Prosazení silou, protože Jakub chce věc probrat", why: "Chtít věc v klidu probrat není nátlak ani prosazování se silou." },
-      { value: "Jednostranný ústupek, protože Jakub navrhuje rozhovor", why: "Ústupek znamená vzdát se něčeho ve sporu, ne navrhnout rozhovor." },
+      { value: "Prosazení silou, protože Jakub trvá na tom, že se věc musí probrat", why: "Chtít věc v klidu probrat není nátlak ani prosazování se silou." },
+      { value: "Jednostranný ústupek, protože Jakub sám navrhuje, že si spolu promluví", why: "Ústupek znamená vzdát se něčeho ve sporu, ne navrhnout rozhovor." },
     ],
     {
       hints: [
@@ -600,9 +600,9 @@ const L3_KOMPROMIS: (() => PracticeTask)[] = [
     "Filip chtěl hrát fotbal, Matěj chtěl hrát honičku bez míče. Filip nakonec bez námitek souhlasil s honičkou, protože se mu nechtělo dál přesvědčovat. Co to je?",
     "Jednostranný ústupek – ustoupil jen Filip, Matěj dostal, co chtěl celé",
     [
-      { value: "Skutečný kompromis, protože se nakonec dohodli", why: "Dohoda sama o sobě kompromis nedělá. Kompromis potřebuje ústupek na obou stranách — tady ustoupil jen Filip." },
+      { value: "Skutečný kompromis, protože se nakonec v klidu dohodli a přestali se hádat", why: "Dohoda sama o sobě kompromis nedělá. Kompromis potřebuje ústupek na obou stranách — tady ustoupil jen Filip." },
       { value: "Aktivní naslouchání, protože Filip souhlasil", why: "Souhlasit bez vysloveného vlastního přání není naslouchání." },
-      { value: "Přivolání dospělého, protože se museli domluvit", why: "V situaci žádný dospělý nezasahoval, Filip se jen sám vzdal svého přání." },
+      { value: "Přivolání dospělého, protože se kluci sami nedokázali domluvit", why: "V situaci žádný dospělý nezasahoval, Filip se jen sám vzdal svého přání." },
     ],
     {
       hints: [
@@ -632,9 +632,9 @@ const L3_KOMPROMIS: (() => PracticeTask)[] = [
     "Kateřina chtěla malovat, Ondřej chtěl stavět z kostek. Kateřina nakonec bez řeči souhlasila se stavěním, aby se nemuseli dál dohadovat. Co to je?",
     "Jednostranný ústupek – ustoupila jen Kateřina, Ondřej dostal, co chtěl celé",
     [
-      { value: "Skutečný kompromis, protože přestali se dohadovat", why: "To, že se přestali hádat, ještě neznamená kompromis. Kompromis potřebuje ústupek na obou stranách." },
+      { value: "Skutečný kompromis, protože se nakonec přestali dohadovat a hra pokračovala", why: "To, že se přestali hádat, ještě neznamená kompromis. Kompromis potřebuje ústupek na obou stranách." },
       { value: "Já-výrok, protože Kateřina souhlasila potichu", why: "Já-výrok je věta popisující pocit, ne tiché podřízení se. Kateřina navíc svůj pocit vůbec nevyjádřila." },
-      { value: "Přivolání dospělého, protože museli dojít k dohodě", why: "V situaci žádný dospělý nezasahoval. Kateřina se sama vzdala svého přání." },
+      { value: "Přivolání dospělého, protože sami nedokázali dojít k žádné dohodě", why: "V situaci žádný dospělý nezasahoval. Kateřina se sama vzdala svého přání." },
     ],
     {
       hints: [
@@ -669,8 +669,8 @@ const L3_PRIVOLAT: (() => PracticeTask)[] = [
     "Ano, jde o opakovanou a nerovnou situaci, na kterou by si děti samy nemusely stačit",
     [
       { value: "Ne, děti si mají všechno vyřešit vždy jen samy mezi sebou", why: "U opakované a dlouhodobě nerovné situace, kterou se dětem samotným nedaří změnit, je vhodné přivolat dospělého." },
-      { value: "Ano, ale jen proto, že je ve skupině jeden hlasitější člověk", why: "Nejde jen o to, že je někdo hlasitější, ale o to, že je situace opakovaná, nerovná a sama se nemění." },
-      { value: "Ne, protože žádný konkrétní incident se nestal", why: "Přivolání dospělého nezávisí jen na jednom konkrétním incidentu — stačí, že jde o dlouhodobou a nerovnou situaci, kterou se nedaří změnit." },
+      { value: "Ano, ale jen proto, že je ve skupině jeden hlasitější člověk, který rád velí", why: "Nejde jen o to, že je někdo hlasitější, ale o to, že je situace opakovaná, nerovná a sama se nemění." },
+      { value: "Ne, protože se zatím nestal žádný konkrétní incident, kvůli kterému by to bylo nutné", why: "Přivolání dospělého nezávisí jen na jednom konkrétním incidentu — stačí, že jde o dlouhodobou a nerovnou situaci, kterou se nedaří změnit." },
     ],
     {
       hints: [
