@@ -84,7 +84,7 @@ const L3: PracticeTask[] = [
     hints: ["Co se muselo stát, že celá vesnice pak někoho hledá?", "Zápletka je problém, který rozjede děj; další body osnovy na ni navazují."],
     explanation: "Ztracený kocour je problém, na který navazuje hledání i šťastný konec.",
   }),
-  choice("Které slovo nejlépe nahradí opakované „a pak“ ve větě „Vstal jsem, a pak jsem se oblékl, a pak jsem snídal.“?", "potom", [
+  choice("Které slovo nejlépe nahradí opakované „a pak“ ve větě „Vstal jsem a pak jsem se oblékl a pak jsem snídal.“?", "potom", [
     { value: "a pak", why: "To je právě to opakované spojení." },
     { value: "protože", why: "Protože vyjadřuje příčinu, ne pořadí." },
     { value: "ale", why: "Ale vyjadřuje odpor, ne pořadí." },

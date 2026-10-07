@@ -72,7 +72,7 @@ const PRANOSTIKA_OBDOBI: { text: string; klic: string }[] = [
 
 const L3A_TABULKA: { text: string; prisloviIdx: number }[] = [
   { text: "Tomáš se na velký test z matematiky vůbec neučil", prisloviIdx: 1 },
-  { text: "Eliška vstává každý den o půl hodiny dřív", prisloviIdx: 6 },
+  { text: "Eliška přišla na zápis do oblíbeného kroužku", prisloviIdx: 6 },
   { text: "Matka Anety je vášnivá malířka", prisloviIdx: 4 },
   { text: "Filip měl jistou nabídku na drobnou brigádu", prisloviIdx: 2 },
   { text: "Martin schválně pustil o spolužačce ošklivou pomluvu", prisloviIdx: 0 },

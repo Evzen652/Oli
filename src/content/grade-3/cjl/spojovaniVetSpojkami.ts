@@ -268,7 +268,7 @@ const SPOJ: SpojItem[] = [
     spravne: "Petr maloval obrázek a Anna psala dopis.",
     vztah: "další děj, který se odehrál vedle toho prvního",
     chybne: [
-      { value: "Petr maloval obrázek, ale Anna psala dopis.", why: "„Ale“ staví věty proti sobě, jenže tady si dvě klidné činnosti nijak neodporují." },
+      { value: "Petr maloval obrázek, takže Anna psala dopis.", why: "„Takže“ ohlašuje následek, jenže Anna nepsala dopis kvůli tomu, že Petr maloval." },
       { value: "Petr maloval obrázek, protože Anna psala dopis.", why: "Psaní dopisu není důvod, proč Petr maloval." },
       { value: "Petr maloval obrázek, aby Anna psala dopis.", why: "Petr nemaloval kvůli tomu, aby Anna psala." },
     ],

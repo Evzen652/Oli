@@ -62,7 +62,7 @@ const L1: PracticeTask[] = [
     hints: ["Autor Starých pověstí českých je český spisovatel. Který z nich psal o praotci Čechovi a Libuši?", "Ezop je starý Řek a psal bajky, Erben a Němcová sbírali hlavně pohádky. Zbývá ten, kdo převyprávěl příběhy o praotci Čechovi, Libuši a Blanických rytířích."],
     explanation: "Staré pověsti české (o praotci Čechovi, Libuši, Blanických rytířích…) sepsal Alois Jirásek.",
   }),
-  zanr("Ezop je známý vypravěč…", "bajka", {
+  zanr("Jaký druh příběhů vyprávěl starořecký vypravěč Ezop?", "bajka", {
     pohádka: "Pohádky sbírali třeba Němcová a Erben.",
     pověst: "České pověsti sepsal Alois Jirásek.",
     povídka: "Ezop nepsal o obyčejných lidech, ale o zvířatech s ponaučením.",

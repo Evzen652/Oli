@@ -50,7 +50,7 @@ const BANKA: Polozka[] = [
   P(3, "Krátký text v próze o jednom odpoledni na rybníce, kde se chlapec poprvé naučí plavat.", POV, "je v próze, krátký a má jeden děj", "Próza s jedním dějem je povídka; román by byl mnohem rozsáhlejší."),
   P(3, "Dlouhá báseň, ve které básník postupně popisuje, co cítí v každém ročním období.", LYR, "je dlouhá, ale nevypráví příběh, jen vyjadřuje pocity", "Délka nerozhoduje — báseň bez děje, plná pocitů, je lyrická."),
   P(3, "Kniha o dvaceti kapitolách vypráví ve verších, jak se chudý chlapec stal králem.", EP, "je rozsáhlá, ale psaná ve verších", "Vyprávění ve verších je báseň epická, i když je dlouhé jako kniha."),
-  P(3, "Text v próze na tři strany, ve kterém vypravěč jen líčí, jak voní les po dešti a jak se cítí.", POV, "je v próze a krátký; román by byl mnohem delší", "Krátký prozaický text se řadí k povídkám (i když se v něm skoro nic neděje)."),
+  P(3, "Text v próze na tři strany o tom, jak se dívka zatoulá v lese a za soumraku najde cestu domů.", POV, "je v próze, krátký a má jeden děj; román by byl mnohem delší", "Krátký prozaický text s jedním dějem je povídka; román by byl mnohem rozsáhlejší."),
   P(3, "Verše, v nichž básník oslovuje měsíc a svěřuje se mu se svým stesknem.", LYR, "vyjadřuje stesk, nevypráví děj", "Oslovení a vyjádření pocitů — báseň lyrická."),
   P(3, "Vyprávění v próze na tři sta stran o jedné výpravě, na kterou se vydá deset postav, a o tom, co každá z nich prožije.", ROM, "je rozsáhlé a sleduje osudy mnoha postav", "Rozsáhlá próza s mnoha postavami a liniemi — román."),
   P(3, "Balada o dívce, která v noci na hřbitově potká ducha.", EP, "balada je ve verších a vypráví příběh", "Balada je báseň epická."),

@@ -45,7 +45,7 @@ const velke = (veta: string, slovo: string, V: string, proc: string): Polozka =>
 
 const L2: Polozka[] = [
   iy("Na poli dozrávaly klas_.", "klasy", "y", NEZIVOTNY, "„Klasy“ — rod mužský neživotný (vzor hrad), koncovka -y."),
-  iy("Do úlu se vraceli včelař_"
+  iy("Od úlů se vraceli včelař_"
     + " s medem.", "včelaři", "i", ZIVOTNY, "„Včelaři“ — rod mužský životný (vzor pán), 1. pád množného čísla, koncovka -i."),
   iy("Před školou parkovaly autobus_.", "autobusy", "y", NEZIVOTNY, "„Autobusy“ — rod mužský neživotný (vzor hrad), koncovka -y."),
   shoda("Sportovci na hřišti dlouho trénoval_.", "trénovali", "i", "Podmět „sportovci“ je rod mužský životný, proto -i."),

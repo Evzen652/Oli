@@ -419,10 +419,10 @@ const POOL_L3: Uloha[] = [
     e: "Mluvící liška je nadpřirozený prvek, takže nejde o povídku. Bez poučení na konci to ale není ani bajka. Zbývá pohádka, které mluvící zvíře stačí a rada do života se po ní nevyžaduje.",
   },
   {
-    q: "Text je zapsaný ve čtyřech krátkých rýmovaných řádcích a vypráví o princezně, kterou unesl drak. Jaký útvar to je?",
+    q: "Text je zapsaný ve čtyřech krátkých rýmovaných řádcích a vypráví o princezně, kterou unesl drak. Jaký útvar to je podle zápisu?",
     a: "Báseň",
     w: [
-      ["Pohádka", "Princezna a drak jsou sice pohádkové postavy, jenže text má jen čtyři rýmované řádky — na vyprávěnou pohádku to není."],
+      ["Pohádka", "Princezna a drak jsou sice pohádkové postavy, ale ptáme se na zápis. Rýmované řádky jsou verše, a verše má báseň."],
       ["Bajka", "Bajka by potřebovala zvířata jednající jako lidé a poučení na konci, drak unášející princeznu to není."],
       ["Povídka", "Povídka by musela vyprávět o skutečném ději v souvislých větách, tady chybí obojí."],
     ],
@@ -475,16 +475,16 @@ const POOL_L3: Uloha[] = [
     e: "Zápis a obsah jsou dvě různé věci. Přepisem se změnil jen zápis: z prózy se staly verše. Děj zůstal pohádkový, protože stejný příběh se dá vyprávět prózou i ve verších.",
   },
   {
-    q: "Který útvar může mít mluvící zvíře, aniž by musel končit radou pro čtenáře?",
+    q: "Který útvar vyprávěný v souvislých větách může mít mluvící zvíře, aniž by musel končit radou pro čtenáře?",
     a: "Pohádka",
     w: [
       ["Bajka", "Bajka bez rady pro čtenáře neexistuje — poučení je její povinná součást."],
       ["Povídka", "Povídka vypráví jen o tom, co se opravdu může stát, a mluvící zvíře mezi to nepatří."],
-      ["Báseň", "Báseň se pozná podle zápisu ve verších, ne podle mluvících zvířat."],
+      ["Báseň", "Báseň je zapsaná ve verších, ne v souvislých větách."],
     ],
     h: [
       "Hledáš útvar, kterému mluvící zvíře stačí a poučení po něm nikdo nevyžaduje.",
-      "U bajky je rada pro čtenáře povinná, takže ta odpadá. Povídka mluvící zvíře vůbec nepřipustí, protože se drží skutečného světa. Báseň se pozná podle veršů, ne podle postav. Zbývá útvar, ve kterém mluvící zvířata běžně vystupují, ale nic se z nich vyvozovat nemusí.",
+      "U bajky je rada pro čtenáře povinná, takže ta odpadá. Povídka mluvící zvíře vůbec nepřipustí, protože se drží skutečného světa. Báseň není v souvislých větách, ale ve verších. Zbývá útvar, ve kterém mluvící zvířata běžně vystupují, ale nic se z nich vyvozovat nemusí.",
     ],
     e: "Mluvící zvíře je nadpřirozený prvek a ten patří do pohádky. Na rozdíl od bajky po ní nikdo nechce, aby na konci radila čtenáři, jak se má chovat.",
   },

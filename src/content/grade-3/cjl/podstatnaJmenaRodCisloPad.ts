@@ -63,7 +63,7 @@ const L3: [string, string, number, string][] = [
   ["Šel jsem do kina s tátou.", "tátou", 7, "Šel jsem s kým?"],
   ["Petře, pojď sem!", "Petře", 5, "Koho oslovujeme?"],
   ["Na stole leží kniha.", "kniha", 1, "Co leží na stole?"],
-  ["Nemám žádného psa.", "psa", 2, "Nemám koho? čeho?"],
+  ["Bojím se bouřky.", "bouřky", 2, "Bojím se koho? čeho?"],
   ["Pomáhám babičce.", "babičce", 3, "Pomáhám komu?"],
   ["Přemýšlím o kamarádovi.", "kamarádovi", 6, "Přemýšlím o kom?"],
   ["Kreslím tužkou.", "tužkou", 7, "Kreslím čím? S čím?"],

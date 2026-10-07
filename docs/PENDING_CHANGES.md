@@ -39,6 +39,8 @@ Detail v `PROJECT_STATUS.md` §6, session 2026-10-07b. Krátce, co se tu tím za
   ženský a střední rod, přibyl `zNebo()`. Detail `PROJECT_STATUS.md` §6.
 
 - ✅ **Věcná kontrola klíčů** (`ffe2e21`) — 9 oprav, detail v PROJECT_STATUS.
+- ✅ **Kontrola klíčů češtiny 2.–6. r.** (2026-10-08) — 25 oprav (chybné
+  klíče, dvě správné možnosti), detail v PROJECT_STATUS §6.
 - 🟠 **K rozhodnutí — fyzika 6. r., učebnicová zjednodušení, která jsou
   fyzikálně chybná:** (1) `pohyb-castic`: inkoust „za hodinu obarví celou
   sklenici", voňavka „za chvíli" u protější stěny, „desítky vteřin" —

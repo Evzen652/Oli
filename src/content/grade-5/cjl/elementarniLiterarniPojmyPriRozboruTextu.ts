@@ -53,7 +53,7 @@ const BANKA_POJMY: Polozka[] = [
   Q(2, "„Pohádka se odehrává v království za sedmero horami.“ — co tu je popsáno?", "prostředí", "říká, kde se pohádka odehrává", "Království za horami — prostředí."),
   Q(2, "„Hlavní hrdinkou je statečná Maruška.“ — čím je Maruška?", "postava", "Maruška v pohádce jedná", "Maruška je postava (hlavní)."),
   Q(2, "„Nejdřív se Maruška v lese ztratila, pak ji našel myslivec.“ — co to je?", "děj", "jsou to události za sebou", "Ztratila se, našel ji — děj."),
-  Q(2, "„Petr vypráví, co se stalo jeho sestře.“ — jakou úlohu tu má Petr?", "vypravěč", "Petr příběh podává", "Petr příběh vypráví — je vypravěč."),
+  Q(2, "Kdo v knize podává příběh čtenáři, i když sám v ději vystupovat nemusí?", "vypravěč", "příběh čtenáři podává", "Ten, kdo příběh čtenáři podává, je vypravěč."),
   Q(2, "Dvojice „les – ples, voda – škoda“ na koncích veršů — co to je?", "rým", "konce veršů spolu zní", "Les – ples, voda – škoda jsou rýmy."),
 
   Q(3, "Běžel rychle jako vítr. — Jaký prostředek tu je?", "přirovnání", "porovnává běh s větrem slovem jako", "Rychle jako vítr — přirovnání."),
@@ -64,7 +64,7 @@ const BANKA_POJMY: Polozka[] = [
   Q(3, "Ve frontě na zmrzlinu stály miliony lidí. — Jaký prostředek tu je?", "nadsázka", "miliony lidí ve frontě být nemohou", "Miliony lidí — nadsázka."),
   Q(3, "Jezero bylo hladké jako zrcadlo. — Jaký prostředek tu je?", "přirovnání", "porovnává jezero se zrcadlem", "Hladké jako zrcadlo — přirovnání."),
   Q(3, "Pejsek radostně vrtěl ocáskem. — Jaký prostředek tu je?", "zdrobnělina", "pejsek a ocásek jsou zmenšená slova", "Pejsek, ocásek — zdrobněliny."),
-  Q(3, "Byl vyšší než věž kostela. — Jaký prostředek tu je?", "přirovnání", "porovnává výšku slovem než", "Vyšší než věž — přirovnání."),
+  Q(3, "Oči měla modré jako chrpy. — Jaký prostředek tu je?", "přirovnání", "porovnává barvu očí s chrpami slovem jako", "Modré jako chrpy — přirovnání."),
   Q(3, "Dům na nás zíral prázdnými okny. — Jaký prostředek tu je?", "zosobnění", "dům zírá jako člověk", "Dům zírá — zosobnění."),
   Q(3, "Tolik jsem se nasmál, že jsem málem praskl. — Jaký prostředek tu je?", "nadsázka", "prasknout smíchy nejde", "Málem praskl — nadsázka."),
   Q(3, "Na stole ležela hromádka knížek. — Jaký prostředek tu je?", "zdrobnělina", "hromádka a knížky jsou zmenšená slova", "Hromádka, knížky — zdrobněliny."),

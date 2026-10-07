@@ -237,6 +237,18 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   „dodnes používaná", Den vítězství bez „v Evropě", „barva" jako vlastnost
   plastu…). Zeměpis, přírodopis, dějepis bez nálezu. 🟠 K rozhodnutí:
   difúze „za hodinu" a pramínek vody — učebnicová zjednodušení.
+- ✅ **Kontrola klíčů češtiny 2.–6. r.** (2026-10-08): 5 900 úloh, 6 čtenářů,
+  každý nález ručně ověřen; 25 oprav. Chybné klíče: „zžloutlo" (spisovně
+  zežloutlo), „Děti běhají na hřiště" (lokál je „na hřišti"), „Nemám
+  žádného psa" = 2. pád (dnes 4.). Dvě správné odpovědi: předpony
+  vylepšil/vypracovala/vylétl/vypadl vedle klíče, loď (kost × píseň),
+  „tvrdá hlava" = i „špatně se učit", báseň s mluvícím zvířetem, veršovaná
+  pohádka, „ale" u dvou souběžných dějů, prosba „Dej mi…, prosím." na L3
+  jako chyba (L1 ji učí jako prosbu), nepřímá řeč „píšeme", úplnost
+  sdělení (chyběl i čas/místo), přirovnání × nadsázka, „podhoubí" ×
+  „plodnice" ve výpiscích, „Bez práce nejsou koláče" u Elišky. Dále
+  „Ezop je známý vypravěč bajka", čárka před „a pak", povídka bez děje,
+  včelaři vracející se do úlu. 6. r. část A bez nálezu.
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).

@@ -296,7 +296,7 @@ const ODSTAVCE: Odstavec[] = [
     obecne: "Příroda kolem nás skrývá spoustu zajímavostí.",
     mimoText: "Houby si podobně jako rostliny vyrábějí živiny fotosyntézou.",
     mimoTextWhy: "Text říká pravý opak — přečti si znovu větu o chlorofylu a o tom, jak houby získávají živiny.",
-    klicovaSlova: "houby, chlorofyl, podhoubí",
+    klicovaSlova: "houby, chlorofyl, živiny",
     klicovaSlovaSpatne: { detail: "plodnice, dřevo, listí", neuplne: "houby, chlorofyl, plodnice", generic: "organismus, příroda, les" },
     nadpis: "Houby a jejich výživa",
     nadpisySpatne: { detail: "Sbírání hub v lese", generic: "Organismy v přírodě", mimoText: "Jedovaté houby" },

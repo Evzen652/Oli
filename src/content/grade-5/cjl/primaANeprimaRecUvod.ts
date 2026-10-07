@@ -104,7 +104,7 @@ const PREVODY: Prevod[] = [
   ["Petr řekl: „Jdu domů.“", "Petr řekl, že jde domů.", "Petr řekl, že jdu domů.", "Domů jde Petr — sloveso ve 3. osobě."],
   ["Babička řekla: „Upeču koláč.“", "Babička řekla, že upeče koláč.", "Babička řekla, že upeču koláč.", "Péct bude babička — upeče."],
   ["Tomáš řekl: „Jsem unavený.“", "Tomáš řekl, že je unavený.", "Tomáš řekl, že jsem unavený.", "Unavený je Tomáš — je."],
-  ["Učitelka řekla: „Zítra píšeme test.“", "Učitelka řekla, že zítra píšou test.", "Učitelka řekla, že zítra píšeme test.", "O žácích se v nepřímé řeči mluví ve 3. osobě — píšou."],
+  ["Kuchařka řekla: „Dnes vařím polévku.“", "Kuchařka řekla, že dnes vaří polévku.", "Kuchařka řekla, že dnes vařím polévku.", "Vařit bude kuchařka — sloveso je ve 3. osobě: vaří."],
   ["Děti volaly: „Máme radost!“", "Děti volaly, že mají radost.", "Děti volaly, že máme radost.", "Radost mají děti — mají."],
   ["Martin řekl: „Mám nové kolo.“", "Martin řekl, že má nové kolo.", "Martin řekl, že mám nové kolo.", "Kolo má Martin — má."],
   ["Kamarádka napsala: „Přijedu v sobotu.“", "Kamarádka napsala, že přijede v sobotu.", "Kamarádka napsala, že přijedu v sobotu.", "Přijede kamarádka — přijede."],

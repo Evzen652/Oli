@@ -15,7 +15,8 @@
 >   (stovky oprav, mnoho šablonových; `czechGrammar.phrase()` opraven, nový `zNebo`)
 >   a textů rozhraní;
 > - vitest na polovině jader (konec `onTaskUpdate` timeoutů).
-> - věcná kontrola klíčů faktických předmětů (9 oprav).
+> - věcná kontrola klíčů faktických předmětů (9 oprav);
+> - kontrola klíčů češtiny 2.–6. r. (25 oprav, 8. 10.).
 > Rozhodnutí pro Evžena: push, nasadit `delete-child`, `allowBackup`,
 > prázdné dlaždice karet témat, fyzikální zjednodušení (PENDING_CHANGES).
 >

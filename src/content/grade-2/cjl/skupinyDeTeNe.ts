@@ -126,7 +126,7 @@ const L3: Dopln[] = [
   { veta: "Na lí_ zpívá kos.", slovo: "lípě", c: "p", g: "ě", vyznam: "kde zpívá kos", zaklad: "lípa" },
   { veta: "Obraz visí na stě_.", slovo: "stěně", c: "n", g: "ě", vyznam: "kde visí obraz", zaklad: "stěna" },
   { veta: "Na ná_stí stojí kašna.", slovo: "náměstí", c: "m", g: "ě", vyznam: "velké volné prostranství uprostřed obce" },
-  { veta: "Děti běhají na hřiš_.", slovo: "hřiště", c: "t", g: "ě", vyznam: "místo, kde se hraje fotbal a běhá" },
+  { veta: "Děti běží na hřiš_.", slovo: "hřiště", c: "t", g: "ě", vyznam: "místo, kde se hraje fotbal a běhá" },
   { veta: "K o_du bude polévka.", slovo: "obědu", c: "b", g: "ě", vyznam: "teplé jídlo v poledne" },
   { veta: "Náš _deček má vousy.", slovo: "dědeček", c: "d", g: "ě", vyznam: "tatínek maminky nebo tatínka" },
   { veta: "Můj dě_ček čte noviny.", slovo: "dědeček", c: "d", g: "e", vyznam: "starý pán, kterému říkáš děda" },

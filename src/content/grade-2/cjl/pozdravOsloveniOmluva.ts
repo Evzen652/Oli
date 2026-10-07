@@ -653,7 +653,9 @@ function vzkazTask(v: Vzkaz): PracticeTask {
 }
 
 // (b) PROSBA × ROZKAZ — nová dovednost: rozlišit, jestli věta nechává druhému
-//     volbu. Past: rozkaz, do kterého se přilepilo „prosím“, zůstává rozkazem.
+//     volbu. Rozkaz bez „prosím“ přikazuje. (Rozkaz s „prosím“ tu jako distraktor
+//     NENÍ — L1 téhož tématu učí „Prosím, pomoz mi.“ jako prosbu, šlo by o dvě
+//     správné odpovědi. Opraveno 2026-10-08.)
 
 interface Prosba {
   kdy: string;
@@ -667,7 +669,7 @@ const PROSBY: Prosba[] = [
     kdy: "Chceš si od kamaráda půjčit pastelku. Která věta je prosba?",
     klic: "Půjčil bys mi tu pastelku?",
     chyby: [
-      ["Dej mi tu pastelku, prosím.", "Slovo „prosím“ to nespraví — „dej“ je pořád rozkaz. Kamarád nemá na výběr."],
+      ["Dej mi tu pastelku.", "„Dej“ je rozkaz a chybí i slovo „prosím“. Kamarád nemá na výběr."],
       ["Potřebuju tu pastelku hned.", "To je oznámení, co potřebuješ ty. Kamaráda se to vůbec neptá."],
       ["Tu pastelku si teď beru.", "Tím mu nic neříkáš, jen si ji vezmeš. To není ani prosba."],
     ],
@@ -677,7 +679,7 @@ const PROSBY: Prosba[] = [
     kdy: "Chceš, aby ti sestra podržela dveře. Která věta je prosba?",
     klic: "Podržela bys mi ty dveře?",
     chyby: [
-      ["Podrž mi ty dveře, prosím.", "„Prosím“ je slušné, ale „podrž“ je rozkaz. Sestra nemá volbu."],
+      ["Podrž mi ty dveře.", "„Podrž“ je rozkaz bez jediného slušného slova. Sestra nemá volbu."],
       ["Musíš mi podržet ty dveře.", "„Musíš“ nedává na výběr vůbec. To není prosba, ale příkaz."],
       ["Ty dveře mi někdo podrží.", "To je oznámení do vzduchu. Nikoho konkrétně to neprosí."],
     ],
@@ -687,7 +689,7 @@ const PROSBY: Prosba[] = [
     kdy: "Chceš, aby ti taťka pomohl s úkolem. Která věta je prosba?",
     klic: "Pomohl bys mi s tím úkolem?",
     chyby: [
-      ["Pomoz mi s tím úkolem, prosím.", "„Prosím“ to nemění — „pomoz“ zůstává rozkaz."],
+      ["Pomoz mi s tím úkolem.", "„Pomoz“ je holý rozkaz. Taťky se to neptá a „prosím“ chybí."],
       ["Ten úkol za mě musíš udělat.", "To není prosba, ale příkaz. A navíc po taťkovi chceš, aby to udělal za tebe."],
       ["Ten úkol nezvládnu sám.", "Tím říkáš, jak ti je. O pomoc to ale neprosí."],
     ],
@@ -697,7 +699,7 @@ const PROSBY: Prosba[] = [
     kdy: "Chceš, aby ti spolužák uvolnil místo v řadě. Která věta je prosba?",
     klic: "Pustil bys mě prosím dopředu?",
     chyby: [
-      ["Uhni mi z cesty, prosím.", "„Uhni“ je rozkaz, i když přidáš „prosím“. Spolužák nemá volbu."],
+      ["Uhni mi z cesty, jdu dopředu.", "„Uhni“ je rozkaz a „jdu dopředu“ jen oznamuje, co uděláš. Spolužák nemá volbu."],
       ["Tady stojím já, ne ty.", "To je hádka o místo, ne prosba."],
       ["Chci stát na tvém místě.", "Tím říkáš, co chceš ty. Spolužáka se to neptá."],
     ],
@@ -707,7 +709,7 @@ const PROSBY: Prosba[] = [
     kdy: "Chceš, aby ti babička přečetla dopis. Která věta je prosba?",
     klic: "Přečetla bys mi ten dopis?",
     chyby: [
-      ["Přečti mi ten dopis, prosím.", "„Prosím“ nestačí — „přečti“ je rozkaz."],
+      ["Přečti mi ten dopis.", "„Přečti“ je holý rozkaz. Babičky se to neptá."],
       ["Ten dopis mi musíš přečíst.", "„Musíš“ nedává babičce na výběr. To je příkaz."],
       ["Tomu dopisu vůbec nerozumím.", "To říká, jak ti je. O přečtení to ale neprosí."],
     ],
@@ -786,9 +788,9 @@ function prosbaTask(p: Prosba): PracticeTask {
     p.chyby,
     [
       `Prosba nechává druhému volbu — může říct i ne. Zkus u každé možnosti, jestli se dá odpovědět „bohužel nemůžu“.`,
-      `Pozor na past: když se k rozkazu přilepí „prosím“, rozkaz z toho prosba nebude. Hledej větu, která se opravdu ptá, ne která přikazuje nebo jen říká, co chceš ty.`,
+      `Rozkaz („dej“, „podrž“) jen přikazuje a oznámení říká, co chceš ty. Hledej větu, která se druhého opravdu ptá.`,
     ],
-    `Prosba se ptá a nechává druhému volbu. Rozkaz přikazuje, i když k němu přidáš „prosím“ — a oznámení o tom, co chceš ty, se druhého vůbec neptá.`,
+    `Prosba se ptá a nechává druhému volbu. Rozkaz přikazuje — a oznámení o tom, co chceš ty, se druhého vůbec neptá.`,
     p.emoji,
   );
 }
@@ -857,8 +859,8 @@ export const POZDRAV_OSLOVENI_OMLUVA: TopicMetadata[] = [
         "Podívej se, komu mluvíš — tykání, nebo vykání.",
         "U vzkazu si odškrtni tři údaje, které ten druhý potřebuje — vždycky kdo volal, a pak co a kdy, u schůzky i kde.",
       ],
-      commonMistake: "Přilepit „prosím“ k rozkazu a myslet si, že je to prosba.",
-      example: "„Půjčil bys mi pastelku?“ je prosba — kamarád může říct i ne. „Dej mi ji, prosím.“ je rozkaz.",
+      commonMistake: "Splést si holý rozkaz („Dej mi to.“) s prosbou.",
+      example: "„Půjčil bys mi pastelku?“ je prosba — kamarád může říct i ne. „Dej mi ji.“ je rozkaz.",
     },
   },
 ];

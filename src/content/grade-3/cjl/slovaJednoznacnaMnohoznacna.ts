@@ -401,7 +401,7 @@ const IDIOMY: IdiomItem[] = [
     spravne: "nenechat si od nikoho poradit",
     chybne: [
       { value: "mít pevnou lebku", why: "O tělo tady vůbec nejde — spojení mluví o chování." },
-      { value: "špatně se učit", why: "Učení to není; i chytrý člověk si může stát tvrdě za svým." },
+      { value: "rychle se rozzlobit", why: "To se říká o někom, kdo má „horkou hlavu“. Tvrdá hlava se nezlobí, ale nedá si říct." },
       { value: "často narážet hlavou", why: "To by bylo čtení slovo od slova a nic by nevysvětlilo." },
     ],
   },

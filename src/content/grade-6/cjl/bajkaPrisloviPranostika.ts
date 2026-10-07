@@ -366,7 +366,7 @@ interface SituaceItem {
 
 const L3A_SITUACE: SituaceItem[] = [
   { text: "Tomáš se na velký test z matematiky vůbec neučil a spoléhal, že mu to půjde samo. Dostal špatnou známku.", prisloviIdx: 1 },
-  { text: "Eliška vstává každý den o půl hodiny dřív než její spolužáci a stihne si v klidu zopakovat látku ještě před vyučováním. Díky tomu má ve škole čím dál lepší výsledky.", prisloviIdx: 6 },
+  { text: "Eliška přišla na zápis do oblíbeného kroužku hned ráno jako první, a tak si mohla vybrat termín, který jí vyhovoval. Spolužáci, kteří přišli až odpoledne, už měli smůlu.", prisloviIdx: 6 },
   { text: "Matka Anety je vášnivá malířka a tráví víkendy u štětců. Aneta od malička kreslí úplně stejně nadšeně jako její maminka.", prisloviIdx: 4 },
   { text: "Filip měl jistou nabídku na drobnou brigádu za rozumné peníze, ale odmítl ji kvůli slibu kamaráda o velkém výdělku, který se nakonec neuskutečnil. Nakonec neměl nic.", prisloviIdx: 2 },
   { text: "Martin schválně pustil o spolužačce ošklivou pomluvu, aby ji dostal do potíží. Za pár dní se ale ukázalo, že si tu historku vymyslel on sám, a do potíží se kvůli tomu dostal on.", prisloviIdx: 0 },

@@ -122,7 +122,7 @@ const L3: PracticeTask[] = [
   vzorUlohy("čtvrť", "kost", "čtvrti"),
   vzorUlohy("tvář", "píseň", "tváře"),
   vzorUlohy("myš", "kost", "myši"),
-  vzorUlohy("loď", "kost", "lodi"),
+  vzorUlohy("noc", "kost", "noci"),
   vzorUlohy("zvíře", "kuře", "zvířete"),
   vzorUlohy("vejce", "moře", "vejce"),
   vzorUlohy("přání", "stavení", "přání"),

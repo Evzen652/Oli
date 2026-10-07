@@ -26,7 +26,7 @@ const BANKA: Polozka[] = [
   S(1, "„Mami, v pondělí v 7 hodin u školy. Eva“", C, "nevíme, co se v pondělí u školy děje"),
   S(1, "„Tréninky fotbalu budou nově na hřišti za školou. Trenér Petr“", T, "nevíme, v které dny a hodiny se trénuje"),
   S(1, "„Vodník Čepický hraje v neděli v 10 hodin. Vstupné 50 Kč.“", M, "nevíme, kde se hraje"),
-  S(1, "„Ztratil se hnědý pes. Kdo ho viděl, ať zavolá.“", O, "nevíme, komu máme zavolat"),
+  S(1, "„Včera večer se v parku u rybníka ztratil hnědý pes. Kdo ho viděl, ať zavolá.“", O, "nevíme, komu máme zavolat"),
   S(1, "„Tatínku, dnes v 5 odpoledne na zahradě. Tvoje Lucka“", C, "nevíme, co se na zahradě bude dít"),
   S(1, "„Knihovna bude zavřená kvůli malování. Knihovnice Jana“", T, "nevíme, odkdy dokdy bude zavřeno"),
   S(1, "„Dnes v 17 hodin bude sraz turistického oddílu. Vedoucí Tomáš“", M, "nevíme, kde se oddíl schází"),
@@ -36,7 +36,7 @@ const BANKA: Polozka[] = [
 
   S(2, "„Ahoj Kubo, oslava mých narozenin bude u nás na zahradě v Lipové ulici 5. Přines plavky. Tvoje Anna“", T, "je tu adresa i kdo zve, ale ne den a hodina"),
   S(2, "„Milí rodiče, v úterý 12. května v 7.30 odjíždíme na školu v přírodě. Zavazadla podepište. Mgr. Dvořák“", M, "víme kdy, ale ne odkud autobus odjíždí"),
-  S(2, "„Našla jsem na lavičce v parku klíče s červeným přívěskem. Majitel si je může vyzvednout zítra v 5 odpoledne.“", O, "nevíme, u koho si je vyzvednout"),
+  S(2, "„Našla jsem na lavičce v parku klíče s červeným přívěskem. Majitel si je může vyzvednout zítra v 5 odpoledne u vrátnice naší školy.“", O, "chybí podpis — nevíme, kdo klíče našel a na koho se máme zeptat"),
   S(2, "„Vážení sousedé, ve středu od 8 do 12 hodin v celém našem domě. Děkujeme za pochopení. Správa domu“", C, "nevíme, co se bude ve středu v domě dít"),
   S(2, "„Pozor, změna! Autobus na výlet odjede od kostela, ne od školy. Paní učitelka Nová“", T, "víme odkud, ale ne v kolik"),
   S(2, "„Honzo, maminka tě vyzvedne dnes ve 4 hodiny. Počkej na ni tam, co minule. Paní vychovatelka“", M, "„tam, co minule“ není přesné určení"),
