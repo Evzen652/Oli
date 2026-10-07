@@ -3,7 +3,7 @@
 > ## ▶ 7. 10. 2026 — autonomní průchod (nic nepushnuto!)
 >
 > Evžen řekl „pokračuj autonomně"; push do `main` = produkce, ten
-> neschválil. **Lokálně je ~27 commitů navíc proti `origin/main`** —
+> neschválil. **Lokálně je ~28 commitů navíc proti `origin/main`** —
 > `git log origin/main..main`. Shrnutí v `PROJECT_STATUS.md` §6, sessions
 > 2026-10-07 a 2026-10-07b. Hlavně:
 > - mazání dítěte maže i jeho auth účet → **nasadit `delete-child`**;
@@ -12,7 +12,8 @@
 > - 9 témat se dalo tipovat (délka, znaménko, „jiný" tvar) → opraveno,
 >   `check:length PO_TYPECH=1`, `check:options` hlídá znaménko;
 > - gramatická revize klíčů, možností, zadání i všech nápověd a vysvětlení
->   (stovky oprav, mnoho šablonových; `czechGrammar.phrase()` opraven, nový `zNebo`);
+>   (stovky oprav, mnoho šablonových; `czechGrammar.phrase()` opraven, nový `zNebo`)
+>   a textů rozhraní;
 > - vitest na polovině jader (konec `onTaskUpdate` timeoutů).
 > Rozhodnutí pro Evžena: push, `allowBackup`, prázdné dlaždice karet témat.
 >

@@ -227,6 +227,10 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   samohlásky" (14×), „Pomůže tohle: ukázka pisatel říká" (dva podměty).
   Zamítnuto po ověření: „zbyde" (knižní, spisovné), malé písmeno citovaného
   názvu na začátku věty (konvence), „Ahoj Ondro," (klíč, norma nejasná).
+- ✅ **Gramatická revize textů rozhraní** (`bd5435c`): 4 334 řetězců
+  mimo obsah cvičení. Kromě gramatiky věcné chyby v popisech okruhů
+  („slyšet" vyjmenované po S, „učitel" podle vzoru pán, příklad „častých
+  chyb" se správným tvarem jako chybou) a zdrobnělina Elišky „Eliášku".
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).
