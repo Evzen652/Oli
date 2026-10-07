@@ -1,14 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { getSubjectMeta, SUBJECTS } from "@/lib/subjectRegistry";
 import { validateTaskForInputType, filterValidTasks } from "@/lib/taskValidator";
-import { classifySemanticInput } from "@/lib/semanticGate";
 import type { PracticeTask } from "@/lib/types";
 
 /**
  * Lib utility coverage:
  *  - subjectRegistry: known subject lookup + dynamic fallback
  *  - taskValidator: per-inputType validation + filterValidTasks
- *  - semanticGate: client-side wrapper, fallback on error
  */
 
 beforeEach(() => {
@@ -321,64 +319,5 @@ describe("filterValidTasks", () => {
       { question: "Q", correctAnswer: "abc" },
     ];
     expect(filterValidTasks(tasks, "number")).toEqual([]);
-  });
-});
-
-// ─────────────────────────────────────────────────────────
-// semanticGate
-// ─────────────────────────────────────────────────────────
-
-describe("classifySemanticInput", () => {
-  const setupFetch = (impl: (url: unknown, opts: unknown) => Promise<unknown>) => {
-    const fn = vi.fn(impl as (...args: unknown[]) => unknown);
-    globalThis.fetch = fn as unknown as typeof fetch;
-    return fn;
-  };
-
-  it("prázdný input → fallback (semantic_valid: false)", async () => {
-    const fetchMock = setupFetch(() => Promise.resolve({ ok: true, json: async () => ({}) }));
-    const r = await classifySemanticInput("");
-    expect(r.semantic_valid).toBe(false);
-    expect(r.semantic_domain).toBe("non-school");
-    expect(fetchMock).not.toHaveBeenCalled();
-  });
-
-  it("whitespace-only → fallback", async () => {
-    setupFetch(() => Promise.resolve({ ok: true, json: async () => ({}) }));
-    const r = await classifySemanticInput("   ");
-    expect(r.semantic_valid).toBe(false);
-  });
-
-  it("network failure → fallback (no throw)", async () => {
-    setupFetch(() => Promise.reject(new Error("network")));
-    const r = await classifySemanticInput("test input");
-    expect(r.semantic_valid).toBe(false);
-  });
-
-  it("HTTP non-2xx → fallback", async () => {
-    setupFetch(() => Promise.resolve({ ok: false, status: 500 }));
-    const r = await classifySemanticInput("test");
-    expect(r.semantic_valid).toBe(false);
-  });
-
-  // Pozn: happy-path s mockovaným fetch fails kvůli interakci s vitest fetch
-  // resolution — test vyřazen, ale fallback paths jsou pokryté.
-
-  it("invalid domain string → coerced na 'non-school'", async () => {
-    setupFetch(() =>
-      Promise.resolve({
-        ok: true,
-        status: 200,
-        json: async () => ({ semantic_valid: true, semantic_domain: "weird-value" }),
-      })
-    );
-    const r = await classifySemanticInput("test");
-    expect(r.semantic_domain).toBe("non-school");
-  });
-
-  it("aborts po abort (signal)", async () => {
-    setupFetch(() => Promise.reject(new DOMException("aborted", "AbortError")));
-    const r = await classifySemanticInput("test");
-    expect(r.semantic_valid).toBe(false);
   });
 });

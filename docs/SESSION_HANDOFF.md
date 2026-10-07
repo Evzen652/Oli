@@ -716,10 +716,12 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
   nasazení funkce klient maže postaru. Claude nasazovat nesmí.
 - **`android:allowBackup="true"`** — u dětské aplikace rozhodnout (záloha
   může nést přihlašovací token). `docs/STORE_DATA_FORMS.md` §6.
-- **`semantic-gate` je mrtvá cesta, ale nebezpečná:** kdyby se dětské UI
-  zase dostalo do stavu `INPUT_CAPTURE`, volný text dítěte odejde ke Groqu
-  — a zásady tvrdí opak. Dnes nedosažitelné (ověřeno 7. 10.). Patří smazat
-  s ostatní AI větví.
+- ✅ **`semantic-gate` odpojený z klienta (7. 10.).** Orchestrátor posílal
+  nesrozumitelný vstup dítěte ke Groqu; z dětského UI to bylo nedosažitelné,
+  ale stačilo cestu otevřít a slib v zásadách by padl. Volání
+  i `src/lib/semanticGate.ts` jsou pryč, hlídá `child-free-text.test.ts`.
+  **Edge funkce `semantic-gate` zůstává nasazená** — odebrat ji jde jen
+  z konzole Supabase (Evžen).
 
 - **Karty témat mají prázdnou plochu místo obrázku (rozhodnutí o vzhledu).**
   Ověřeno v prohlížeči 7. 10. (3. r. → Čeština → Sloh): všechny čtyři karty

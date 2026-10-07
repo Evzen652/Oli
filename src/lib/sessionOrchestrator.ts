@@ -4,7 +4,6 @@ import { matchTopic } from "./contentRegistry";
 import { generateMockExplain, generateMockBatch } from "./aiExecution";
 import { logSession } from "./logger";
 import { classifyIntent, CONFUSION_THRESHOLD } from "./preIntent";
-import { classifySemanticInput } from "./semanticGate";
 import { recordCheckResult } from "./performanceTracker";
 import { computeAdaptiveDecision, type SkillSnapshot } from "./adaptiveEngine";
 import { maxAvailableLevel } from "./levelCoverage";
@@ -196,13 +195,12 @@ export async function processState(session: SessionData, userInput?: string): Pr
         };
       }
 
-      // AI Semantic Gate: call directly in core before STOP decision (with timeout)
-      if (intent === "nonsense") {
-        const semanticResult = await classifySemanticInput(s.childInput);
-        if (semanticResult.semantic_valid === true) {
-          intent = "confusion";
-        }
-      }
+      // Dřív tu „nonsense" ještě posuzoval jazykový model (edge funkce „sémantická brána",
+      // Groq) — dostal by VOLNÝ TEXT DÍTĚTE. Zásady soukromí slibují, že model
+      // text dítěte nedostane, a CLAUDE.md vede Semantic Gate jako „odchází".
+      // Odstraněno 7. 10. 2026; do té doby byla cesta z dětského UI
+      // nedosažitelná, ale stačilo ji zase otevřít. Hlídá
+      // `child-free-text.test.ts`.
 
       if (intent === "unclear_input") {
         s = transition(s, "INPUT_CAPTURE");

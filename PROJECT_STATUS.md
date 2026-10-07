@@ -178,7 +178,9 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
 - ✅ **Ověřeno, že neplatí:** volný text dítěte k Groqu (`semantic-gate`)
   **neodchází** — jediné místo, které zakládá sezení, nastaví téma a stav
   `EXPLAIN`, takže `INPUT_CAPTURE` je z dětského UI nedosažitelný. Cesta
-  je mrtvý kód (CLAUDE.md ji vede jako „odchází"). Bod `parovani` „utržená
+  je mrtvý kód (CLAUDE.md ji vede jako „odchází") — **a 7. 10. odpojená**:
+  volání i `semanticGate.ts` pryč, hlídá `child-free-text.test.ts` (obě
+  měřítka obráceně ověřena). Edge funkce zůstává nasazená. Bod `parovani` „utržená
   věta" ze `SESSION_HANDOFF` §4 je vyřízený opravou z 13. 9.
 - ✅ **Serverová kopie anonymního pokroku ověřená** (klientská strana):
   `anon-server-record.test.ts` — po splnění úkolu odejde právě jedno
