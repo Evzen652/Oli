@@ -34,6 +34,10 @@ Detail v `PROJECT_STATUS.md` §6, session 2026-10-07b. Krátce, co se tu tím za
 - ✅ **Gramatická revize obsahu** — 53 souborů, nálezy ověřené ručně
   (`ee02694`). Detail `PROJECT_STATUS.md` §6.
 
+- ✅ **Gramatická revize nápověd a vysvětlení** — všechny ročníky
+  (`b9e6537`, `6061aa5`, `8b29eaa`). `czechGrammar.phrase()` opraven pro
+  ženský a střední rod, přibyl `zNebo()`. Detail `PROJECT_STATUS.md` §6.
+
 **Zůstává otevřené (rozhodnutí):** `android:allowBackup="true"` u dětské
 aplikace (záloha může nést přihlašovací token) — `STORE_DATA_FORMS.md` §6.
 

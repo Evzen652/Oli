@@ -217,6 +217,16 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   „v 4:00" → `vCas()`, „OPAČNÝ význam jako" → „než" (20 zadání). Věcná
   chyba: graf 5. r. „ve všech pěti měsících / za celý týden" i při čtyřech
   položkách. 4 nálezy zamítnuty po ověření (důvody v commitu).
+- ✅ **Gramatická revize nápověd, vysvětlení a zpětné vazby** (`b9e6537`,
+  `6061aa5`, `8b29eaa`; 70 + 111 + 12 souborů). 61 101 unikátních textů,
+  23 čtenářů ve dvou vlnách, každý nález ručně ověřen. Oprava v jádru:
+  `czechGrammar.phrase()` skloňoval přídavné jméno jen v mužském rodě
+  („3 stejné čísla") → `adjRod`; nový `zNebo(n)` pro „z/ze" před číslem.
+  Největší šablony: „patří k svátku" (517×), „Písmeno A osově souměrný"
+  (~28×), „„…“ je 7. pádě" (21×), „Ve sloupci desítky" (16×), „ve slově je
+  samohlásky" (14×), „Pomůže tohle: ukázka pisatel říká" (dva podměty).
+  Zamítnuto po ověření: „zbyde" (knižní, spisovné), malé písmeno citovaného
+  názvu na začátku věty (konvence), „Ahoj Ondro," (klíč, norma nejasná).
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).
