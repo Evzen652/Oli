@@ -161,8 +161,48 @@ function spravnyPrisudek(verb: string, keys: string[], n: number): string | null
   return tvar;
 }
 
+/**
+ * Začátek větného úseku, ve kterém leží pozice `pos`. Čárka mezi číslicemi
+ * je desetinná, ne hranice úseku: dřív „0,3 m je 3 desetiny metru" uřízla
+ * „0," i s podmětem před ní a pravidlo pak hledalo podmět v samotném „3 m".
+ */
+const HRANICE_USEKU = new Set([".", "!", "?", ";", ":", ",", "—", "–", "(", ")"]);
+function zacatekUseku(text: string, pos: number): number {
+  for (let i = pos - 1; i >= 0; i--) {
+    if (!HRANICE_USEKU.has(text[i])) continue;
+    if (text[i] === "," && /\d/.test(text[i - 1] ?? "") && /\d/.test(text[i + 1] ?? "")) continue;
+    return i + 1;
+  }
+  return 0;
+}
+
+/** Spojky, přes které se číslo dál počítá k téže předložce („mezi 2 a 6"). */
+const SPOJKY_V_ROZSAHU = new Set(["a", "i", "až", "nebo", "-"]);
+
+/**
+ * Číslo jako podmět: „0,3 m **je** 3 desetiny metru". Spona se tu shoduje
+ * s podmětem „0,3 m" a „3 desetiny" je jmenná část přísudku — tvar „je" je
+ * správně. Číslo za předložkou podmětem není („od 0 do 4 je 4 centimetry"
+ * je pořád chyba), a to ani druhé číslo rozsahu za spojkou („mezi 2 a 6").
+ */
+function maCiselnyPodmet(prefix: string): boolean {
+  const tokeny = prefix
+    .split(/\s+/)
+    .map((t) => t.toLowerCase().replace(/^[^\p{L}\p{N}-]+|[^\p{L}\p{N}]+$/gu, ""))
+    .filter(Boolean);
+  let zaPredlozkou = false;
+  for (const tok of tokeny) {
+    if (PREDLOZKY.has(tok)) zaPredlozkou = true;
+    else if (/^\d+(?:[.,]\d+)?$/.test(tok)) {
+      if (!zaPredlozkou) return true;
+    } else if (!SPOJKY_V_ROZSAHU.has(tok)) zaPredlozkou = false;
+  }
+  return false;
+}
+
 /** Stojí v úseku textu před přísudkem něco, co může být podmět? */
 function maJinyPodmet(prefix: string): boolean {
+  if (maCiselnyPodmet(prefix)) return true;
   const tokeny = prefix.split(/[^\p{L}]+/u).filter(Boolean);
   return tokeny.some((tok, i) => {
     const slovo = tok.toLowerCase();
@@ -193,10 +233,7 @@ export function checkCzechAgreement(text: string): AgreementFinding[] {
     if (ZA_ROVNITKEM.test(text.slice(0, at))) continue;
     const slovo = m.replace(/^[234]\s+/, "").toLowerCase();
     if (NOMINATIV_SG.has(slovo) || NENI_SUBSTANTIVUM.has(slovo)) continue;
-    const hranice = [".", "!", "?", ";", ":", ",", "—", "–", "(", ")"].map((sep) =>
-      text.lastIndexOf(sep, at),
-    );
-    if (!pociVGenitivuJeChyba(text.slice(Math.max(...hranice) + 1, at))) continue;
+    if (!pociVGenitivuJeChyba(text.slice(zacatekUseku(text, at), at))) continue;
     findings.push({
       rule: "genitiv_po_2_4",
       match: m,
@@ -217,10 +254,7 @@ export function checkCzechAgreement(text: string): AgreementFinding[] {
     const spravne = spravnyPrisudek(verb, keys, n);
     if (!spravne || spravne === verb) continue;
     const start = m.index ?? 0;
-    const hranice = [".", "!", "?", ";", ":", ",", "—", "–", "(", ")"].map((sep) =>
-      text.lastIndexOf(sep, start),
-    );
-    const prefix = text.slice(Math.max(...hranice) + 1, start);
+    const prefix = text.slice(zacatekUseku(text, start), start);
     if (maJinyPodmet(prefix)) continue; // „Výsledek je 3 centimetry" — podmět je v j. č.
     findings.push({
       rule: "shoda_prisudku",

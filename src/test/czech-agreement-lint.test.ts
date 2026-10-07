@@ -36,6 +36,13 @@ describe("lint shody přísudku s číslovkou", () => {
       expect(f.map((x) => x.rule)).toEqual(["pul_s_mnoznym_cislem"]);
     });
 
+    it("číslo za předložkou podmět není: „mezi 2 a 6 je 4 centimetry“", () => {
+      // Pojistka k výjimce pro číselný podmět („0,3 m je…"): číslo, které
+      // patří k předložce, podmětem být nemůže — ani druhé za spojkou.
+      const f = checkCzechAgreement("Na pravítku mezi 2 a 6 je 4 centimetry.");
+      expect(f.map((x) => x.rule)).toEqual(["shoda_prisudku"]);
+    });
+
     it("genitiv plurálu po 2–4: „3 dílů“", () => {
       const f = checkCzechAgreement("Rozděl to na 3 dílů.");
       expect(f.map((x) => x.rule)).toEqual(["genitiv_po_2_4"]);
@@ -66,6 +73,11 @@ describe("lint shody přísudku s číslovkou", () => {
       "Spočítej nohy 4 kachen.",          // přivlastňovací genitiv („nohy čtyř kachen")
       "Zjisti součet 3 čísel.",           // totéž — genitiv řídí „součet"
       "Polovina 2 dílů je jeden díl.",    // totéž
+      // Spona se shoduje s podmětem, ne se jmennou částí přísudku: podmět
+      // je „0,3 m" (j. č.), „3 desetiny" je přísudek. Nález z kontroly g5mat-b.
+      "Úsečka 0,3 m je 3 desetiny metru.",
+      "0,3 m je 3 desetiny metru.",
+      "Tedy 0,4 l je 4 desetiny litru.",
     ];
     for (const veta of spravne) {
       it(`„${veta}“`, () => {
