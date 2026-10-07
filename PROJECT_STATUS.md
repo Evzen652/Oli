@@ -231,6 +231,12 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   mimo obsah cvičení. Kromě gramatiky věcné chyby v popisech okruhů
   („slyšet" vyjmenované po S, „učitel" podle vzoru pán, příklad „častých
   chyb" se správným tvarem jako chybou) a zdrobnělina Elišky „Eliášku".
+- ✅ **Věcná kontrola klíčů faktických předmětů** (`ffe2e21`): 6 152 úloh,
+  9 oprav (sv. Václav „král", Plechý „nejvyšší hora Šumavy", zimolez jako
+  nejedlý, městská policie 156 jako „chybné" číslo při krádeži, koruna
+  „dodnes používaná", Den vítězství bez „v Evropě", „barva" jako vlastnost
+  plastu…). Zeměpis, přírodopis, dějepis bez nálezu. 🟠 K rozhodnutí:
+  difúze „za hodinu" a pramínek vody — učebnicová zjednodušení.
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).

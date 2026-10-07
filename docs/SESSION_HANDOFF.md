@@ -3,7 +3,7 @@
 > ## ▶ 7. 10. 2026 — autonomní průchod (nic nepushnuto!)
 >
 > Evžen řekl „pokračuj autonomně"; push do `main` = produkce, ten
-> neschválil. **Lokálně je ~28 commitů navíc proti `origin/main`** —
+> neschválil. **Lokálně je ~30 commitů navíc proti `origin/main`** —
 > `git log origin/main..main`. Shrnutí v `PROJECT_STATUS.md` §6, sessions
 > 2026-10-07 a 2026-10-07b. Hlavně:
 > - mazání dítěte maže i jeho auth účet → **nasadit `delete-child`**;
@@ -15,7 +15,9 @@
 >   (stovky oprav, mnoho šablonových; `czechGrammar.phrase()` opraven, nový `zNebo`)
 >   a textů rozhraní;
 > - vitest na polovině jader (konec `onTaskUpdate` timeoutů).
-> Rozhodnutí pro Evžena: push, `allowBackup`, prázdné dlaždice karet témat.
+> - věcná kontrola klíčů faktických předmětů (9 oprav).
+> Rozhodnutí pro Evžena: push, nasadit `delete-child`, `allowBackup`,
+> prázdné dlaždice karet témat, fyzikální zjednodušení (PENDING_CHANGES).
 >
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.

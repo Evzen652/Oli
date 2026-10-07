@@ -38,6 +38,16 @@ Detail v `PROJECT_STATUS.md` §6, session 2026-10-07b. Krátce, co se tu tím za
   (`b9e6537`, `6061aa5`, `8b29eaa`). `czechGrammar.phrase()` opraven pro
   ženský a střední rod, přibyl `zNebo()`. Detail `PROJECT_STATUS.md` §6.
 
+- ✅ **Věcná kontrola klíčů** (`ffe2e21`) — 9 oprav, detail v PROJECT_STATUS.
+- 🟠 **K rozhodnutí — fyzika 6. r., učebnicová zjednodušení, která jsou
+  fyzikálně chybná:** (1) `pohyb-castic`: inkoust „za hodinu obarví celou
+  sklenici", voňavka „za chvíli" u protější stěny, „desítky vteřin" —
+  čistou difúzí by to trvalo měsíce/hodiny, ve skutečnosti roznáší
+  proudění; u dvou úloh je proto „chybná" možnost o proudění správně.
+  (2) `elektricky-naboj` L3: ohyb pramínku vody způsobuje hlavně
+  indukovaný náboj z kohoutku, ne natáčení molekul (J. Chem. Educ. 2000).
+  Učebnice to běžně uvádějí zjednodušeně — přepsat, nebo ponechat?
+
 **Zůstává otevřené (rozhodnutí):** `android:allowBackup="true"` u dětské
 aplikace (záloha může nést přihlašovací token) — `STORE_DATA_FORMS.md` §6.
 
