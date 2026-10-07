@@ -25,6 +25,11 @@
 // dvou témat o souvětí a všechny byly falešné. Skript proto nález zahodí,
 // jakmile se tatáž nabídka objeví v tématu i s JINÝM klíčem.
 //
+// ZNAMÉNKO (přibylo 2026-10-07): u číselných možností je stejné vodítko
+// „klíč je jediné záporné číslo" (nebo jediné nezáporné). První slovo to
+// nevidí — „−10" a „12" začínají jinak vždycky. Našlo se u dvou šablon
+// o teplotě v 5. ročníku: klíč byl jediné záporné číslo ve 100 % úloh.
+//
 // Nález NENÍ důkaz chyby. Někdy je odlišný začátek klíče věcně nutný — třeba
 // u otázky „Které z nich…“, kde jsou možnosti výčtem. Skript proto
 // **nekončí chybou**, jen vypíše, co posoudit.
@@ -37,6 +42,13 @@ const REPEATS = Number(process.env.REPEATS ?? 6);
 const temata = getAllTopics().filter(
   (t) => t.generator && (zadane.length === 0 || zadane.includes(t.id)),
 );
+
+/** Znaménko číselné možnosti („−3 °C" → záporné), u nečíselné null. */
+function znamenko(s: string): string | null {
+  const m = s.trim().match(/^([−-])?\s*\d/);
+  if (!m) return null;
+  return m[1] ? "záporné číslo" : "nezáporné číslo";
+}
 
 /** První slovo možnosti, bez interpunkce a velikosti písmen. */
 function prvni(s: string): string {
@@ -71,6 +83,14 @@ for (const t of temata) {
         // Jen plné čtyřmožnostní úlohy: u tří možností je shoda dvou začátků
         // ještě náhoda, u tří je to už vzorec.
         if (jine.length < 3) continue;
+        const znDistr = o.filter((x) => x !== klic).map(znamenko);
+        const znKlic = znamenko(klic);
+        if (znKlic && znDistr.every((z) => z !== null && z === znDistr[0]) && znDistr[0] !== znKlic) {
+          nalezy.set(`${t.id}|${lvl}|${u.question}`, {
+            id: t.id, lvl, q: u.question, klic, spolecne: `${znDistr[0]} (klíč ${znKlic})`, nabidka,
+          });
+          continue;
+        }
         // Jedno- a dvouznaková funkční slova („v“, „na“, „je“, „do“) se opakují
         // i v úplně zdravé nabídce a dítěti nenapovědí nic. Signál dávají až
         // slova od tří znaků — spojky („protože“, „aby“) a zájmena („tím“, „obě“).
@@ -97,13 +117,13 @@ const skutecne = [...nalezy.values()].filter((n) => (skaly.get(n.nabidka)?.size 
 const zahozeno = nalezy.size - skutecne.length;
 
 for (const n of skutecne) {
-  console.log(`\n[${n.id}] L${n.lvl} · distraktory začínají „${n.spolecne}“`);
+  console.log(`\n[${n.id}] L${n.lvl} · distraktory ${n.spolecne.includes("číslo") ? "jsou" : "začínají"} „${n.spolecne}“`);
   console.log(`   Q:    ${n.q.slice(0, 90)}`);
   console.log(`   KLÍČ: ${n.klic.slice(0, 90)}`);
 }
 
 console.log(`
-K posouzení: ${pad(skutecne.length, "ÚLOHA")}, kde klíč začíná jiným slovem než všechny distraktory.`
+K posouzení: ${pad(skutecne.length, "ÚLOHA")}, kde klíč začíná jiným slovem (nebo má jiné znaménko) než všechny distraktory.`
   + ` Jako pevná škála zahozeno: ${zahozeno}.`
   + ` Nález není důkaz chyby — u výčtových otázek bývá odlišný začátek v pořádku.`
   + ` (REPEATS=${REPEATS}, témat ${temata.length})`);

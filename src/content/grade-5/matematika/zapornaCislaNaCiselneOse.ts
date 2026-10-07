@@ -254,7 +254,10 @@ function ochladilo(): PracticeTask | null {
     [
       { value: `${Z(start + zmena)} °C`, why: "Posun šel nahoru. Ochlazení je pohyb po ose doleva, tedy k menším číslům." },
       { value: `${Z(-konec)} °C`, why: `Číslo sedí, znaménko ne. Ochlazení o ${zmena} °C je víc než ${pad(start, "DÍL")} k nule, takže teplota klesla až pod ni.` },
-      { value: "0 °C", why: `U nuly ochlazování neskončilo: z ${start} °C k nule stačí ${pad(start, "DÍL")}, ale ochlazení bylo o ${zmena} °C.` },
+      // Dřív „0 °C" — a klíč byl ve 100 % úloh JEDINÉ záporné číslo nabídky
+      // (2026-10-07, stejná vada jako u `zpetnaTeplota`). „−změna" je
+      // skutečná chyba (posun od nuly místo od odpolední teploty), vždy záporná.
+      { value: `${Z(-zmena)} °C`, why: `To by vyšlo, kdyby odpoledne byla nula. Odpoledne ale bylo ${start} °C, a o ${pad(zmena, "DÍL")} doleva se jde od tohoto čísla, ne od nuly.` },
     ],
     [
       `${kde} klesla teplota z ${start} °C dolů o ${zmena} °C. Kolik dílů stačí k nule a kolik jich pak ještě zbude pod ni?`,
