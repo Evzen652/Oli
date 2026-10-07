@@ -220,7 +220,7 @@ const POOL_L1: Polozka[] = [
     ],
     hints: [
       "Tři z nabídnutých nemocí způsobují viry. Najdi tu, která mezi ně nepatří.",
-      "Chřipka, rýma a dětské nemoci s vyrážkou jsou virové. Bakteriální nemoc z nabídky napadá hlavně plíce a dřív se proti ní povinně očkovalo všechny novorozence.",
+      "Chřipka, rýma a dětské nemoci s vyrážkou jsou virové. Bakteriální nemoc z nabídky napadá hlavně plíce a dřív proti ní povinně očkovali všechny novorozence.",
     ],
     explanation: "Tuberkulózu způsobuje bakterie a napadá hlavně plíce. Léčí se antibiotiky. Rýma, spalničky i chřipka jsou virové nemoci.",
   },
@@ -448,7 +448,7 @@ const POOL_L2: Polozka[] = [
     ],
     hints: [
       "Čím déle klíště saje, tím víc hrozí přenos nemoci. Jak ho bezpečně odstranit?",
-      "Klíště odstraň co nejdřív a tak, aby žádná jeho část nezůstala v kůži a nevypustilo do rány víc slin. Mastnota ho hned nezabije. Po odstranění zbývá ošetřit místo přisátí.",
+      "Klíště odstraň co nejdřív a tak, aby žádná jeho část nezůstala v kůži a aby klíště nevypustilo do rány víc slin. Mastnota ho hned nezabije. Po odstranění zbývá ošetřit místo přisátí.",
     ],
     explanation: "Klíště je potřeba co nejdřív vytáhnout celé (pinzetou nebo kartičkou), místo vydezinfikovat a několik týdnů sledovat. Mastnota ani trhání nepomáhají.",
   },

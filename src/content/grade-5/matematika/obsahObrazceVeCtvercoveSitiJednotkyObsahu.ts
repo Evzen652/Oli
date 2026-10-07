@@ -59,10 +59,10 @@ function sit(): PracticeTask | null {
     `Obdélník ve čtvercové síti má ${pad(r, "ŘÁDEK")} a v každém řádku ${pad(s, "ČTVEREČEK")}. Kolik čtverečků zabírá celkem?`,
     r * s,
     [
-      { value: r + s, why: `Počet řádků a počet čtverečků v řádku se sečetl. Každý řádek ale přidá celých ${pad(s, "ČTVEREČEK")}, ne jeden.` },
+      { value: r + s, why: `Počet řádků a počet čtverečků v řádku se sečetl. Každý řádek ale přidá ${s >= 2 && s <= 4 ? "celé" : "celých"} ${pad(s, "ČTVEREČEK")}, ne jeden.` },
       { value: 2 * (r + s), why: "Takhle vyjde obvod, tedy délka čáry kolem obrazce. Obsah je počet čtverečků uvnitř, i těch prostředních." },
-      { value: r * s - s, why: `Jeden řádek vypadl z počítání — řádků je ${r}, ne ${r - 1}.` },
-      { value: r * s + s, why: `Jeden řádek se připočítal navíc — řádků je ${r}, ne ${r + 1}.` },
+      { value: r * s - s, why: `Jeden řádek vypadl z počítání — ${r <= 4 ? "řádky jsou" : "řádků je"} ${r}, ne ${r - 1}.` },
+      { value: r * s + s, why: `Jeden řádek se připočítal navíc — ${r <= 4 ? "řádky jsou" : "řádků je"} ${r}, ne ${r + 1}.` },
     ],
     [
       `Jeden řádek pokrývá ${pad(s, "ČTVEREČEK")} a řádků je celkem ${r}. Sčítat je jeden po druhém by trvalo dlouho — která operace opakované sčítání zkrátí?`,

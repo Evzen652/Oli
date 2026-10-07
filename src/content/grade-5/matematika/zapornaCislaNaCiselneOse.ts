@@ -1,5 +1,8 @@
 import type { TopicMetadata, PracticeTask, TaskVisual } from "@/lib/types";
-import { pad } from "@/lib/czechGrammar";
+import { pad, zNebo } from "@/lib/czechGrammar";
+/** „z/ze" před teplotou či patrem; záporná čísla se čtou „minus…" → vždy „z". */
+const zP = (n: number): string => (n < 0 ? "z" : zNebo(n));
+const ZP = (n: number): string => (zP(n) === "ze" ? "Ze" : "Z");
 import { ciselnaUloha, pick, rnd, sada, shuffle } from "./_mat";
 
 // Přepsáno 2026-09-12 (inventura obsahu). Předchozí verze měla statické
@@ -63,7 +66,7 @@ function naOse(): PracticeTask | null {
     Z(-n),
     [
       { value: Z(n), why: `Číslo ${n} bez znaménka leží ${pad(n, "DÍL")} vpravo od nuly, tedy na opačnou stranu, než zadání říká.` },
-      { value: Z(-(n + 1)), why: `O jeden díl dál, než zadání říká. Od nuly se má odpočítat ${pad(n, "DÍL")}.` },
+      { value: Z(-(n + 1)), why: `O jeden díl dál, než zadání říká. Od nuly se ${n >= 2 && n <= 4 ? "mají" : "má"} odpočítat ${pad(n, "DÍL")}.` },
       { value: Z(-(n - 1)), why: `O jeden díl blíž nule. Počítej znovu — po prvním dílu od nuly doleva stojíš na čísle ${Z(-1)}.` },
     ],
     [
@@ -236,7 +239,7 @@ function oteplilo(): PracticeTask | null {
       `Oteplení je posun po číselné ose doprava (na teploměru nahoru), ochlazení doleva. Rozděl si proto cestu na dvě části: z ${Z(start)} k nule a odtud dál. Když je oteplení větší než vzdálenost k nule, teploměr přejde přes nulu do kladných čísel. Když je menší, zůstane teplota pod nulou, jen blíž k ní.`,
     ],
     [
-      `Z ${Z(start)} °C k nule: ${pad(-start, "DÍL")}.`,
+      `${ZP(start)} ${Z(start)} °C k nule: ${pad(-start, "DÍL")}.`,
       konec > 0
         ? `Z oteplení zbývá ${zmena} − ${-start} = ${konec}, teploměr tedy přešel přes nulu.`
         : `Oteplení o ${zmena} °C nestačí na ${pad(-start, "DÍL")} k nule, teplota zůstala pod nulou.`,
@@ -260,7 +263,7 @@ function ochladilo(): PracticeTask | null {
       { value: `${Z(-zmena)} °C`, why: `To by vyšlo, kdyby odpoledne byla nula. Odpoledne ale bylo ${start} °C, a o ${pad(zmena, "DÍL")} doleva se jde od tohoto čísla, ne od nuly.` },
     ],
     [
-      `${kde} klesla teplota z ${start} °C dolů o ${zmena} °C. Kolik dílů stačí k nule a kolik jich pak ještě zbude pod ni?`,
+      `${kde} klesla teplota ${zP(start)} ${start} °C dolů o ${zmena} °C. Kolik dílů stačí k nule a kolik jich pak ještě zbude pod ni?`,
       `Ochlazení je posun po číselné ose doleva. Nejdřív ujdeš cestu z ${start} °C k nule, a protože je ochlazení větší, zbytek pokračuje pod nulu do záporných čísel. Výsledek se zapisuje se znaménkem minus a říká, o kolik dílů leží vlevo od nuly.`,
     ],
     [
@@ -283,7 +286,7 @@ function patra(): PracticeTask | null {
       { value: Z(konec + 1), why: "Přízemí má číslo 0 a cestou nahoru se počítá jako jedno z projetých pater." },
     ],
     [
-      `Z patra ${Z(start)} je do přízemí, které má číslo 0, jen kousek. Kolik pater to je a kolik z těch ${pad(nahoru, "PATRO")} pak ještě zbude?`,
+      `Z patra ${Z(start)} je do přízemí, které má číslo 0, jen kousek. Kolik pater to je a kolik z těch ${nahoru} pater pak ještě zbude?`,
       `Patra pod zemí se značí zápornými čísly, přízemí je nula a patra nad zemí kladná čísla. Jízda nahoru je posun po číselné ose doprava. Rozděl si ji proto na dvě části: z patra ${Z(start)} do přízemí a odtud dál nahoru. Přízemí se přitom počítá jako jedno patro na cestě, ne jako mezera navíc.`,
     ],
     [
@@ -311,7 +314,7 @@ function vzdalenostPresNulu(): PracticeTask | null {
       `Když leží jedno číslo vlevo a druhé vpravo od nuly, rozděl si cestu na dvě části a ty pak sečti. Od ${Z(a)} k nule je tolik dílů, kolik říká číslice za minusem, a od nuly k ${b} tolik, kolik říká samo číslo. Pozor na odečtení obou číslic bez ohledu na minus — tím bys dostal jen rozdíl vzdáleností, ne celou cestu.`,
     ],
     [
-      `Z ${Z(a)} k nule: ${pad(-a, "DÍL")}.`,
+      `${ZP(a)} ${Z(a)} k nule: ${pad(-a, "DÍL")}.`,
       `Z nuly k ${b}: ${pad(b, "DÍL")}.`,
       `Celá cesta: ${-a} + ${b} = ${d}, tedy ${pad(d, "DÍL")}.`,
     ],
@@ -326,7 +329,7 @@ function zpetnaTeplota(): PracticeTask | null {
     `${Z(rano)} °C`,
     [
       { value: `${Z(konec + zmena)} °C`, why: `Oteplení se přičetlo, místo aby se odečetlo. Ráno bylo chladněji než v poledne, takže se od ${Z(konec)} °C jde po ose zpátky doleva.` },
-      { value: `${Z(-rano)} °C`, why: `Číslo sedí, znaménko ne: posun o ${pad(zmena, "DÍL")} doleva z ${Z(konec)} končí vlevo od nuly.` },
+      { value: `${Z(-rano)} °C`, why: `Číslo sedí, znaménko ne: posun o ${pad(zmena, "DÍL")} doleva ${zP(konec)} ${Z(konec)} končí vlevo od nuly.` },
       // Dřív tu bylo „0 °C" — a klíč pak býval JEDINÉ záporné číslo v nabídce,
       // takže stačilo vybrat to s minusem (zjištěno 2026-10-07 přes
       // `PO_TYPECH=1 npm run check:length`). „−změna" je skutečná chyba
@@ -337,12 +340,12 @@ function zpetnaTeplota(): PracticeTask | null {
       },
     ],
     [
-      `Ráno bylo chladněji než v poledne, takže se z ${Z(konec)} °C musíš po ose vrátit o ${pad(zmena, "DÍL")}. Kterým směrem?`,
+      `Ráno bylo chladněji než v poledne, takže se ${zP(konec)} ${Z(konec)} °C musíš po ose vrátit o ${pad(zmena, "DÍL")}. Kterým směrem?`,
       `Když víš, o kolik teplota stoupla, a znáš výsledek, hledáš začátek — to znamená jít po ose obráceně, tedy doleva. Z ${Z(konec)} °C odpočítej ${pad(zmena, "DÍL")} zpátky${konec > 0 ? ": nejdřív k nule a pak dál pod ni, protože cesta k nule sama tolik dílů nezabere" : ", a protože poledne bylo pod nulou, celá cesta zůstane vlevo od ní"}.`,
     ],
     [
       `Zpětný posun je doleva o ${pad(zmena, "DÍL")}.`,
-      konec > 0 ? `Z ${Z(konec)} °C nejdřív k nule a pak ještě dál pod nulu.` : `Poledne bylo pod nulou, takže se jde jen dál doleva.`,
+      konec > 0 ? `${ZP(konec)} ${Z(konec)} °C nejdřív k nule a pak ještě dál pod nulu.` : `Poledne bylo pod nulou, takže se jde jen dál doleva.`,
       `Ráno bylo ${Z(rano)} °C. Kontrola: ${Z(rano)} + ${zmena} = ${Z(konec)} ✓`,
     ],
   )), { kind: "thermometer", readings: [konec] });

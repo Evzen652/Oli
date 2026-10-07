@@ -520,7 +520,7 @@ const ZNAKY_OTAZKY: ZnakOtazka[] = [
     distractors: [
       {
         value: "do inzerátu na ztraceného psa",
-        why: "Čtenář inzerátu potřebuje psa rychle poznat podle viditelných znaků. Tam se hodí prostý popis — termínům a mírám by nepomohly.",
+        why: "Čtenář inzerátu potřebuje psa rychle poznat podle viditelných znaků. Tam se hodí prostý popis — termíny a míry by mu nepomohly.",
       },
       {
         value: "do básně o jarní louce",

@@ -352,7 +352,7 @@ const DIFUZE: Polozka[] = [
       },
     ],
     h0: "Pokus trval pět let, a přesto se něco stalo. Zeptej se, co se v pevném kovu vůbec může hýbat.",
-    h1: "Částice se pohybují v každém skupenství, liší se jen tím jak. V plynu létají volně, v kapalině se posouvají kolem sebe a v pevné látce kmitají kolem svých stálých míst. Právě proto je difúze v pevné látce nejpomalejší ze všech — ale nezastaví se, jen potřebuje mnohem víc času.",
+    h1: "Částice se pohybují v každém skupenství, liší se jen tím, jak. V plynu létají volně, v kapalině se posouvají kolem sebe a v pevné látce kmitají kolem svých stálých míst. Právě proto je difúze v pevné látce nejpomalejší ze všech — ale nezastaví se, jen potřebuje mnohem víc času.",
     vysvetleni:
       "Difúze probíhá ve všech třech skupenstvích, nejrychleji v plynech a nejpomaleji v pevných látkách. Tenhle pokus se skutečně dělal a je jedním z důkazů, že částice pevné látky nestojí na místě.",
   },

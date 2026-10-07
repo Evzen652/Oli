@@ -6,6 +6,14 @@ import { urceni, type Kategorie, type Polozka } from "../_urceni";
 // jaký je to text: L1 zřetelné ukázky · L2 ukázky s méně nápadnými znaky
 // · L3 zrádné případy (naučný text o zvířeti × pohádka o zvířeti, zpráva × povídka).
 
+/**
+ * „ukázka" předřaď jen tam, kde `klic` začíná slovesem („ukázka radí…").
+ * Klíč s vlastním podmětem („pisatel říká…", „je tu přirovnání") by jinak
+ * měl dva podměty — „ukázka pisatel říká". Opraveno 2026-10-07.
+ */
+const sUkazkou = (klic: string): string =>
+  /^(stručně |věcně )?(líčí|oznamuje|radí|uvádí|vede|vyjmenovává|vysvětluje|začíná|popisuje)(?=[\s,]|$)/.test(klic) ? `ukázka ${klic}` : klic;
+
 const TEXTY: Kategorie[] = [
   { nazev: "umělecký text", znak: "vymyšlený příběh nebo báseň, která má zaujmout a vyvolat pocity (pohádka, povídka, báseň)." },
   { nazev: "naučný text", znak: "věcně vysvětluje, jak něco je nebo funguje (učebnice, encyklopedie)." },
@@ -17,7 +25,7 @@ const P = (uroven: 1 | 2 | 3, ukazka: string, kategorie: string, klic: string, p
   ({ uroven, slovo: ukazka, veta: ukazka, kategorie, klic, proc });
 
 const BANKA: Polozka[] = [
-  P(1, "„Byl jednou jeden král a ten měl tři dcery…“", UM, "začíná jako pohádka a je vymyšlený", "Vymyšlený příběh s pohádkovým začátkem — umělecký text."),
+  P(1, "„Byl jednou jeden král a ten měl tři dcery…“", UM, "začíná jako pohádka a je vymyšlená", "Vymyšlený příběh s pohádkovým začátkem — umělecký text."),
   P(1, "„Ježek je savec. Živí se hmyzem a žížalami a v zimě spí.“", NA, "věcně popisuje, jak ježek žije", "Věcné informace o zvířeti — naučný text."),
   P(1, "„Včera odpoledne hasiči v Brně uhasili požár skladu. Nikdo nebyl zraněn.“", ZP, "oznamuje, co se kdy a kde skutečně stalo", "Skutečná událost s místem a časem — zpráva."),
   P(1, "„Nejprve rozšlehej vejce, potom přidej mouku a nakonec mléko.“", NV, "radí po krocích, jak něco udělat", "Kroky za sebou — návod (recept)."),
@@ -64,8 +72,8 @@ function gen(level: number): PracticeTask[] {
   return urceni(BANKA, TEXTY, level, (p) => ({
     question: `Jaký je to text? ${p.veta}`,
     hints: [
-      `Ukázka začíná slovy ${p.veta.split(" ").slice(0, 3).join(" ")}… Chce něco vysvětlit, oznámit, poradit, nebo pobavit příběhem?`,
-      `Pomůže tohle: ukázka ${p.klic}.`,
+      `Ukázka začíná slovy „${p.veta.replace(/^„/, "").split(" ").slice(0, 3).join(" ")}…“. Chce něco vysvětlit, oznámit, poradit, nebo pobavit příběhem?`,
+      `Pomůže tohle: ${sUkazkou(p.klic)}.`,
     ],
   }));
 }

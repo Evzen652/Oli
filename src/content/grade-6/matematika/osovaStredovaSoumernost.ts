@@ -359,7 +359,7 @@ function genL1Osy(u: Utvar): PracticeTask | null {
       ],
       explanation: u.os === 0 && u.bezOs
         ? u.bezOs
-        : `Osa souměrnosti je přímka, podél které jde útvar přeložit tak, aby obě části na sebe přesně padly. Fungují tyto přehyby: ${u.prehyby}. Počet os souměrnosti je tedy ${cis(u.os)}.`,
+        : `Osa souměrnosti je přímka, podél které jde útvar přeložit tak, aby obě části na sebe přesně padly. ${u.prehyby.startsWith("jen ") ? `Funguje jen tento přehyb: ${u.prehyby.slice(4)}` : `Fungují tyto přehyby: ${u.prehyby}`}. Počet os souměrnosti je tedy ${cis(u.os)}.`,
     },
   );
 }
@@ -779,7 +779,7 @@ function genL2Vzdalenost(k: KontextVzd): PracticeTask | null {
       Number.isInteger(d)
         ? {
           value: f(d + 2),
-          why: `K ${cis(d)} se přičetlo 2 místo toho, aby se vzdálenost vzala dvakrát. Bod je ${k.od} ${f(d)} a obraz také ${f(d)}, dohromady tedy ${cis(d)} + ${cis(d)}.`,
+          why: `${d === 4 ? "Ke" : "K"} ${cis(d)} se přičetlo 2 místo toho, aby se vzdálenost vzala dvakrát. Bod je ${k.od} ${f(d)} a obraz také ${f(d)}, dohromady tedy ${cis(d)} + ${cis(d)}.`,
         }
         : {
           // Typická chyba: zdvojnásobí se jen celá část, desetiny zůstanou.

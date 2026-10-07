@@ -163,14 +163,14 @@ const L1: Uloha[] = [
     key: "Attila",
     d: [
       ["Odoakar", "Odoakar byl germánský vůdce, který roku 476 sesadil posledního císaře. Huny nevedl."],
-      ["Hannibal", "Hannibal byl kartáginský vojevůdce z Punských válek, o víc než šest set let dřív."],
+      ["Hannibal", "Hannibal byl kartáginský vojevůdce z punských válek, o víc než šest set let dřív."],
       ["Theodosius I.", "Theodosius I. byl římský císař. Proti nepřátelům Říma naopak bojoval."],
     ],
     hints: [
       "Hledej vůdce kočovníků z východu, ne Germána ani Římana.",
       "Germán sesadil císaře, Říman byl sám císař a Kartáginec žil o staletí dřív. Zbývá obávaný jezdec, kterému se později začalo říkat „bič boží“.",
     ],
-    explanation: "Hunům vládl v 5. století Attila, kterému se později začalo říkat „bič boží“. Pustošil římské území, ale Řím nedobyl a zemřel dřív, než západní říše zanikla. Odoakar byl Germán a Hannibal žil v době Punských válek.",
+    explanation: "Hunům vládl v 5. století Attila, kterému se později začalo říkat „bič boží“. Pustošil římské území, ale Řím nedobyl a zemřel dřív, než západní říše zanikla. Odoakar byl Germán a Hannibal žil v době punských válek.",
   },
   {
     q: "Koho Římané nazývali barbary?",
@@ -270,7 +270,7 @@ function stoletiUloha(q: string, rok: number, souvislost: string): Uloha {
     d: [
       [`${stovky}. století`, `Vzal jsi jen počet celých stovek (${stovky}). Století je o jedno vyšší.`],
       [`${c + 1}. století`, `To je o jedno století víc. ${c}. století trvá od roku ${(c - 1) * 100 + 1} do roku ${c * 100}.`],
-      [`${c}. století př. n. l.`, `Spletl sis éru. ${souvislost} se stalo v našem letopočtu, ne před ním.`],
+      [`${c}. století př. n. l.`, `Spletl sis éru. ${souvislost} — to se stalo v našem letopočtu, ne před ním.`],
     ],
     hints: [
       `Rok ${rok}: kolik celých stovek obsahuje? Z toho počtu pak století určíš.`,
@@ -296,7 +296,7 @@ function rozdilUloha(q: string, pozdejsi: number, drivejsi: number, chyby: [numb
       `Roky ${drivejsi} a ${pozdejsi} jsou oba v našem letopočtu. Máš je sčítat, nebo odčítat?`,
       `Ve stejné éře se doba mezi událostmi počítá odečtením: od roku ${pozdejsi} odečti rok ${drivejsi}. Rok 0 tu nehraje roli, protože se nepřechází přes přelom letopočtu. Počítej pozorně pod sebou a hlídej půjčování.`,
     ],
-    explanation: `Obě události jsou v našem letopočtu, proto se roky odečítají: ${pozdejsi} − ${drivejsi} = ${ans}. Mezi nimi tedy uplynulo ${pad(ans, "ROK")}.`,
+    explanation: `Obě události jsou v našem letopočtu, proto se roky odečítají: ${pozdejsi} − ${drivejsi} = ${ans}. Mezi nimi tedy ${ans === 1 ? "uplynul" : ans <= 4 ? "uplynuly" : "uplynulo"} ${pad(ans, "ROK")}.`,
     steps: [`Pozdější rok minus dřívější: ${pozdejsi} − ${drivejsi}.`, `${pozdejsi} − ${drivejsi} = ${ans}.`],
   };
 }
@@ -387,7 +387,7 @@ const L2: Uloha[] = [
     key: "Utíkaly a pronikaly přes hranice na území říše",
     d: [
       ["Spojily se s Římany a Huny společně porazily", "Germáni a Římané Huny hned neporazili. Kmeny se naopak hrnuly do říše, která je nedokázala zastavit."],
-      ["Odtáhly na sever a od říše se vzdálily", "Na severu už Germáni žili. Před útokem z východu se hnuly na jih a západ, přímo do říše."],
+      ["Odtáhly na sever a od říše se vzdálily", "Na severu už Germáni žili. Před útokem z východu se hnuli na jih a západ, přímo do říše."],
       ["Spojily se s Huny a společně táhly na Persii", "Na Persii Germáni netáhli. Před Huny se velké skupiny Germánů hnaly přes Dunaj a Rýn do říše."],
     ],
     hints: [
@@ -679,10 +679,10 @@ const L3: Uloha[] = [
     d: [
       ["Punské války Řím prohrál, ale až dlouho po roce 476", "Punské války proběhly ve 3. a 2. století př. n. l. a Řím v nich porazil Kartágo."],
       ["Punské války vedl Řím proti Hunům a Germánům", "Punské války vedl Řím proti Kartágu. S Huny a Germány se střetl až o staletí později."],
-      ["Punské války jsou jen pověst, o které nemáme prameny", "O Punských válkách máme spoustu pramenů, například dílo dějepisců. Je to skutečná historie."],
+      ["Punské války jsou jen pověst, o které nemáme prameny", "O punských válkách máme spoustu pramenů, například dílo dějepisců. Je to skutečná historie."],
     ],
     hints: [
-      "Ověř dvě věci: kdy Punské války proběhly a kdo v nich zvítězil.",
+      "Ověř dvě věci: kdy punské války proběhly a kdo v nich zvítězil.",
       "Punské války vedl Řím proti Kartágu v době republiky, dávno před naším letopočtem. Zjisti, kdo z nich vyšel jako pán Středomoří, a spočítej, jak daleko ta doba leží od roku 476.",
     ],
     explanation: "Punské války proti Kartágu Řím vyhrál ve 3. a 2. století př. n. l. a stal se díky nim pánem Středomoří. Od nich uplynulo do roku 476 víc než šest set let, příčinou pádu tedy být nemohly.",

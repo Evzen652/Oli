@@ -215,7 +215,7 @@ const L2: PracticeTask[] = [
     { value: "ve stáří se začíná chodit do školy", why: "Do školy chodí děti." },
     { value: "ve stáří člověk znovu dospívá", why: "Dospívání je jen jednou." },
   ], {
-    hints: ["Co ti mohou naučit babička nebo dědeček?", "Babičky a dědečkové mají za sebou dlouhý život a mnoho zkušeností."],
+    hints: ["Co tě mohou naučit babička nebo dědeček?", "Babičky a dědečkové mají za sebou dlouhý život a mnoho zkušeností."],
     explanation: "Starší lidé předávají zkušenosti a moudrost mladším.",
   }),
 ];
@@ -243,7 +243,7 @@ const L3: PracticeTask[] = [
     { value: "řeknu jim, že si za to můžou sami", why: "Za akné nikdo nemůže." },
   ], {
     hints: ["Jak by ses cítil nebo cítila na jejich místě?", "Akné má v pubertě mnoho lidí; posměch jim jen ublíží."],
-    explanation: "Akné je v pubertě běžné — je správné se zastat.",
+    explanation: "Akné je v pubertě běžné — je správné se ho zastat.",
   }),
   choice("Proč dospívající potřebují víc soukromí?", "stávají se samostatnějšími a mění se jim tělo", [
     { value: "přestanou mít rádi svoji rodinu", why: "Rodinu mají rádi dál." },

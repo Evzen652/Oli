@@ -314,7 +314,7 @@ const plodinaVlhke = (): Fakt => ({
     "Rozhodni, jaké podnebí popisuje zadání: horko, hodně vody, žádná zima. Pak porovnej s tím, co která plodina potřebuje.",
     "Hledej plodinu, která miluje stálé teplo i vláhu. Plodiny suchých oblastí nebo mírného pásu takové podmínky nesnesou.",
   ],
-  explanation: "Ve vlhkých tropech je celý rok horko a hodně srážek, což se daří kakaovníku i banánovníku. Datlovník patří do oáz, olivovník do suchého Středomoří a pšenice do mírného pásu.",
+  explanation: "Ve vlhkých tropech je celý rok horko a hodně srážek, a proto se tam daří kakaovníku i banánovníku. Datlovník patří do oáz, olivovník do suchého Středomoří a pšenice do mírného pásu.",
 });
 
 const plodinaSavana = (): Fakt => ({
@@ -679,7 +679,7 @@ const BANKA_L3: Fakt[] = [
     ],
     hints: [
       "Hledej opatření, které půdu chrání a zároveň nezvyšuje spotřebu vody.",
-      "Půdu drží vegetace. Zvaž, které možnosti vegetaci přidávají a které ji ničí nebo stěžují.",
+      "Půdu drží vegetace. Zvaž, které možnosti vegetaci přidávají a které ji ničí nebo jí ztěžují růst.",
     ],
     explanation: "Vysychání krajiny zpomalí stromy a keře, které drží půdu, menší počet zvířat na pastvinách a šetření vodou. Kácení, plodiny náročné na vodu i čekání na déšť problém nevyřeší.",
   },

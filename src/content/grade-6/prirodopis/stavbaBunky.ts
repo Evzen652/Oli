@@ -47,7 +47,7 @@ const L1_SOUCAST: Polozka[] = [
     q: "Která součást buňky řídí její činnost a nese dědičné informace?",
     correct: JADRO,
     distractors: [
-      { value: MITO, why: "Mitochondrie z živin uvolňují energii. Činnost buňky neřídí, řídicím centrem s dědičnými informacemi je jádro." },
+      { value: MITO, why: "Mitochondrie ze živin uvolňují energii. Činnost buňky neřídí, řídicím centrem s dědičnými informacemi je jádro." },
       { value: CYTO, why: "V cytoplazmě probíhá většina buněčných dějů, ale neřídí je. Řídicí centrum buňky je jádro." },
       { value: VAKUOLA, why: "Vakuola uchovává buněčnou šťávu. Dědičné informace v ní uložené nejsou." },
     ],
@@ -76,7 +76,7 @@ const L1_SOUCAST: Polozka[] = [
     correct: CHLORO,
     distractors: [
       { value: "Chlorofyl", why: "Chlorofyl je barvivo, ne součást buňky. Je uložený uvnitř zelených tělísek, na která se otázka ptá." },
-      { value: MITO, why: "Mitochondrie z živin energii uvolňují, nevyrábějí je ze světla. A zelené nejsou." },
+      { value: MITO, why: "Mitochondrie ze živin energii uvolňují, nevyrábějí je ze světla. A zelené nejsou." },
       { value: VAKUOLA, why: "Vakuola je naplněná buněčnou šťávou. Zelené barvivo v ní uložené není." },
     ],
     hints: [
@@ -103,7 +103,7 @@ const L1_SOUCAST: Polozka[] = [
     q: "Která součást buňky získává ze živin energii při buněčném dýchání?",
     correct: MITO,
     distractors: [
-      { value: CHLORO, why: "Chloroplasty pomocí světla živiny vyrábějí. Energii z živin uvolňují mitochondrie." },
+      { value: CHLORO, why: "Chloroplasty pomocí světla živiny vyrábějí. Energii ze živin uvolňují mitochondrie." },
       { value: JADRO, why: "Jádro řídí činnost buňky, ale energii nevyrábí." },
       { value: CYTO, why: "V cytoplazmě leží součásti buňky. Dýchání probíhá v drobných tělískách, ne v celé hmotě buňky." },
     ],
@@ -111,7 +111,7 @@ const L1_SOUCAST: Polozka[] = [
       "Pozor na záměnu: jedna součást živiny vyrábí, jiná z nich energii uvolňuje. Ptáme se na tu druhou.",
       "Dýchání probíhá v rostlinných i živočišných buňkách, takže hledáš součást, kterou mají oba typy. Zelená tělíska mají jen rostliny, a proto to nebudou ona.",
     ],
-    explanation: "Mitochondrie jsou drobná tělíska, ve kterých probíhá buněčné dýchání: z živin se uvolní energie pro buňku. Mají je rostlinné i živočišné buňky. Chloroplasty živiny vyrábějí, ne rozkládají.",
+    explanation: "Mitochondrie jsou drobná tělíska, ve kterých probíhá buněčné dýchání: ze živin se uvolní energie pro buňku. Mají je rostlinné i živočišné buňky. Chloroplasty živiny vyrábějí, ne rozkládají.",
   },
   {
     q: "Která součást buňky je pevný obal z celulózy, který mají jen rostlinné buňky?",
@@ -162,7 +162,7 @@ const F_STENA = "Zpevňuje buňku a dává jí stálý tvar";
 const F_JADRO = "Řídí činnost buňky a nese dědičné informace";
 const F_CHLORO = "Vyrábějí pomocí světla živiny pro rostlinu";
 const F_VAKUOLA = "Uchovává buněčnou šťávu a drží buňku napjatou";
-const F_MITO = "Uvolňují z živin energii pro činnost buňky";
+const F_MITO = "Uvolňují ze živin energii pro činnost buňky";
 const F_MEMBRANA = "Odděluje buňku od okolí a propouští do ní látky";
 const F_CYTO = "Vyplňuje buňku a probíhá v ní většina dějů";
 
@@ -185,7 +185,7 @@ const L1_FUNKCE: Polozka[] = [
     q: "K čemu slouží jádro buňky?",
     correct: F_JADRO,
     distractors: [
-      { value: "Uvolňuje z živin energii pro buňku", why: "Energii z živin uvolňují mitochondrie. Jádro buňku řídí." },
+      { value: "Uvolňuje ze živin energii pro buňku", why: "Energii ze živin uvolňují mitochondrie. Jádro buňku řídí." },
       { value: "Uchovává v buňce zásobu vody a šťávy", why: "Vodu a buněčnou šťávu uchovává vakuola." },
       { value: "Zpevňuje buňku zevnitř jako kostra", why: "Jádro buňku nezpevňuje. Rostlinnou buňku zpevňuje stěna a napjatá vakuola." },
     ],
@@ -199,7 +199,7 @@ const L1_FUNKCE: Polozka[] = [
     q: "K čemu slouží chloroplasty?",
     correct: F_CHLORO,
     distractors: [
-      { value: "Uvolňují z živin energii při dýchání", why: "Dýchání probíhá v mitochondriích, a to v rostlinných i živočišných buňkách. Chloroplasty živiny vyrábějí." },
+      { value: "Uvolňují ze živin energii při dýchání", why: "Dýchání probíhá v mitochondriích, a to v rostlinných i živočišných buňkách. Chloroplasty živiny vyrábějí." },
       { value: "Nesou dědičné informace rostliny", why: "Dědičné informace jsou uložené hlavně v jádru. Chloroplasty vyrábějí živiny." },
       { value: "Zpevňují buňku a dávají jí tvar", why: "Rostlinnou buňku zpevňuje stěna. Chloroplasty jsou drobná tělíska uvnitř." },
     ],
@@ -207,7 +207,7 @@ const L1_FUNKCE: Polozka[] = [
       "Chloroplasty jsou zelená tělíska. Kde v rostlině jsou a co tam rostlina dělá se světlem?",
       "Rostlina si potravu nesežene, vyrábí si ji sama z vody a oxidu uhličitého. Potřebuje k tomu světlo, a proto jsou zelená tělíska hlavně v listech.",
     ],
-    explanation: "V chloroplastech probíhá fotosyntéza: rostlina v nich pomocí světla vyrábí živiny. Energii z živin pak uvolňují mitochondrie, dědičné informace nese jádro.",
+    explanation: "V chloroplastech probíhá fotosyntéza: rostlina v nich pomocí světla vyrábí živiny. Energii ze živin pak uvolňují mitochondrie, dědičné informace nese jádro.",
   },
   {
     q: "K čemu slouží vakuola v rostlinné buňce?",
@@ -233,16 +233,16 @@ const L1_FUNKCE: Polozka[] = [
     ],
     hints: [
       "Mitochondrie mají rostlinné i živočišné buňky. Co potřebuje každá buňka, aby mohla pracovat?",
-      "Buňka potřebuje energii na všechno, co dělá. Tu získá z živin při buněčném dýchání. Výroba živin ze světla je jiný děj, který mají jen zelené rostliny.",
+      "Buňka potřebuje energii na všechno, co dělá. Tu získá ze živin při buněčném dýchání. Výroba živin ze světla je jiný děj, který mají jen zelené rostliny.",
     ],
-    explanation: "V mitochondriích probíhá buněčné dýchání: z živin se uvolňuje energie pro činnost buňky. Mají je rostlinné i živočišné buňky. Živiny ze světla vyrábějí chloroplasty.",
+    explanation: "V mitochondriích probíhá buněčné dýchání: ze živin se uvolňuje energie pro činnost buňky. Mají je rostlinné i živočišné buňky. Živiny ze světla vyrábějí chloroplasty.",
   },
   {
     q: "K čemu slouží cytoplazmatická membrána?",
     correct: F_MEMBRANA,
     distractors: [
       { value: "Zpevňuje buňku a dává jí pevný tvar", why: "To je úkol buněčné stěny, kterou mají jen rostliny. Membrána je tenká a pružná." },
-      { value: "Uvolňuje z živin energii pro buňku", why: "Energii z živin uvolňují mitochondrie." },
+      { value: "Uvolňuje ze živin energii pro buňku", why: "Energii ze živin uvolňují mitochondrie." },
       { value: "Uchovává zásobu vody a buněčné šťávy", why: "Buněčnou šťávu uchovává vakuola." },
     ],
     hints: [
@@ -269,7 +269,7 @@ const L1_FUNKCE: Polozka[] = [
     q: "K čemu slouží zelené barvivo chlorofyl?",
     correct: "Zachycuje světlo potřebné k výrobě živin",
     distractors: [
-      { value: "Uvolňuje z živin energii při dýchání", why: "Dýchání probíhá v mitochondriích a chlorofyl k němu není potřeba. Mají ho jen zelené části rostlin." },
+      { value: "Uvolňuje ze živin energii při dýchání", why: "Dýchání probíhá v mitochondriích a chlorofyl k němu není potřeba. Mají ho jen zelené části rostlin." },
       { value: "Láká svou barvou hmyz k opylení", why: "Hmyz lákají barevné květy. Zelený chlorofyl slouží k fotosyntéze." },
       { value: "Chrání list před spálením sluncem", why: "Chlorofyl světlo naopak využívá. Bez světla by rostlina nemohla vyrábět živiny." },
     ],
@@ -344,7 +344,7 @@ const ROLE: Record<string, string> = {
   [JADRO]: "Jádro řídí činnost buňky a mají ho rostlinné i živočišné buňky",
   [MEMBRANA]: "Cytoplazmatická membrána propouští látky dovnitř a ven a má ji každá buňka",
   [CYTO]: "Cytoplazma vyplňuje vnitřek buňky a má ji každá buňka",
-  [MITO]: "Mitochondrie uvolňují z živin energii a mají je rostlinné i živočišné buňky",
+  [MITO]: "Mitochondrie uvolňují ze živin energii a mají je rostlinné i živočišné buňky",
 };
 
 function genL2b(p: Bunka, a: string, i: number): Polozka {
@@ -540,7 +540,7 @@ const L3_PREPARAT: Polozka[] = [
       { value: P_MRKEV, why: "Mitochondrie mají obě buňky, o typu nerozhodují. Buňky kořene mrkve by měly stěnu." },
     ],
     hints: [
-      "Mitochondrie mají všechny buňky. Který znak rozhoduje, a co prozrazuje, že jich je hodně?",
+      "Mitochondrie mají všechny buňky. Který znak rozhoduje a co prozrazuje, že jich je hodně?",
       "Bez stěny a velké vakuoly je buňka živočišná. Hodně tělísek pro dýchání potřebuje buňka, která spotřebuje hodně energie, třeba při pohybu.",
     ],
     explanation: "Bez stěny a velké vakuoly jde o živočišnou buňku. Mnoho mitochondrií potřebují buňky, které spotřebují hodně energie — svalové. Mech, cibule a mrkev jsou rostliny se stěnou.",
@@ -552,7 +552,7 @@ const L3_CHYBI: Polozka[] = [
     q: "Buňce listu by chyběly chloroplasty. Co by nemohla dělat?",
     correct: "Vyrábět živiny pomocí světla",
     distractors: [
-      { value: "Dýchat a získávat z živin energii", why: "Dýchání probíhá v mitochondriích, ty by buňce zůstaly. Chloroplasty vyrábějí živiny." },
+      { value: "Dýchat a získávat ze živin energii", why: "Dýchání probíhá v mitochondriích, ty by buňce zůstaly. Chloroplasty vyrábějí živiny." },
       { value: "Přijímat vodu a látky z okolí", why: "Látky propouští membrána, ta by buňce zůstala." },
       { value: "Řídit svou činnost a dělit se", why: "Činnost buňky řídí jádro, ne chloroplasty." },
     ],
@@ -580,7 +580,7 @@ const L3_CHYBI: Polozka[] = [
     q: "Kdyby buňce kůže chybělo jádro, co by nedokázala?",
     correct: "Rozdělit se na nové buňky",
     distractors: [
-      { value: "Uvolnit z živin energii", why: "Energii uvolňují mitochondrie. Jádro buňku řídí a při dělení předává dědičné informace." },
+      { value: "Uvolnit ze živin energii", why: "Energii uvolňují mitochondrie. Jádro buňku řídí a při dělení předává dědičné informace." },
       { value: "Přijímat vodu a látky z okolí", why: "Látky do buňky propouští membrána, a ta by buňce zůstala." },
       { value: "Oddělit se od okolí tenkou blánou", why: "Tenká blána na povrchu je cytoplazmatická membrána. Ta by buňce zůstala i bez jádra." },
     ],
@@ -592,17 +592,17 @@ const L3_CHYBI: Polozka[] = [
   },
   {
     q: "Kdyby svalové buňce chyběly mitochondrie, co by nemohla dělat?",
-    correct: "Získávat z živin energii k pohybu",
+    correct: "Získávat ze živin energii k pohybu",
     distractors: [
-      { value: "Vyrábět si živiny pomocí světla", why: "To svalová buňka neumí nikdy, nemá chloroplasty. Mitochondrie energii z živin uvolňují, nevyrábějí živiny." },
+      { value: "Vyrábět si živiny pomocí světla", why: "To svalová buňka neumí nikdy, nemá chloroplasty. Mitochondrie energii ze živin uvolňují, nevyrábějí živiny." },
       { value: "Předávat dědičné informace dál", why: "Dědičné informace nese jádro, ne mitochondrie." },
       { value: "Propouštět do sebe vodu a látky", why: "Látky propouští membrána, ta by buňce zůstala." },
     ],
     hints: [
       "Co v mitochondriích probíhá a proč to sval potřebuje?",
-      "Sval při každém pohybu spotřebuje energii. Zjisti, kterou součást buňky zajišťuje uvolnění energie z živin, a vyřaď činnosti, které patří jiným součástem.",
+      "Sval při každém pohybu spotřebuje energii. Zjisti, která součást buňky zajišťuje uvolnění energie ze živin, a vyřaď činnosti, které patří jiným součástem.",
     ],
-    explanation: "V mitochondriích probíhá buněčné dýchání, při kterém se z živin uvolní energie. Bez nich by sval neměl energii k pohybu. Dědičnost nese jádro a látky propouští membrána.",
+    explanation: "V mitochondriích probíhá buněčné dýchání, při kterém se ze živin uvolní energie. Bez nich by sval neměl energii k pohybu. Dědičnost nese jádro a látky propouští membrána.",
   },
   {
     q: "Kdyby rostlinným buňkám chyběla buněčná stěna, co by se stalo se stonkem?",
@@ -673,9 +673,9 @@ const L3_ORGANISMUS: Polozka[] = [
     ],
     hints: [
       "Co mitochondrie dělají? Která z obou buněk toho potřebuje víc?",
-      "Kůže tělo hlavně chrání, sval se neustále stahuje. Pro každý stah je potřeba energie, kterou buňka uvolní z živin.",
+      "Kůže tělo hlavně chrání, sval se neustále stahuje. Pro každý stah je potřeba energie, kterou buňka uvolní ze živin.",
     ],
-    explanation: "V mitochondriích se z živin uvolňuje energie. Svalové buňky ji spotřebují hodně při pohybu, a proto mají mitochondrií mnohem víc než buňky kůže.",
+    explanation: "V mitochondriích se ze živin uvolňuje energie. Svalové buňky ji spotřebují hodně při pohybu, a proto mají mitochondrií mnohem víc než buňky kůže.",
   },
   {
     q: "Proč se zvadlá rostlina po zalití za pár hodin zase napřímí?",

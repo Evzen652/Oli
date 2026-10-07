@@ -169,7 +169,7 @@ const L2: PracticeTask[] = [
     { value: "ztrácejí hlasivky", why: "Hlasivky se naopak prodlužují." },
   ], {
     hints: ["Kde vzniká hlas?", "Orgán s hlasivkami se v pubertě zvětší a hlas je pak hlubší."],
-    explanation: "Hrtan a hlasivky rostou, a hlas se prohloubí.",
+    explanation: "Hrtan a hlasivky rostou a hlas se prohloubí.",
   }),
   choice("Proč v pubertě rosteme rychleji?", "hormony urychlí růst kostí", [
     { value: "víc sedíme", why: "Sezení růst neurychlí." },

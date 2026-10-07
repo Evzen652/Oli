@@ -117,13 +117,13 @@ function celkem(): PracticeTask | null {
   const s = d.hodnoty.reduce((x, y) => x + y, 0);
   const vynechana = pick(d.hodnoty);
   return sDaty(ciselnaUloha(`${zadani(d)} ${d.t.celkem}`, s, [
-    { value: s - vynechana, why: `Jedna hodnota (${vynechana}) se nezapočítala. Sečti všech ${d.n === 4 ? "čtyř" : "pět"} čísel.` },
+    { value: s - vynechana, why: `Jedna hodnota (${vynechana}) se nezapočítala. Sečti ${d.n === 4 ? "všechna čtyři čísla" : "všech pět čísel"}el.` },
     { value: Math.max(...d.hodnoty) * d.n, why: "Nejvyšší hodnota se vynásobila počtem položek. Každá položka má ale jiné číslo." },
     { value: s + 10, why: "Chyba při sčítání desítek." },
     { value: s - 10, why: "Chyba při sčítání desítek — zkontroluj přenos." },
   ], [
     `Sečti postupně všechna čísla: ${d.hodnoty.join(" + ")}.`,
-    `Celkem = součet všech hodnot. Sčítej postupně a odškrtávej, co už máš, ať žádnou z ${d.n === 4 ? "čtyř" : "pěti"} položek nevynecháš.`,
+    `Celkem = součet všech hodnot. Sčítej postupně a odškrtávej, co už máš, ať žádnou ${d.n === 4 ? "ze čtyř" : "z pěti"} položek nevynecháš.`,
   ], [`${d.hodnoty.join(" + ")} = ${s}`]), d);
 }
 
@@ -140,7 +140,7 @@ function prumer(): PracticeTask | null {
     { value: p - 1, why: `Zkouška: ${d.n} × ${p - 1} = ${d.n * (p - 1)}, ale součet je ${s}.` },
   ], [
     `Kolik je součet všech hodnot ${d.hodnoty.join(" + ")}? A kolik je položek?`,
-    `Průměr = součet všech hodnot ÷ počet položek. Položek je ${d.n === 4 ? "čtyři" : "pět"}, takže součet vyděl ${d.n === 4 ? "čtyřmi" : "pěti"}. Průměr musí ležet mezi nejnižší a nejvyšší hodnotou — tím si výsledek zkontroluješ.`,
+    `Průměr = součet všech hodnot ÷ počet položek. ${d.n === 4 ? "Položky jsou čtyři" : "Položek je pět"}, takže součet vyděl ${d.n === 4 ? "čtyřmi" : "pěti"}. Průměr musí ležet mezi nejnižší a nejvyšší hodnotou — tím si výsledek zkontroluješ.`,
   ], [`Součet: ${d.hodnoty.join(" + ")} = ${s}`, `Průměr: ${s} ÷ ${d.n} = ${p}`]), d);
 }
 

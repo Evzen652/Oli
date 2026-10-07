@@ -574,7 +574,7 @@ const L3: Uloha[] = [
       "Pro každou válku si řekni, kdo proti komu stál a kdo vyhrál. Pak obě porovnej.",
       "V jedné válce přišel nepřítel zvenčí, ve druhé ne. Ověř u každé možnosti, zda sedí soupeři i vítěz v obou válkách zároveň.",
     ],
-    explanation: "Obě války vedli Řekové. V řecko-perských válkách se spojili proti cizí říši a zvítězili, v peloponéské válce bojovali Athény a Sparta proti sobě a vyhrála Sparta.",
+    explanation: "Obě války vedli Řekové. V řecko-perských válkách se spojili proti cizí říši a zvítězili, v peloponéské válce bojovaly Athény a Sparta proti sobě a vyhrála Sparta.",
   },
   {
     q: "Dějepisec napsal, že válku nezpůsobily drobné spory, ale strach Sparty z rostoucí moci Athén. O které válce a o jaké příčině mluví?",

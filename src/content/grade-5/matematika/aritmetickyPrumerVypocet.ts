@@ -45,7 +45,7 @@ function prumer(count: number, max: number, desetiny: boolean): PracticeTask | n
   const kontext = (desetiny ? KONTEXT_DES : KONTEXT_CELE)[sum % 4];
   return ciselnaUloha(kontext(seznam(nums)), fdec(avg), chyby, [
     `Nejdřív sečti všechna čísla: ${nums.join(" + ")}. Kolik vyjde?`,
-    `Průměr = součet všech čísel ÷ jejich počet. Čísel je ${POCET_1P[count]}, takže celý součet vyděl ${POCET_7P[count]}.${desetiny ? " Když dělení nevyjde beze zbytku, pokračuj za desetinnou čárkou." : ""}`,
+    `Průměr = součet všech čísel ÷ jejich počet. ${count <= 4 ? "Čísla jsou" : "Čísel je"} ${POCET_1P[count]}, takže celý součet vyděl ${POCET_7P[count]}.${desetiny ? " Když dělení nevyjde beze zbytku, pokračuj za desetinnou čárkou." : ""}`,
   ], [
     `Součet: ${nums.join(" + ")} = ${sum}`,
     `Průměr: ${sum} ÷ ${count} = ${fdec(avg)}`,

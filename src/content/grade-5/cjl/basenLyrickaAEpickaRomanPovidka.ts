@@ -65,7 +65,7 @@ function gen(level: number): PracticeTask[] {
   return urceni(BANKA, UTVARY, level, (p) => ({
     question: `O jaký útvar jde? ${p.veta}`,
     hints: [
-      `Je text „${p.veta.slice(0, 60)}${p.veta.length > 60 ? "…" : ""}“ psaný ve verších, nebo v próze?`,
+      `Je text „${p.veta.replace(/^„|“$/g, "").slice(0, 60)}${p.veta.length > 60 ? "…" : ""}“ psaný ve verších, nebo v próze?`,
       `Pomůže tohle: ${p.klic}.`,
     ],
   }));

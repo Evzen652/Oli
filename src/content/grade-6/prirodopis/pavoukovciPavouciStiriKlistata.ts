@@ -354,7 +354,7 @@ const L2: Fakt[] = [
     ],
     h: [
       "Nemoc od klíštěte se může projevit až po dnech nebo týdnech. Proč je dobré znát den přisátí?",
-      `Nemoc se může ukázat až během ${pad(4, "TÝDEN")}. K čemu je počáteční den, když chceš hlídat konec tohoto období nebo popsat potíže?`,
+      `Nemoc se může ukázat až během 4 týdnů. K čemu je počáteční den, když chceš hlídat konec tohoto období nebo popsat potíže?`,
     ],
     e: `Podle data poznáš, do kdy místo sledovat (asi ${pad(4, "TÝDEN")}). Když se objeví zarudnutí nebo horečka, lékař podle něj posoudí, jestli příznaky souvisejí s klíštětem.`,
   },

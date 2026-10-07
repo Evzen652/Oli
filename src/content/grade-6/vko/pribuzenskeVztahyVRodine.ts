@@ -291,7 +291,7 @@ const POOL_L1: Polozka[] = [
     d: ["prarodiče", "sourozenec", "teta"],
     hints: [
       "Hledáš jedno slovo pro oba, kdo tě vychovávají — otce i matku.",
-      "Nejde o osobu o generaci výš (kdo vychovával je, když byli malí) ani o osoby ve tvé vlastní generaci.",
+      "Nejde o osobu o generaci výš (kdo je vychovával, když byli malí) ani o osoby ve tvé vlastní generaci.",
     ],
     explanation: "Otec a matka se společně nazývají rodiče.",
   },
@@ -469,7 +469,7 @@ const POOL_L3: Polozka[] = [
     d: ["bratranec", "strýc", "sourozenec"],
     hints: [
       "Hana a Petr mají společné rodiče, ale Tomáš a Karolína ne — čí děti to vlastně jsou?",
-      "Tomáš je syn Hany a Karolína je dcera Petra — Hana a Petr jsou jen sourozenci, ne rodiče toho druhého dítěte. Tomáš a Karolína jsou tedy děti sourozenců, ne sourozenci samy.",
+      "Tomáš je syn Hany a Karolína je dcera Petra — Hana a Petr jsou jen sourozenci, ne rodiče toho druhého dítěte. Tomáš a Karolína jsou tedy děti sourozenců, ne sourozenci sami.",
     ],
     explanation: "Hana a Petr jsou sourozenci. Tomáš je syn Hany, Karolína je dcera Petra — jsou to tedy děti sourozenců. Dítě strýce nebo tety (zde Petra, bratra Hany) je sestřenice nebo bratranec: Karolína je proto sestřenice Tomáše.",
   },

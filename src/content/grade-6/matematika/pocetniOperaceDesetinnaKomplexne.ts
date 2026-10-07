@@ -15,7 +15,7 @@
  * místa, se zahodí; když zbydou méně než tři, úloha se losuje znovu.
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { pastTense, phrase, plural } from "@/lib/czechGrammar";
+import { pastTense, phrase, plural, zNebo } from "@/lib/czechGrammar";
 import { cis, rnd, pick, buildChoiceTask, losUlohy, ruzneUlohy, type Distractor } from "./_shared";
 
 // ── Formátování a pomocníci ────────────────────────────────────────────────
@@ -516,8 +516,8 @@ function l2Mnozstvi(): PracticeTask | null {
       ],
       solutionSteps: [`${n} · ${h(p)} = ${fmt(vsechny)}`, `${h(vsechny)} + ${h(q)} = ${fmt(key)}`],
       explanation: litry
-        ? `Po ${h(p)} l bylo v každé z ${n} konví, proto se nejdřív násobí: ${n} · ${h(p)} = ${fmt(vsechny)}. Pak se přičte kbelík: ${h(vsechny)} + ${h(q)} = ${fmt(key)}.`
-        : `Délku ${h(p)} m má každý z ${n} stejných kusů, proto se nejdřív násobí: ${n} · ${h(p)} = ${fmt(vsechny)}. Pak se přičte poslední kus: ${h(vsechny)} + ${h(q)} = ${fmt(key)}.`,
+        ? `Po ${h(p)} l bylo v každé ${zNebo(n)} ${n} konví, proto se nejdřív násobí: ${n} · ${h(p)} = ${fmt(vsechny)}. Pak se přičte kbelík: ${h(vsechny)} + ${h(q)} = ${fmt(key)}.`
+        : `Délku ${h(p)} m má každý ${zNebo(n)} ${n} stejných kusů, proto se nejdřív násobí: ${n} · ${h(p)} = ${fmt(vsechny)}. Pak se přičte poslední kus: ${h(vsechny)} + ${h(q)} = ${fmt(key)}.`,
     },
   );
 }

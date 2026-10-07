@@ -267,7 +267,7 @@ const DEFINICE: Definice[] = [
   {
     q: "Jak se nazývá vzdálenost vrcholu trojúhelníku od přímky, na které leží protější strana?",
     klic: "výška",
-    hints: ["Vzdálenost bodu od přímky se měří po kolmici.", "Z vrcholu vedeš kolmici k přímce protější strany a měříš její délku. Vyber pojem, u kterého rozhoduje kolmost a vychází z vrcholu."],
+    hints: ["Vzdálenost bodu od přímky se měří po kolmici.", "Z vrcholu vedeš kolmici k přímce protější strany a měříš její délku. Vyber pojem, u kterého rozhoduje kolmost a který vychází z vrcholu."],
   },
   {
     q: "Jak se nazývá úsečka z vrcholu trojúhelníku, která končí přesně uprostřed protější strany?",
@@ -724,7 +724,7 @@ function genL3Dilky(): PracticeTask | null {
   const dil2 = PLNY / dilu2;
   const zOtoc = varianta === "vrchol" ? k * dil2 : dil2;
   const vOtoc = varianta === "vrchol" ? dil2 : k * dil2;
-  pridej(ptejSeNa === "z" ? zOtoc : vOtoc, `Otočil jsi vztah: v zadání je ${vztah}, ne naopak.`);
+  pridej(ptejSeNa === "z" ? zOtoc : vOtoc, `Otočil jsi vztah: v zadání stojí, že ${vztah}, ne naopak.`);
 
   const soucetDilu = varianta === "vrchol" ? `1 + 1 + ${cis(k)} = ${cis(dilu)}` : `${cis(k)} + ${cis(k)} + 1 = ${cis(dilu)}`;
   return uloha(

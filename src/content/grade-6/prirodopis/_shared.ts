@@ -25,7 +25,7 @@ const STRATEGIE_RAZENI = [
   "U každé položky se ptej, co musí proběhnout před ní.",
 ];
 const STRATEGIE_TRIDENI = [
-  "Zařaď nejdřív položky, u kterých si jsi jistý nebo jistá, a zbytek podle rozlišovacího znaku.",
+  "Zařaď nejdřív položky, u kterých jsi si jistý nebo jistá, a zbytek podle rozlišovacího znaku.",
   "U každé položky se ptej, podle jakého znaku do skupiny patří, ne jak vypadá na první pohled.",
 ];
 

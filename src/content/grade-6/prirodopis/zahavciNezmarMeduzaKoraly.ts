@@ -174,7 +174,7 @@ const L1: Fakt[] = [
     ],
     h: [
       "Vzpomeň si, čím nezmar loví a kam potom potravu dopraví.",
-      "Na horním konci nezmara je otvor, kterým přijímá potravu. Kolem něj vyrůstá několik dlouhých ohebných výběžků s žahavými buňkami.",
+      "Na horním konci nezmara je otvor, kterým přijímá potravu. Kolem něj vyrůstá několik dlouhých ohebných výběžků se žahavými buňkami.",
     ],
     e: "Ústní otvor nezmara obklopuje věnec chapadel. Chapadla mají žahavé buňky, chytají kořist a přitahují ji k ústům.",
   },
@@ -218,7 +218,7 @@ const L1: Fakt[] = [
       "Kde jsi mohl nebo mohla medúzu vidět, třeba na dovolené?",
       "Medúzy se vznášejí ve velké vodě a plavci se jich bojí u pláže. V českých rybnících je nenajdeš skoro nikdy.",
     ],
-    e: "Medúzy žijí převážně v moři. Vznášejí se ve vodě a pohybují se stahováním zvonu. Ve sladké vodě žije z žahavců hlavně nezmar.",
+    e: "Medúzy žijí převážně v moři. Vznášejí se ve vodě a pohybují se stahováním zvonu. Ve sladké vodě žije ze žahavců hlavně nezmar.",
   },
   {
     q: "Jakou nervovou soustavu mají žahavci?",
@@ -518,7 +518,7 @@ const L3: Fakt[] = [
     ],
     h: [
       "Tři znaky: přisedá, má chapadla kolem úst a rozmnožuje se výrůstky. Který žahavec žije v tůni?",
-      "Porovnej, jestli popsaný živočich přisedá, nebo volně plove, a jestli je sladkovodní. Z žahavců splňuje obojí jen jeden polyp.",
+      "Porovnej, jestli popsaný živočich přisedá, nebo volně plove, a jestli je sladkovodní. Ze žahavců splňuje obojí jen jeden polyp.",
     ],
     e: "Přisedlý sladkovodní živočich s chapadly kolem úst, který se rozmnožuje pučením, je nezmar.",
   },

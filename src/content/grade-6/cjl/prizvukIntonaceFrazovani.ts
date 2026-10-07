@@ -269,8 +269,8 @@ function ukolPredlozkovyTakt(item: FrazePolozka): PracticeTask | null {
     correct,
     [
       { value: d1, why: `Jednoslabičná předložka „${item.prep}“ se slovem „${noun}“ tvoří jeden přízvukový takt a PŘEBÍRÁ přízvuk. Tenhle zápis předložku přeskakuje a dává přízvuk jen na jméno.` },
-      { value: d2, why: `Přízvuk je tu na poslední slabice jména – v češtině tam nikdy není, a navíc předložka s jménem tvoří jeden takt, kde přízvuk nese ona.` },
-      { value: d3, why: `Takhle by to vypadalo, kdyby „${item.prep} ${noun}“ byly dva samostatné přízvukové takty. Jednoslabičná předložka ale s jménem splývá v jeden takt – přízvuk je jen jeden, na předložce.` },
+      { value: d2, why: `Přízvuk je tu na poslední slabice jména – v češtině tam nikdy není, a navíc předložka se jménem tvoří jeden takt, kde přízvuk nese ona.` },
+      { value: d3, why: `Takhle by to vypadalo, kdyby „${item.prep} ${noun}“ byly dva samostatné přízvukové takty. Jednoslabičná předložka ale se jménem splývá v jeden takt – přízvuk je jen jeden, na předložce.` },
     ],
     {
       hints: [
@@ -315,7 +315,7 @@ function ukolRozdeleniTaktu(item: TaktRozdeleniPolozka): PracticeTask | null {
     ],
     {
       hints: [
-        "Přízvukový takt je skupina slov, která se vyslovují s jedním přízvukem – jednoslabičná předložka se do taktu spojuje s jménem, které za ní stojí.",
+        "Přízvukový takt je skupina slov, která se vyslovují s jedním přízvukem – jednoslabičná předložka se do taktu spojuje se jménem, které za ní stojí.",
         "Každé další plnovýznamové slovo (sloveso, podstatné jméno) má svůj vlastní přízvuk a tvoří vlastní takt. Spočítej, kolik plnovýznamových slov (a předložek k nim) věta má.",
       ],
       explanation: `„${prep} ${noun}“ tvoří jeden takt (předložka splývá se jménem), „${verb}“ a „${subject}“ jsou každé svůj vlastní takt – proto „${correct}“.`,

@@ -404,7 +404,7 @@ function taskL3a(item: SituaceItem): PracticeTask | null {
     {
       hints: [
         "Nejdřív si řekni vlastními slovy, co se v situaci stalo a proč — teprve pak hledej přísloví se stejným smyslem, ne se stejným slovem.",
-        "Situace a přísloví se nemusí podobat slovy, ale musí sedět smyslem. Vyřaď přísloví, která mluví o úplně jiné zkušenosti, i kdyby znělo podobně.",
+        "Situace a přísloví se nemusí podobat slovy, ale musí sedět smyslem. Vyřaď přísloví, která mluví o úplně jiné zkušenosti, i kdyby zněla podobně.",
       ],
       explanation: `Situaci nejlépe vystihuje přísloví „${correct.text}“ — ${correct.vyznam}`,
     },
@@ -510,7 +510,7 @@ const L3C_ITEMS: PravdaItem[] = [
 function taskL3c(item: PravdaItem): PracticeTask | null {
   return choice(item.q, item.correct, item.distractors, {
     hints: [
-      "Pranostika vychází z toho, co si lidé po generace všímali na počasí v daném období — není to jistá věda ani náhoda.",
+      "Pranostika vychází z toho, čeho si lidé po generace všímali na počasí v daném období — není to jistá věda ani náhoda.",
       "Vyřaď tvrzení, která pranostice přisuzují stoprocentní jistotu, nebo naopak tvrdí, že s počasím vůbec nesouvisí — obojí je špatně.",
     ],
     explanation: item.correct,

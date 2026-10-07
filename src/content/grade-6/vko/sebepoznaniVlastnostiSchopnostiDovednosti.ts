@@ -38,7 +38,7 @@ const S = "Schopnost";
 const D = "Dovednost";
 
 const RULE =
-  "Vlastnost je stálý rys povahy — projevuje se v chování, ne v tréninku. Schopnost je vrozený předpoklad, se kterým se člověk narodil a ukazuje se i bez cvičení. Dovednost je to, co se člověk naučil a zdokonalil cvičením — bez tréninku by to neuměl, i s talentem.";
+  "Vlastnost je stálý rys povahy — projevuje se v chování, ne v tréninku. Schopnost je vrozený předpoklad, se kterým se člověk narodil a který se ukazuje i bez cvičení. Dovednost je to, co se člověk naučil a zdokonalil cvičením — bez tréninku by to neuměl, i s talentem.";
 
 /** [text položky, proč do své kategorie patří] */
 type Polozka = [string, string];
@@ -147,7 +147,7 @@ const PARY: Par[] = [
   },
   {
     s: ["Petra má od přírody cit pro rytmus a pohyb.", "cit pro rytmus od přírody je vrozený předpoklad, schopnost"],
-    d: ["Petra po dvou letech tréninku zvládla celou taneční sestavu bez jediné chyby.", "zvládnout tanečního sestavu je výsledek dvou let tréninku, dovednost"],
+    d: ["Petra po dvou letech tréninku zvládla celou taneční sestavu bez jediné chyby.", "zvládnout taneční sestavu je výsledek dvou let tréninku, dovednost"],
   },
   {
     s: ["David má od narození rychlé reflexy.", "rychlé reflexy od narození jsou vrozený předpoklad, schopnost"],

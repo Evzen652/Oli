@@ -34,9 +34,9 @@ const Z: Zarazeni[] = [
   { uroven: 3, polozka: "ptakopysk", skupina: "savci", proc: "Ptakopysk klade vejce, ale mláďata kojí — proto patří k savcům." },
   { uroven: 3, polozka: "slepýš", skupina: "plazi", proc: "Slepýš není had ani červ, je to beznohá ještěrka." },
   { uroven: 3, polozka: "kuňka", skupina: "obojživelníci", proc: "Kuňka je malá žába s pestrým bříškem." },
-  { uroven: 3, polozka: "ropucha", skupina: "obojživelníci", proc: "Ropucha má bradavičnatou kůži, ale kladou vajíčka do vody." },
+  { uroven: 3, polozka: "ropucha", skupina: "obojživelníci", proc: "Ropucha má bradavičnatou kůži, ale klade vajíčka do vody." },
   { uroven: 3, polozka: "mořský koník", skupina: "ryby", proc: "Mořský koník vypadá zvláštně, ale dýchá žábrami — je to ryba." },
-  { uroven: 3, polozka: "úhoř", skupina: "ryby", proc: "Úhoř vypadá jako had, ale je to ryba s žábrami." },
+  { uroven: 3, polozka: "úhoř", skupina: "ryby", proc: "Úhoř vypadá jako had, ale je to ryba se žábrami." },
   { uroven: 3, polozka: "kiwi", skupina: "ptáci", proc: "Kiwi nelétá a jeho peří připomíná srst, přesto je to pták." },
 ];
 

@@ -92,7 +92,7 @@ const BANKA_L1: Fakt[] = [
     q: "Co znamená slovo endemit?",
     key: "druh, který žije jen v jedné oblasti a jinde ne",
     d: [
-      ["druh, kterému hrozí vyhynutí a je pod ochranou", "Endemit nemusí být ohrožený — endemitů je i mnoho běžných druhů. Slovo říká, KDE druh žije, ne kolik ho zbývá."],
+      ["druh, kterému hrozí vyhynutí a je pod ochranou", "Endemit nemusí být ohrožený — mezi endemity je i mnoho běžných druhů. Slovo říká, KDE druh žije, ne kolik ho zbývá."],
       ["největší a nejsilnější druh v dané oblasti", "Velikost s pojmem nesouvisí. Endemit může být drobný hmyz i velké zvíře."],
       ["druh, který je pro člověka nebezpečný a jedovatý", "Jed s pojmem nesouvisí. Endemit se pozná podle výskytu, ne podle vlastností."],
     ],
@@ -266,7 +266,7 @@ const BANKA_L1: Fakt[] = [
     ],
     hints: [
       "Koala tráví většinu dne na stromech — potravu najde přímo nad hlavou.",
-      "Její potrava je rostlinná, roste přímo v korunách stromů typických pro Austrálii a vůbec nemusí lovit.",
+      "Její potrava je rostlinná, roste přímo v korunách stromů typických pro Austrálii, a koala proto vůbec nemusí lovit.",
     ],
     explanation: "Koala se živí téměř výhradně listy eukalyptů. Proto žije na těchto stromech a bez nich by neměla co jíst.",
   },
@@ -732,7 +732,7 @@ const BANKA_L3: Fakt[] = [
     q: "Zpráva: v posledních letech koráli na jedné části útesu blednou a hynou. Vědci to spojují se změnou podmínek v moři. Která změna to nejspíš vysvětluje?",
     key: "voda v moři se dlouhodobě oteplila",
     d: [
-      ["voda v moři se dlouhodobě ochladila", "Koráli chlad neuloží; bělení vzniká při přehřátí, ne při ochlazení."],
+      ["voda v moři se dlouhodobě ochladila", "Bělení korálů chlad nezpůsobí; vzniká při přehřátí, ne při ochlazení."],
       ["k mělkému dnu proniká málo slunce", "Koráli potřebují světlo, ale bělení nevzniká jeho nedostatkem, nýbrž přehřátím vody."],
       ["mořská voda ztratila všechnu sůl", "Slanost se za pár let neztratí. Bělení způsobuje oteplení."],
     ],
@@ -878,7 +878,7 @@ const BANKA_L3: Fakt[] = [
     ],
     hints: [
       "Které z prostředí nabízí zároveň teplo, světlo a čistou slanou vodu? Vyber to, kde se to všechno sejde.",
-      "U každého místa najdi, která podmínka mu chybí (světlo, teplo, čistota). Správné místo nemá chybějící žádnou.",
+      "U každého místa najdi, která podmínka mu chybí (světlo, teplo, čistota). Správnému místu nechybí žádná.",
     ],
     explanation: "Útes vznikne v průzračné mělké laguně kolem tropického ostrova: je tam teplo, světlo a čistá slaná voda. Hluboká voda, studená zátoka i kalné ústí řeky vždy některou podmínku nesplňují.",
   },

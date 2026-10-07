@@ -526,13 +526,13 @@ const L3B: PracticeTask[] = [
     { value: "3. pád množného čísla", why: "3. pád množného čísla by měl tvar „městům“, ne „města“." },
   ], "Číslovka „tři“ ukazuje množné číslo a „navštívili co?“ ukazuje 4. pád, i když má tvar stejný jako 2. pád jednotného čísla „bez města“."),
   l3bUloha("V kurníku poskakovala malá KUŘATA.", "KUŘATA", "1. pád množného čísla", [
-    { value: "4. pád množného čísla", why: "4. pád by bylo, kdyby „kuřata“ byla předmětem nějakého slovesa (třeba „vidím kuřata“). Tady ale kuřata sama poskakovala – jsou podmětem, proto 1. pád." },
+    { value: "4. pád množného čísla", why: "4. pád by to byl, kdyby „kuřata“ byla předmětem nějakého slovesa (třeba „vidím kuřata“). Tady ale kuřata sama poskakovala – jsou podmětem, proto 1. pád." },
     { value: "2. pád jednotného čísla", why: "2. pád jednotného čísla je „kuřete“, ne „kuřata“ – jiný tvar." },
     { value: "3. pád množného čísla", why: "3. pád množného čísla by měl tvar „kuřatům“, ne „kuřata“." },
   ], "Kuřata sama poskakovala – jsou podmětem věty (kdo, co poskakovalo?), proto 1. pád. Tvar je stejný jako u 4. pádu množného čísla, tady ale jde o podmět."),
   l3bUloha("Kočka honila dvě MYŠI.", "MYŠI", "4. pád množného čísla", [
     { value: "2. pád jednotného čísla", why: "Tvar „myši“ je stejný i ve 2. pádě jednotného čísla, ale slovo „dvě“ ukazuje na množné číslo." },
-    { value: "1. pád množného čísla", why: "1. pád by byl podmětem (kdo honil?). Tady je podmětem „kočka“, a myši jsou předmětem, proto 4. pád." },
+    { value: "1. pád množného čísla", why: "1. pád by byl podmětem (kdo honil?). Tady je podmětem „kočka“ a myši jsou předmětem, proto 4. pád." },
     { value: "3. pád jednotného čísla", why: "3. pád jednotného čísla („k myši“) je tvar pro jednu myš. Tady jde o dvě myši v roli předmětu, proto 4. pád množného čísla." },
   ], "Číslovka „dvě“ ukazuje množné číslo a „honila koho?“ ukazuje 4. pád – myši jsou předmětem, podmětem je kočka."),
 ];

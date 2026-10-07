@@ -254,7 +254,7 @@ const BANKA_L1: Polozka[] = [
     ],
     h: [
       "Hledáš drobný organismus, který stejně jako řasa umí fotosyntézu.",
-      "Tento partner je velmi jednoduchý, nemá buněčné jádro a žije i ve vodě, kde se v létě přemnoží a zbarví ji do zelena.",
+      "Tento partner je velmi jednoduchý, nemá buněčné jádro a žije i ve vodě, kde se v létě přemnoží a zbarví ji dozelena.",
     ],
     ex: "Místo řasy může v lišejníku žít sinice. Umí fotosyntézu, a proto houbě dodá živiny stejně jako řasa.",
   },

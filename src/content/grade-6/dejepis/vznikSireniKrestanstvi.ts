@@ -481,7 +481,7 @@ export const POOL_L3: Polozka[] = [
       "Rozhodni zvlášť dvě věci: jaký byl tehdy vztah státu ke křesťanům a co přesně Římanům vadilo.",
       "Zjisti nejdřív, jestli ve 2. století už platilo povolení víry. Pak zvaž, co soudce na chování obviněného viděl jako hlavní provinění.",
     ],
-    explanation: "Ve 2. století křesťanství ještě povolené nebylo. Od obviněného křesťana soudce žádal oběť u sochy císaře jako důkaz věrnosti státu, a kdo ji odmítl, byl potrestán. Víru v bohy Římané netrestali, trestali odmítnutí oběti.",
+    explanation: "Ve 2. století křesťanství ještě povolené nebylo. Od obviněného křesťana soudce žádal oběť u sochy císaře jako důkaz věrnosti státu a kdo ji odmítl, byl potrestán. Víru v bohy Římané netrestali, trestali odmítnutí oběti.",
   },
   {
     q: "Apoštol Pavel poslal List Římanům křesťanské obci v Římě dřív, než do města sám poprvé přišel. Co z tohoto pramene vyplývá?",
@@ -516,7 +516,7 @@ export const POOL_L3: Polozka[] = [
     correct: "Že tu pohřbívali své mrtvé křesťané",
     distractors: [
       { value: "Že tu stál chrám boha moře Neptuna", why: "Chrámy římských bohů stály na povrchu, ne v podzemí mezi hroby. Ryba tu má jiný význam." },
-      { value: "Že tu byli pohřbeni římští rybáři a námořníci", why: "Ryba vedle hrobů není znak řemesla. Byla to znamení, podle kterého se poznávali křesťané." },
+      { value: "Že tu byli pohřbeni římští rybáři a námořníci", why: "Ryba vedle hrobů není znak řemesla. Bylo to znamení, podle kterého se poznávali křesťané." },
       { value: "Že tu po roce 380 stál kostel postavený státem", why: "Kostel postavený státem by stál veřejně na povrchu. Podzemní chodby s hroby sloužily k pohřbívání." },
     ],
     hints: [

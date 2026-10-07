@@ -446,7 +446,7 @@ function osaMezi(): PracticeTask | null {
     `Ve čtvercové síti jsou sloupce očíslované zleva. Bod A leží ve sloupci ${p}, jeho obraz v osové souměrnosti ve sloupci ${q}. Ve kterém sloupci leží osa souměrnosti?`,
     String(m),
     [
-      { value: String(d), why: `${d} je polovina vzdálenosti mezi oběma sloupci, ne číslo sloupce. Tuhle polovinu je ještě potřeba přičíst k sloupci ${p}.` },
+      { value: String(d), why: `${d} je polovina vzdálenosti mezi oběma sloupci, ne číslo sloupce. Tuhle polovinu je ještě potřeba přičíst ke sloupci ${p}.` },
       { value: String(2 * d), why: `${2 * d} je celá vzdálenost mezi sloupci ${p} a ${q}. Osa leží uprostřed, tedy jen o polovinu té vzdálenosti dál.` },
       { value: String(m + 1), why: `O sloupec vedle: od sloupce ${p} by k ose ${wasCount(d + 1, "SLOUPEC")}, ale od ní k obrazu ve sloupci ${q} už jen ${pad(d - 1, "SLOUPEC")}. Osa musí mít na obě strany stejně.` },
       { value: String(q), why: `${q} je sloupec obrazu. Osa leží mezi bodem a obrazem, ne přímo v obrazu.` },

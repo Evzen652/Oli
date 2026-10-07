@@ -235,7 +235,7 @@ const L3: PracticeTask[] = [
     { value: "nic se nestane", why: "Chybějící predátoři se projeví." },
     { value: "přibude stromků, protože srnců ubude", why: "Bez predátorů srnců přibude." },
   ], {
-    hints: ["Kdo loví srnce a co srnci jedí?", "Bez predátorů se srnců přemnoží a spasou výhonky mladých stromků."],
+    hints: ["Kdo loví srnce a co srnci jedí?", "Bez predátorů se srnci přemnoží a spasou výhonky mladých stromků."],
     explanation: "Bez šelem se srnci přemnoží a okusují mladé stromky.",
   }),
   choice("Jak by vypadal les bez rozkladačů?", "hromadilo by se listí a mrtvá těla", [

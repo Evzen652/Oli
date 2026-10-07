@@ -192,7 +192,7 @@ function genL3(): PracticeTask {
     [
       {
         value: `${cz(targetMl + haveMl)} ml`,
-        why: `Sečetl jsi místo odečetl. Chybějící objem = celá nádrž − už nalité.`,
+        why: `Sečetl jsi, místo abys odečetl. Chybějící objem = celá nádrž − už nalité.`,
       },
       {
         value: `${cz(targetL - haveMl / 1000)} ml`,

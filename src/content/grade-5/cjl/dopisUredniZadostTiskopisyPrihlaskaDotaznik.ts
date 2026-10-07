@@ -144,7 +144,7 @@ const L2: PracticeTask[] = [
     { value: "nikam", why: "Místo a datum v dopise být má." },
   ], {
     hints: ["Kde v dopise najdeš, kdy byl napsaný?", "Místo a datum patří do záhlaví, aby je adresát hned viděl."],
-    explanation: "Místo a datum se píše nahoru, obvykle vpravo.",
+    explanation: "Místo a datum se píšou nahoru, obvykle vpravo.",
   }),
   choice("Který údaj do přihlášky do kroužku nepatří?", "oblíbené jídlo", [
     { value: "jméno a příjmení", why: "Bez jména by nebylo jasné, kdo se hlásí." },
@@ -164,7 +164,7 @@ const L2: PracticeTask[] = [
   }),
   choice("V dotazníku je otázka s možnostmi a) ano, b) ne. Co uděláš?", "zakroužkuji tu jednu možnost, která platí", [
     { value: "napíšu dlouhý příběh", why: "Stačí vybrat možnost." },
-    { value: "zakroužkuji rovnou obě možnosti", why: "Ano i ne zároveň platit nemůže." },
+    { value: "zakroužkuji rovnou obě možnosti", why: "Ano i ne zároveň platit nemohou." },
     { value: "nevyplním nic", why: "Otázka zůstane bez odpovědi." },
   ], {
     hints: ["Kolik odpovědí u takové otázky platí?", "U otázky s nabídnutými možnostmi se vybírá jedna, pokud dotazník neříká jinak."],

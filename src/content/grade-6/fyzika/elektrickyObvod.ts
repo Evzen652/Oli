@@ -317,7 +317,7 @@ const ZAPOJENI: Polozka[] = [
       },
     ],
     h0: "Přerušení je uvnitř. Zamysli se, co všechno o vnitřku drátu prozradí pohled zvenku.",
-    h1: "Drát se skládá z vodivého jádra a izolace kolem něj. Prasknout může jádro, aniž se izolace poruší — třeba po mnohém ohýbání u nabíječky. Zvenku to vypadá jako nový kabel, ale obvod je přerušený úplně stejně jako by byl s nůžkami přestřiženým drátem.",
+    h1: "Drát se skládá z vodivého jádra a izolace kolem něj. Prasknout může jádro, aniž se izolace poruší — třeba po mnohém ohýbání u nabíječky. Zvenku to vypadá jako nový kabel, ale obvod je přerušený úplně stejně, jako by byl drát přestřižený nůžkami.",
     vysvetleni:
       "Obvod přeruší i závada, kterou není vidět. Proto se zapojení zkouší postupným přemostěním úseků, ne jen prohlídkou.",
   },
@@ -453,7 +453,7 @@ const ZAPOJENI: Polozka[] = [
       },
     ],
     h0: "Projdi si ty čtyři věci jednu po druhé a u každé se zeptej, z čeho je.",
-    h1: "Vodiče jsou hlavně kovy, izolanty naopak plast, guma, sklo, suché dřevo nebo suchý vzduch. Hliník i kov v minci proud vedou, sklo a guma ne. Právě proto mají kleště elektrikáře gumové rukojeti a proč se drát obaluje plastem.",
+    h1: "Vodiče jsou hlavně kovy, izolanty naopak plast, guma, sklo, suché dřevo nebo suchý vzduch. Hliník i kov v minci proud vedou, sklo a guma ne. Právě proto mají kleště elektrikáře gumové rukojeti a proto se drát obaluje plastem.",
     vysvetleni:
       "Obvod uzavřou jen vodiče. Z běžných věcí to bývají kovy, kdežto sklo, guma a plast jsou izolanty.",
   },

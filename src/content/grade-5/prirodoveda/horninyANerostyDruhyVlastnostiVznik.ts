@@ -307,7 +307,7 @@ const L3: PracticeTask[] = [
     { value: "někdo je obrousil", why: "Obrušuje je příroda, ne lidé." },
   ], {
     hints: ["Co se děje s kamenem, který voda roky kutálí po dně?", "Kameny do sebe narážejí a písek je obrušuje, až zmizí ostré hrany."],
-    explanation: "Voda kameny valí a o sebe se obrušují, až jsou oblé.",
+    explanation: "Voda kameny valí a ty se o sebe obrušují, až jsou oblé.",
   }),
   choice("Jak se jmenuje děj, při kterém se horniny dokola mění jedna v druhou?", "koloběh hornin", [
     { value: "koloběh vody", why: "V koloběhu vody se mění skupenství vody." },

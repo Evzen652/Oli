@@ -230,7 +230,7 @@ export const POOL_L1: Polozka[] = [
     ],
     hints: [
       "Všimni si slov „narodil“ a „určovala povolání“. Ta skupina se nedala vybrat.",
-      "Vyřaď skupiny, do kterých se člověk dostane vlastní prací, vyučením nebo přízní vládce. Hledaná skupina byla v Indii čtyři a člověk v ní zůstal celý život.",
+      "Vyřaď skupiny, do kterých se člověk dostane vlastní prací, vyučením nebo přízní vládce. Takových skupin bylo v Indii čtyři a člověk v jedné z nich zůstal celý život.",
     ],
     explanation: "Indická společnost se dělila na varny, kterým se také říká kasty. Do varny se člověk narodil, zůstal v ní celý život a varna určovala jeho povolání i to, s kým se smí oženit.",
   },
@@ -334,7 +334,7 @@ export const POOL_L2: Polozka[] = [
       "Všimni si dvou myšlenek: utrpení má příčinu a dá se skončit. Kdo s nimi přišel?",
       "Učení o touze jako příčině utrpení vyslovil indický princ, který opustil palác. Vyber náboženství, které se po něm jmenuje, a vyřaď čínská učení.",
     ],
-    explanation: "Mnich šíří buddhismus. Buddha učil, že utrpení vzniká z touhy, a když se člověk touhy zbaví, utrpení skončí a dosáhne nirvány.",
+    explanation: "Mnich šíří buddhismus. Buddha učil, že utrpení vzniká z touhy, a když se člověk touhy zbaví, utrpení skončí a člověk dosáhne nirvány.",
   },
   {
     q: "Člověk z nejnižší skupiny slyší kazatele, že ke konci utrpení může dojít každý bez ohledu na původ. Kdo mu to káže?",
@@ -452,9 +452,9 @@ export const POOL_L2: Polozka[] = [
     q: "Které jednání by hinduista považoval za těžké provinění?",
     correct: "Zabít krávu a sníst její maso",
     distractors: [
-      { value: "Dojit krávu a pít její mléko", why: "Mléko krav hinduisté běžně pijí. Kráva ho dává, a proto si jí váží." },
+      { value: "Dojit krávu a pít její mléko", why: "Mléko krav hinduisté běžně pijí. Kráva ho dává, a proto si jí hinduisté váží." },
       { value: "Omýt se v posvátné řece Ganze", why: "Omytí v Ganze je pro hinduisty naopak očista od hříchů." },
-      { value: "Obětovat bohům mléko a máslo", why: "Mléko a přepuštěné máslo se při hinduistických obřadech bohům obětovaly. Proviněním to nebylo." },
+      { value: "Obětovat bohům mléko a máslo", why: "Mléko a přepuštěné máslo se při hinduistických obřadech bohům obětovala. Proviněním to nebylo." },
     ],
     hints: [
       "Vzpomeň si, jaký vztah mají hinduisté ke krávě a co od ní smějí přijímat.",
@@ -696,7 +696,7 @@ export const POOL_L3: Polozka[] = [
     distractors: [
       { value: "Narodil se jako bůh, a proto věděl vše", why: "Siddhártha byl člověk. Poznání dosáhl až po letech hledání." },
       { value: "Byl bráhman a znal nazpaměť posvátné spisy", why: "Siddhártha byl princ, ne bráhman, a osvícení nezískal znalostí spisů." },
-      { value: "Jako princ vládl nejmoudřeji ze všech", why: "Siddhártha palác i vládu opustil. Osvícený se stal díky poznání, ne vládnutím." },
+      { value: "Jako princ vládl nejmoudřeji ze všech", why: "Siddhártha palác i vládu opustil. Osvíceným se stal díky poznání, ne vládnutím." },
     ],
     hints: [
       "Osvícený znamená, že mu něco „došlo“. Co hledal, když opustil palác?",

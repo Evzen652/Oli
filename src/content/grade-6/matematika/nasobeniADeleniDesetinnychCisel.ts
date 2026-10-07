@@ -20,7 +20,7 @@
  * v děliteli, záměna operace, násobení „po částech“).
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { pad } from "@/lib/czechGrammar";
+import { pad, zNebo } from "@/lib/czechGrammar";
 import { cis, rnd, pick, buildChoiceTask, losUlohy, ruzneUlohy, type Distractor } from "./_shared";
 
 // ── Přesná aritmetika desetinných čísel ────────────────────────────────────
@@ -668,12 +668,12 @@ function l3Ekvivalence(): PracticeTask | null {
         {
           value: c(mene),
           why: e - 1 === 0
-            ? `Dělence jsi nechal beze změny, ale dělitel se z ${c(delitel)} změnil na ${c(novyDelitel)}, tedy ${cis(M)}krát. Dělence musíš vynásobit stejným číslem.`
-            : `Dělence jsi vynásobil jen ${cis(M / 10)}, ale dělitel se z ${c(delitel)} změnil na ${c(novyDelitel)}, tedy ${cis(M)}krát. Obě čísla musí být vynásobená stejným číslem.`,
+            ? `Dělence jsi nechal beze změny, ale dělitel se ${zNebo(hod(delitel))} ${c(delitel)} změnil na ${c(novyDelitel)}, tedy ${cis(M)}krát. Dělence musíš vynásobit stejným číslem.`
+            : `Dělence jsi vynásobil jen ${cis(M / 10)}, ale dělitel se ${zNebo(hod(delitel))} ${c(delitel)} změnil na ${c(novyDelitel)}, tedy ${cis(M)}krát. Obě čísla musí být vynásobená stejným číslem.`,
         },
         {
           value: c(posun(delenec, e + 1)),
-          why: `Dělence jsi vynásobil ${cis(M * 10)}, ale dělitel se z ${c(delitel)} změnil na ${c(novyDelitel)}, tedy jen ${cis(M)}krát. Obě čísla musí být vynásobená stejným číslem.`,
+          why: `Dělence jsi vynásobil ${cis(M * 10)}, ale dělitel se ${zNebo(hod(delitel))} ${c(delitel)} změnil na ${c(novyDelitel)}, tedy jen ${cis(M)}krát. Obě čísla musí být vynásobená stejným číslem.`,
         },
         { value: c(vysl), why: vyslText },
         {
@@ -691,7 +691,7 @@ function l3Ekvivalence(): PracticeTask | null {
           `Dělenec musíme vynásobit stejně: ${c(delenec)} · ${cis(M)} = ${c(novyDelenec)}`,
           `Kontrola: ${c(delenec)} : ${c(delitel)} = ${c(vysl)} a také ${c(novyDelenec)} : ${c(novyDelitel)} = ${c(vysl)}`,
         ],
-        explanation: `Vynásobíme-li dělence i dělitele stejným číslem, podíl se nezmění. Dělitel se z ${c(delitel)} změnil na ${c(novyDelitel)}, tedy ${cis(M)}krát, proto i dělenec musí být ${cis(M)}krát větší: ${c(novyDelenec)}.`,
+        explanation: `Vynásobíme-li dělence i dělitele stejným číslem, podíl se nezmění. Dělitel se ${zNebo(hod(delitel))} ${c(delitel)} změnil na ${c(novyDelitel)}, tedy ${cis(M)}krát, proto i dělenec musí být ${cis(M)}krát větší: ${c(novyDelenec)}.`,
       },
     );
   }
@@ -704,12 +704,12 @@ function l3Ekvivalence(): PracticeTask | null {
       {
         value: c(mene),
         why: e - 1 === 0
-          ? `Dělitele jsi nechal beze změny, ale dělenec se z ${c(delenec)} změnil na ${c(novyDelenec)}, tedy ${cis(M)}krát. Dělitele musíš vynásobit stejným číslem.`
-          : `Dělitele jsi vynásobil jen ${cis(M / 10)}, ale dělenec se z ${c(delenec)} změnil na ${c(novyDelenec)}, tedy ${cis(M)}krát. Obě čísla musí být vynásobená stejným číslem.`,
+          ? `Dělitele jsi nechal beze změny, ale dělenec se ${zNebo(hod(delenec))} ${c(delenec)} změnil na ${c(novyDelenec)}, tedy ${cis(M)}krát. Dělitele musíš vynásobit stejným číslem.`
+          : `Dělitele jsi vynásobil jen ${cis(M / 10)}, ale dělenec se ${zNebo(hod(delenec))} ${c(delenec)} změnil na ${c(novyDelenec)}, tedy ${cis(M)}krát. Obě čísla musí být vynásobená stejným číslem.`,
       },
       {
         value: c(posun(delitel, e + 1)),
-        why: `Dělitele jsi vynásobil ${cis(M * 10)}, ale dělenec se z ${c(delenec)} změnil na ${c(novyDelenec)}, tedy jen ${cis(M)}krát. Obě čísla musí být vynásobená stejným číslem.`,
+        why: `Dělitele jsi vynásobil ${cis(M * 10)}, ale dělenec se ${zNebo(hod(delenec))} ${c(delenec)} změnil na ${c(novyDelenec)}, tedy jen ${cis(M)}krát. Obě čísla musí být vynásobená stejným číslem.`,
       },
       { value: c(vysl), why: vyslText },
       {
@@ -727,7 +727,7 @@ function l3Ekvivalence(): PracticeTask | null {
         `Dělitel musíme vynásobit stejně: ${c(delitel)} · ${cis(M)} = ${c(novyDelitel)}`,
         `Kontrola: ${c(delenec)} : ${c(delitel)} = ${c(vysl)} a také ${c(novyDelenec)} : ${c(novyDelitel)} = ${c(vysl)}`,
       ],
-      explanation: `Vynásobíme-li dělence i dělitele stejným číslem, podíl se nezmění. Dělenec se z ${c(delenec)} změnil na ${c(novyDelenec)}, tedy ${cis(M)}krát, proto i dělitel musí být ${cis(M)}krát větší: ${c(novyDelitel)}.`,
+      explanation: `Vynásobíme-li dělence i dělitele stejným číslem, podíl se nezmění. Dělenec se ${zNebo(hod(delenec))} ${c(delenec)} změnil na ${c(novyDelenec)}, tedy ${cis(M)}krát, proto i dělitel musí být ${cis(M)}krát větší: ${c(novyDelitel)}.`,
     },
   );
 }
@@ -795,7 +795,7 @@ function l3Odhad(): PracticeTask | null {
       }),
       explanation: vetsi
         ? `Výsledek větší než dělenec dá jen dělení číslem menším než 1: kolikrát se ${c(m1)} vejde do ${cis(N)}, je víc než ${cis(N)}. Dělení číslem větším než 1 i násobení číslem menším než 1 výsledek zmenšují.`
-        : `Výsledek menší než ${cis(N)} dá jen násobení číslem menším než 1: vezmeš jen část z ${cis(N)}. Dělení číslem menším než 1 i násobení číslem větším než 1 výsledek zvětšují.`,
+        : `Výsledek menší než ${cis(N)} dá jen násobení číslem menším než 1: vezmeš jen část ${zNebo(N)} ${cis(N)}. Dělení číslem menším než 1 i násobení číslem větším než 1 výsledek zvětšují.`,
     },
   );
 }

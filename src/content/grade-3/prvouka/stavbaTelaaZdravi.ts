@@ -541,7 +541,7 @@ const L3: U[] = [
   },
   {
     q: "Proč sportovci dbají nejen na trénink, ale i na spánek a jídlo?",
-    a: "Tělo se zpevňuje a obnovuje hlavně při odpočinku a z živin",
+    a: "Tělo se zpevňuje a obnovuje hlavně při odpočinku a ze živin",
     emoji: "🏅",
     d: [
       ["Aby se jim po zápase lépe usínalo", "To je jen důsledek, ne důvod, proč na to dbají."],
@@ -552,7 +552,7 @@ const L3: U[] = [
       "Kdy sval doopravdy zesílí — během dřiny, nebo až potom?",
       "Trénink sval nejdřív unaví a naruší. Aby zesílil, potřebuje čas na opravu a materiál, ze kterého se opraví. Obojí sportovec dostane až mimo hřiště.",
     ],
-    e: "Při tréninku se svaly zatíží, ale zesílí až potom — během spánku a z živin v jídle. Bez odpočinku a stravy by se tělo jen vyčerpávalo.",
+    e: "Při tréninku se svaly zatíží, ale zesílí až potom — během spánku a ze živin v jídle. Bez odpočinku a stravy by se tělo jen vyčerpávalo.",
   },
   {
     q: "Při pádu si narazíš koleno a nemůžeš nohu ohnout. Které spolupracující části k ohnutí potřebuješ?",

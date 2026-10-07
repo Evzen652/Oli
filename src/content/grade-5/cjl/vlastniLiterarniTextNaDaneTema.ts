@@ -7,6 +7,9 @@ import { urceni, type Kategorie, type Polozka } from "../_urceni";
 // · L2 stavba textu (začátek, konec, nadpis, rým, plán) · L3 úprava vlastního
 // textu (opakování, spisovnost, přesná slova, obraznost).
 
+/** Citát uvnitř uvozovek: vnitřní „ “ → ‚ ‘ (jinak vzniká „„Ahoj,“ …“). */
+const vnor = (t: string): string => t.replace(/„/g, "‚").replace(/“/g, "‘");
+
 const ZANRY: Kategorie[] = [
   { nazev: "pohádka", znak: "vymyšlený příběh s kouzly, kde dobro vítězí nad zlem." },
   { nazev: "bajka", znak: "zvířata jednají jako lidé a z příběhu plyne ponaučení." },
@@ -156,9 +159,9 @@ const L3: PracticeTask[] = [
   ["V lese bylo ticho. V lese byla tma. V lese byla zima.", "V lese bylo ticho, tma a zima.", ["V lese bylo ticho a v lese byla tma.", "Opakování zůstalo a zima zmizela."], ["V lese bylo veselo a teplo.", "Mění smysl."], ["Ticho tma zima les.", "Není to věta."], "Která slova se na začátku každé věty opakují?", "Tři věty se stejným začátkem spoj do jedné a jednotlivé jevy odděl čárkou."],
 ].map(([veta, klic, d1, d2, d3, h0, h1]) => {
   const ds = [d1, d2, d3] as [string, string][];
-  return choice(`Která úprava textu „${veta as string}“ je nejlepší?`, klic as string,
+  return choice(`Která úprava textu „${vnor(veta as string)}“ je nejlepší?`, klic as string,
     ds.map(([value, why]) => ({ value, why })) as never,
-    { hints: [h0 as string, h1 as string], explanation: `„${klic as string}“ říká totéž, ale lépe — bez zbytečného opakování, spisovně a výstižně.` });
+    { hints: [h0 as string, h1 as string], explanation: `„${vnor(klic as string)}“ říká totéž, ale lépe — bez zbytečného opakování, spisovně a výstižně.` });
 });
 
 function gen(level: number): PracticeTask[] {

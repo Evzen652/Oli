@@ -194,7 +194,7 @@ export const POOL_L1: Polozka[] = [
     correct: "Úrodné černé bahno",
     distractors: [
       { value: "Slanou mořskou vodu", why: "Nil je sladkovodní řeka a tekl z vnitrozemí. Záplava pole nezasolila, ale zúrodnila." },
-      { value: "Písek z okolní pouště", why: "Písek pole neúrodní a záplava ho nepřinášela. Po opadnutí vody zůstalo na polích bahno." },
+      { value: "Písek z okolní pouště", why: "Písek pole nezúrodní a záplava ho nepřinášela. Po opadnutí vody zůstalo na polích bahno." },
       { value: "Trosky zničených domů", why: "Tak vypadají dnešní ničivé povodně. Nilská záplava přicházela pomalu a pravidelně a po opadnutí vody zůstala na polích jemná vrstva, ve které rostlo obilí." },
     ],
     hints: [
@@ -309,13 +309,13 @@ export const POOL_L2: Polozka[] = [
     q: "Tisíce dělníků léta lámou a přesouvají kamenné kvádry na stavbu, do které bude uloženo tělo panovníka. Co stavějí?",
     correct: "Pyramidu",
     distractors: [
-      { value: "Zikkurat", why: `${MEZO} Zikkurat byla chrámová věž z cihel, nikdo v ní nebyl pohřben.` },
+      { value: "Zikkurat", why: `${MEZO} Zikkurat byl chrámová věž z cihel, nikdo v něm nebyl pohřben.` },
       { value: "Palác", why: "V paláci panovník za života bydlel. Stavba pro uložení jeho těla byla hrobka." },
       { value: "Obelisk", why: "Obelisk je sloup z jednoho kusu kamene. Nikdo do něj nemohl být uložen." },
     ],
     hints: [
       "Rozhodující je, k čemu stavba poslouží: bude v ní uloženo tělo. Která stavba je hrobka?",
-      "V paláci se bydlí, zikkurat byla chrámová věž v Mezopotámii a obelisk je jediný kámen. Hledáš obrovskou egyptskou stavbu z kamenných kvádrů s pohřební komorou uvnitř.",
+      "V paláci se bydlí, zikkurat byl chrámová věž v Mezopotámii a obelisk je jediný kámen. Hledáš obrovskou egyptskou stavbu z kamenných kvádrů s pohřební komorou uvnitř.",
     ],
     explanation: "Dělníci stavějí pyramidu, hrobku faraona. Stavba trvala mnoho let a vyžadovala tisíce lidí, zásoby a kámen.",
   },
@@ -365,7 +365,7 @@ export const POOL_L2: Polozka[] = [
     q: "Rolník po sklizni odveze část obilí do státních sýpek a písař to zapíše. Co tím rolník platí?",
     correct: "Daň pro faraona",
     distractors: [
-      { value: "Pokutu za povodeň", why: "Za záplavu nikdo neplatil, záplava byla vítaná. Odvedené obilí byla pravidelná daň." },
+      { value: "Pokutu za povodeň", why: "Za záplavu nikdo neplatil, záplava byla vítaná. Odvedené obilí bylo pravidelná daň." },
       { value: "Clo za vývoz", why: "Clo se platí za zboží vezené přes hranice. Rolník obilí nevyvážel, odváděl ho státu." },
       { value: "Nájem kupcům", why: "Kupci obilí nevybírali, sýpky patřily státu. Rolník platil daň panovníkovi." },
     ],
@@ -547,7 +547,7 @@ export const POOL_L3: Polozka[] = [
       "Porovnej, jaké stavební suroviny měla v okolí Mezopotámie a jaké Egypt.",
       "Porovnej, jaké suroviny měli stavitelé v okolí každé z obou řek a co by se vyplatilo převážet zdaleka. Ověř také, jestli každá možnost souhlasí s tím, z čeho Egypťané stavěli obyčejné domy.",
     ],
-    explanation: "V Egyptě byly podél Nilu lomy s vápencem a žulou a kámen se po řece dal dopravovat. V Mezopotámii kamene chybělo, proto se tam stavělo z hliněných cihel.",
+    explanation: "V Egyptě byly podél Nilu lomy s vápencem a žulou a kámen se po řece dal dopravovat. V Mezopotámii kámen chyběl, proto se tam stavělo z hliněných cihel.",
   },
   {
     q: `Proč Egypťané pozorovali oblohu a sestavili kalendář, podle kterého rok trvá ${pad(365, "DEN")}?`,

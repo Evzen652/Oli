@@ -68,7 +68,7 @@ const L1: PracticeTask[] = [
     { value: "Venuše", why: "Venuše je zahalená bělavými mraky." },
     { value: "Neptun", why: "Neptun je modrý." },
   ], {
-    hints: ["Tato planeta je čtvrtá od Slunce.", "Její povrch pokrývá načervenalý prach, a proto na obloze svítí do červena."],
+    hints: ["Tato planeta je čtvrtá od Slunce.", "Její povrch pokrývá načervenalý prach, a proto na obloze svítí dočervena."],
     explanation: "Mars je rudá planeta — pokrývá ho rezavý prach.",
   }),
   choice("Za jak dlouho oběhne Země kolem Slunce?", "za rok", [
@@ -223,7 +223,7 @@ const L2: PracticeTask[] = [
 const L3: PracticeTask[] = [
   choice("Proč z Měsíce vidíme stále stejnou stranu?", "otočí se kolem osy stejně rychle, jako oběhne Zemi", [
     { value: "Měsíc se kolem své osy vůbec neotáčí", why: "Otáčí se — jednou za oběh." },
-    { value: "druhá strana je stále ve tmě", why: "Odvrácená strana je také osvětlená, jen z ní nevidíme." },
+    { value: "druhá strana je stále ve tmě", why: "Odvrácená strana je také osvětlená, jen ji nevidíme." },
     { value: "Země mu zakrývá druhou stranu", why: "Země ho nezakrývá." },
   ], {
     hints: ["Zkus obejít židli tak, abys na ni stále hleděl nebo hleděla. Co udělá tvoje tělo?", "Při jednom obejití se sám nebo sama jednou otočíš — stejně to dělá Měsíc kolem Země."],
@@ -298,7 +298,7 @@ const L3: PracticeTask[] = [
     { value: "odráží červené Slunce", why: "Slunce je bílé, červený je povrch." },
     { value: "je z červeného skla", why: "Mars je z hornin a prachu." },
   ], {
-    hints: ["Z čeho vzniká rez?", "Horniny Marsu obsahují hodně železa, které zreziví a zbarví prach do červena."],
+    hints: ["Z čeho vzniká rez?", "Horniny Marsu obsahují hodně železa, které zreziví a zbarví prach dočervena."],
     explanation: "Prach na Marsu obsahuje zrezivělé železo, a proto je planeta rudá.",
   }),
   choice("Hvězdy se v noci zdají pomalu pohybovat po obloze. Proč?", "Země se otáčí", [

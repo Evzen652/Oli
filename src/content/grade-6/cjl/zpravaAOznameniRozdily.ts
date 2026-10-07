@@ -691,7 +691,7 @@ function ukolSituace(s: SituaceItem): PracticeTask | null {
     `${s.situace} Jaký útvar zvolí a proč?`,
     s.spravny,
     [
-      { value: s.b, why: "Útvar je určený správně, ale důvod nesedí k podstatě věci — jde o to, zda akce teprve bude, nebo už byla, ne o tom, kde, jak často, jak rychle nebo jak dlouze se o ní píše." },
+      { value: s.b, why: "Útvar je určený správně, ale důvod nesedí k podstatě věci — jde o to, zda akce teprve bude, nebo už byla, ne o to, kde, jak často, jak rychle nebo jak dlouze se o ní píše." },
       { value: s.c, why: "Důvod zní rozumně, ale útvar neodpovídá tomu, zda akce teprve bude, nebo už proběhla." },
       { value: s.d, why: "Útvar i důvod jsou v rozporu se zadanou situací — zkontroluj, jestli akce teprve bude, nebo už byla." },
     ],

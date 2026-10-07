@@ -53,7 +53,7 @@ const L1: PracticeTask[] = [
     { value: "jen kůži", why: "Kůži škodí, ale nejvíc plícím a srdci." },
     { value: "ničemu, když se kouří jen občas", why: "Kouření škodí i občasným kuřákům." },
   ], {
-    hints: ["Kam jde kouř, když se nadechne?", "Kouř jde do plic a jedovaté látky se z nich dostanou do krve; srdce pak musí pracovat víc."],
+    hints: ["Kam jde kouř, když se kuřák nadechne?", "Kouř jde do plic a jedovaté látky se z nich dostanou do krve; srdce pak musí pracovat víc."],
     explanation: "Kouření nejvíc poškozuje plíce a srdce.",
   }),
   choice("Co je pasivní kouření?", "vdechování kouře z cigaret druhých lidí", [

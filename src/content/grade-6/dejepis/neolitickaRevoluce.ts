@@ -327,7 +327,7 @@ const L2: Polozka[] = [
       "Přeslen je hliněné kolečko na dřevěné tyčince, která se roztáčela. Co se s ní dalo dělat s vlákny lnu?",
       "Uvaž, jak se z rostliny stane oblečení a ke kterému kroku přeslen patří. Vyřaď práci s kovem, kterou neolitičtí lidé ještě neznali, i výrobu nástrojů lovců.",
     ],
-    e: "Přeslen zatěžoval vřeteno, na kterém se ze lněných vláken spřádala nit. Z nití se pak na stavu tkala látka. Předení na vřetenu s přeslenem a tkaní lněných látek se rozšířily v neolitu spolu s pěstováním lnu.",
+    e: "Přeslen zatěžoval vřeteno, na kterém se ze lněných vláken spřádala nit. Z nití se pak na stavu tkala látka. Předení na vřetenu s přeslenem a tkaní lněných látek se rozšířila v neolitu spolu s pěstováním lnu.",
   },
   {
     q: "Archeologové našli srp s pazourkovými čepelkami. Do kterého období nález patří?",
@@ -481,7 +481,7 @@ const L2: Polozka[] = [
       "Všimni si, k čemu slouží ohrada. Proč by lidé stavěli ohradu, kdyby zvířata jen lovili?",
       "Ohrada a kosti zvířat, která žijí ve stádě u lidí, ukazují na jednu činnost. Vyřaď zvířata, která v neolitu u vesnice nežila nebo se začala chovat až později.",
     ],
-    e: "Tur, ovce a prase patřily k hlavním zvířatům prvních zemědělců. Ohrada ukazuje, že je lidé drželi u vesnice a chovali. Mamuti a sobi tu nežili, koně a slepice se začali chovat později a po rybolovu by zbyly rybí kosti.",
+    e: "Tur, ovce a prase patřili k hlavním zvířatům prvních zemědělců. Ohrada ukazuje, že je lidé drželi u vesnice a chovali. Mamuti a sobi tu nežili, koně a slepice se začali chovat později a po rybolovu by zbyly rybí kosti.",
   },
 ];
 
@@ -552,7 +552,7 @@ const L3: Polozka[] = [
       ["Protože lidé začali vyrábět hliněné nádoby a sekery.", "Nástroje a nádoby měl skoro každý. Spory vznikaly o půdu, stáda a zásoby."],
     ],
     h: [
-      "Zeptej se, co měl zemědělec, a lovec to neměl. O co se dá přít?",
+      "Zeptej se, co měl zemědělec a co lovec neměl. O co se dá přít?",
       "Spor o majetek potřebuje něco, co jeden má a druhý chce, a co se dá schovat nebo nashromáždit. Porovnej, co si lovec mohl nechat a co zemědělec.",
     ],
     e: "Lovci toho moc nevlastnili, protože všechno nosili s sebou. Zemědělci měli pole, stáda a zásoby, které šlo hromadit. Některé rodiny měly víc než jiné, a tak vznikaly majetkové rozdíly a spory.",
@@ -625,7 +625,7 @@ const L3: Polozka[] = [
       "Řemeslník celý den vyrábí a nepracuje na poli. Z čeho se tedy najedl?",
       "Nejdřív urči, co muselo být dřív: dost jídla, nebo řemeslníci. Pak ověř, jestli ostatní možnosti opravdu vysvětlují, odkud měl řemeslník jídlo.",
     ],
-    e: "Když zemědělci vypěstovali víc, než potřebovali, mohli přebytkem uživit i lidi, kteří zrovna na poli nepracovali. Ti mohli víc času věnovat řemeslu a výrobky vyměňovat za jídlo. Tak začínala dělba práce. Hrnčířství a tkaní ale v neolitu zůstávaly hlavně prací v domácnosti.",
+    e: "Když zemědělci vypěstovali víc, než potřebovali, mohli přebytkem uživit i lidi, kteří zrovna na poli nepracovali. Ti mohli víc času věnovat řemeslu a výrobky vyměňovat za jídlo. Tak začínala dělba práce. Hrnčířství a tkaní ale v neolitu zůstávala hlavně prací v domácnosti.",
   },
   {
     q: "Vesnice měla víc obilí, než potřebovala, ale chyběl jí kvalitní pazourek. Co z toho mohlo plynout?",

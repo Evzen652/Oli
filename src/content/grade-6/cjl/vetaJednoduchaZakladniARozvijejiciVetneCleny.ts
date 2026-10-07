@@ -150,7 +150,7 @@ function ulohaPredmet(it: ItemPredmet): PracticeTask | null {
   const ds = [
     {
       value: "podmět",
-      why: `Podmětem by bylo slovo v 1. pádě (kdo/co ${it.sloveso}?). ${Oznac(it.fraze)} odpovídá na otázku ${it.otazka}, to je jiný pád – předmět, ne podmět.`,
+      why: `Podmětem by bylo slovo v 1. pádě (kdo/co ${it.sloveso.replace(/^(\S+) (se|si)$/, "$2 $1")}?). ${Oznac(it.fraze)} odpovídá na otázku ${it.otazka}, to je jiný pád – předmět, ne podmět.`,
     },
     {
       value: "příslovečné určení místa",

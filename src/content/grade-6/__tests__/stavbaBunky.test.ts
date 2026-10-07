@@ -26,7 +26,7 @@ const SOUCASTI: Record<string, Soucast> = {
   "Chloroplasty": { rost: true, ziv: false, zelenaJen: true, def: /pomocí světla/i, fce: /^vyrábějí pomocí světla živiny pro rostlinu/i },
   "Vakuola": { rost: true, ziv: false, def: /šťáv/i, fce: /uchovává buněčnou šťávu/i },
   "Velká vakuola": { rost: true, ziv: false, def: /šťáv/i, fce: /uchovává buněčnou šťávu/i },
-  "Mitochondrie": { rost: true, ziv: true, def: /dýchání/i, fce: /^uvolňují z živin energii pro činnost/i },
+  "Mitochondrie": { rost: true, ziv: true, def: /dýchání/i, fce: /^uvolňují ze živin energii pro činnost/i },
   "Chlorofyl": { rost: true, ziv: false, def: /$^/, fce: /zachycuje světlo/i },
 };
 

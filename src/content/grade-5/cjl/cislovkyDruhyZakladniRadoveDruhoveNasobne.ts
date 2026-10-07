@@ -66,7 +66,7 @@ function gen(level: number): PracticeTask[] {
     question: `Jaký druh číslovky je „${p.slovo}“ ve větě „${p.veta}“?`,
     hints: [
       `Na jakou otázku odpovídá „${p.slovo}“ ve větě „${p.veta}“: kolik, kolikátý, kolikery, nebo kolikrát?`,
-      `Pomůže tohle: „${p.slovo}“ tu ${p.klic}.`,
+      `Pomůže tohle: „${p.slovo}“ ${p.klic.startsWith("ptá se") ? `se tu ptá${p.klic.slice(6)}` : `tu ${p.klic}`}.`,
     ],
   }));
 }

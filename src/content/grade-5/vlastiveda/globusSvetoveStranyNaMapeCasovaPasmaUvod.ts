@@ -24,7 +24,7 @@ const DVOJICE: Dvojice[] = [
     proc: "Poledníky se sbíhají v pólech; podle nich se určuje zeměpisná délka." },
   { uroven: 2, levy: "rovnoběžka", pravy: "kružnice, která vede souběžně s rovníkem",
     proc: "Rovnoběžky se k pólům zmenšují; podle nich se určuje zeměpisná šířka." },
-  { uroven: 2, levy: "nultý poledník", pravy: "poledník, který prochází Greenwichí v Londýně",
+  { uroven: 2, levy: "nultý poledník", pravy: "poledník, který prochází Greenwichem v Londýně",
     proc: "Od nultého poledníku se počítá zeměpisná délka na východ a na západ." },
   { uroven: 2, levy: "hnědá barva na mapě", pravy: "hory a vysoko položená místa",
     proc: "Čím tmavší hnědá, tím vyšší nadmořská výška." },

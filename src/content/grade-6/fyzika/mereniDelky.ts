@@ -216,7 +216,7 @@ function genL3(): PracticeTask {
     [
       {
         value: `${cz(targetM + doneM)} m`,
-        why: `Sečetl jsi místo odečetl. Zbytek = celá trasa − už ušlé.`,
+        why: `Sečetl jsi, místo abys odečetl. Zbytek = celá trasa − už ušlé.`,
       },
       {
         value: `${cz(targetM / 1000 - doneM / 1000)} m`,

@@ -67,7 +67,7 @@ function gen(level: number): PracticeTask[] {
     question: `Jaký tvar slovesa je „${p.slovo}“ ve větě „${p.veta}“?`,
     hints: [
       `Co vyjadřuje „${p.slovo}“ ve větě „${p.veta}“ — že se něco děje, výzvu, nebo co by se stalo?`,
-      `Pomůže tohle: „${p.slovo}“ ${p.klic}.`,
+      `Pomůže tohle: „${p.slovo}“ ${p.klic.replace(/^ptá se/, "se ptá").replace(/^je to /, "je ")}.`,
     ],
   }));
 }

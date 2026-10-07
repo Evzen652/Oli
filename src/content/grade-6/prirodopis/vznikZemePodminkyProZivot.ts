@@ -801,11 +801,11 @@ export const POOL_L3_SOUSTAVA: Polozka[] = [
     correct: "Země má vhodnou vzdálenost i ovzduší",
     distractors: [
       { value: "Země je ze všech planet nejblíž Slunci", why: "Venuše je Slunci blíž než Země a je tam takové horko, že se voda vypaří. " + BLIZ },
-      { value: "Země je ze všech planet nejdál od Slunce", why: "Mars je od Slunce dál než Země, a voda tam zamrzá." },
+      { value: "Země je ze všech planet nejdál od Slunce", why: "Mars je od Slunce dál než Země a voda tam zamrzá." },
       { value: "Země má jako jediná planeta pevný povrch", why: "Pevný povrch mají i Venuše a Mars. Rozhoduje teplota, a ta závisí na vzdálenosti od Slunce i na ovzduší." },
     ],
     hints: [
-      "Venuše je blíž ke Slunci a Mars dál. Kde je Země mezi nimi, a jaký obal ze vzduchu tyto tři planety mají?",
+      "Venuše je blíž ke Slunci a Mars dál. Kde je Země mezi nimi a jaký obal ze vzduchu tyto tři planety mají?",
       "Na Venuši hustý obal ze vzduchu drží příliš mnoho tepla, na Marsu řídký obal neudrží skoro žádné. Zamysli se, proč se Zemi nestalo ani jedno.",
     ],
     explanation: "Země je od Slunce ve vhodné vzdálenosti a její ovzduší drží přiměřené teplo. Venuše je blíž a její husté ovzduší ji přehřívá, Mars je dál a jeho řídké ovzduší teplo neudrží. Proto je kapalná voda jen na Zemi.",

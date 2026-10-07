@@ -48,7 +48,7 @@ const L1: Uloha[] = [
     ],
     hints: [
       "Samotný název Mezopotámie znamená „země mezi řekami“. Hledej dvojici řek, které tečou dnešním Irákem.",
-      "Egyptská civilizace vyrostla u Nilu a indická u Indu. Mezopotámie leží v Předním východě a její dvě řeky se na jihu stékají, než dotečou do Perského zálivu.",
+      "Egyptská civilizace vyrostla u Nilu a indická u Indu. Mezopotámie leží na Předním východě a její dvě řeky se na jihu stékají, než dotečou do Perského zálivu.",
     ],
     explanation: "Mezopotámie (řecky „země mezi řekami“) ležela mezi Eufratem a Tigridem. Nil je řeka Egypta, Indus a Ganga jsou řeky Indie.",
   },
@@ -112,7 +112,7 @@ const L1: Uloha[] = [
     q: "Které město bylo hlavním městem Asýrie v době jejího největšího rozmachu?",
     key: "Ninive",
     d: [
-      ["Babylon", "Babylon bylo hlavní město Babylonie, sousední a soupeřící říše."],
+      ["Babylon", "Babylon byl hlavní město Babylonie, sousední a soupeřící říše."],
       ["Ur", "Ur byl sumerský městský stát na jihu Mezopotámie, ne asyrská metropole."],
       ["Théby", "Théby byly město v Egyptě u Nilu."],
     ],
@@ -188,7 +188,7 @@ const L1: Uloha[] = [
     ],
     hints: [
       "Najdi si na mapě řeky Eufrat a Tigris. Kterou dnešní zemí tečou nejdéle?",
-      "Egypt je v Africe, Řecko v Evropě. Z dvou asijských sousedů hledej ten, jehož hlavní město Bagdád leží přímo na Tigridu — horská země na východ od něj to není.",
+      "Egypt je v Africe, Řecko v Evropě. Ze dvou asijských sousedů hledej ten, jehož hlavní město Bagdád leží přímo na Tigridu — horská země na východ od něj to není.",
     ],
     explanation: "Většina Mezopotámie leží v dnešním Iráku (Bagdád stojí na Tigridu). Írán je východní soused, Egypt a Řecko leží úplně jinde.",
   },
@@ -444,7 +444,7 @@ const L2: Uloha[] = [
     ],
     hints: [
       "Rozhoduje místo nálezu. Které říši patřilo město Ninive?",
-      "Egypt a jižní sumerské státy vyřaď. Babylon bylo jiné centrum. Hledej severní válečnou říši, jejíž vládci se rádi zobrazovali při boji a lovu.",
+      "Egypt a jižní sumerské státy vyřaď. Babylon byl jiné centrum. Hledej severní válečnou říši, jejíž vládci se rádi zobrazovali při boji a lovu.",
     ],
     explanation: "Palác v Ninive a reliéfy s bojem a lovem vytvořila Asýrie, válečná říše na severu Mezopotámie. Babylonie měla centrum v Babylonu, Sumer ležel na jihu a Egypt u Nilu.",
   },
@@ -485,7 +485,7 @@ const L3: Uloha[] = [
     key: "Trest závisel na tom, kdo byl poškozený",
     d: [
       ["Trest byl pro každého člověka stejný", "To je dnešní představa rovnosti před zákonem. V úryvku jsou dva různé tresty za tentýž čin."],
-      ["Trest určovali sami poškození lidé", "Úryvek trest předem stanoví zákon, neurčuje ho poškozený."],
+      ["Trest určovali sami poškození lidé", "V úryvku trest předem stanoví zákon, neurčuje ho poškozený."],
       ["Trest byl vždy jen pokuta ve stříbře", "Pokuta platí jen u otroka. Svobodnému muži hrozila stejná újma, jakou způsobil."],
     ],
     hints: [
@@ -545,7 +545,7 @@ const L3: Uloha[] = [
       ["Protože hliněné domy lépe odolávaly povodním", "Naopak, voda nepálené cihly rozmáčela a domy se musely opravovat. Rozhodovalo, že kámen a dřevo chyběly."],
     ],
     hints: [
-      "Z čeho se staví, když si nemůžeš materiál snadno přivézt z daleka?",
+      "Z čeho se staví, když si nemůžeš materiál snadno přivézt zdaleka?",
       "Mezopotámie je plochá rovina z naplavenin řek, bez hor a velkých lesů. Co tam bylo v nadbytku a čeho se naopak nedostávalo?",
     ],
     explanation: "Rovina mezi řekami neměla lomy ani velké lesy, zato hlíny bylo všude dost. Sumerové proto stavěli z cihel. Stavby nebyly věčné a musely se opravovat.",

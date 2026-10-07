@@ -174,7 +174,7 @@ function pickDistractorsFrom(
   const chosen = forced ? [forced, ...extra] : extra;
   return chosen.map((d) => ({
     value: d,
-    why: `„${d}“ poznáš takto: ${znak[d]}. Tady ale popis odpovídá pojmu „${correct}“: ${znak[correct]}.`,
+    why: `Pojem „${d}“ poznáš takto: ${znak[d]}. Tady ale popis odpovídá pojmu „${correct}“: ${znak[correct]}.`,
   }));
 }
 
@@ -354,7 +354,7 @@ function genL3b(): PracticeTask | null {
     pickDistractorsInstituce(row.instituce),
     {
       hints: [HINT1_L3B, HINT2_INSTITUCE],
-      explanation: `${clue} Nejdřív jde o ${row.umeni} (${ZNAK_UMENI[row.umeni]}), a takové umění se dá zažít v instituci „${row.instituce}“ — ${ZNAK_INSTITUCE[row.instituce]}.`,
+      explanation: `${clue} Nejdřív jde o ${row.umeni} (${ZNAK_UMENI[row.umeni]}) a takové umění se dá zažít v instituci „${row.instituce}“ — ${ZNAK_INSTITUCE[row.instituce]}.`,
     },
   );
 }

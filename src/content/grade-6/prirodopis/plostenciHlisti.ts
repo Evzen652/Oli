@@ -204,7 +204,7 @@ const BANK_L1: Fakt[] = [
     ],
     h: [
       "Obojetník má v jednom těle samčí i samičí pohlavní orgány. Platí to pro ploštěnce, nebo pro hlísty?",
-      "Rozmnožování jen dělením k ploštěncům nepatří, tvoří vajíčka. Rozhodni, jestli mají ploštěnci samce a samice zvlášť jako hlísti.",
+      "Rozmnožování jen dělením k ploštěncům nepatří, ploštěnci tvoří vajíčka. Rozhodni, jestli mají ploštěnci samce a samice zvlášť jako hlísti.",
     ],
     e: "Ploštěnci jsou většinou obojetníci: jeden jedinec má samčí i samičí pohlavní orgány. Hlísti jsou naopak odděleného pohlaví.",
   },

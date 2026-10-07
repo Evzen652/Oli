@@ -423,7 +423,7 @@ const BANKA_L2: Fakt[] = [
       "Přenes naše roční doby na opačnou polokouli a mysli na to, kdy je cesta nejschůdnější.",
       "Naše zimní měsíce jsou na jihu léto. Tehdy tam bývá nejmírnější mráz, moře je nejpřístupnější a Slunce svítí i v noci.",
     ],
-    explanation: "Prosinec a leden je na jižní polokouli léto. Tehdy je nejmírnější mráz, pobřeží je nejlépe dostupné pro lodě i letadla a díky polárnímu dni je stále světlo — proto se posádky střídají právě tehdy.",
+    explanation: "Prosinec a leden jsou na jižní polokouli léto. Tehdy je nejmírnější mráz, pobřeží je nejlépe dostupné pro lodě i letadla a díky polárnímu dni je stále světlo — proto se posádky střídají právě tehdy.",
   },
   {
     q: "Proč je na antarktické stanici nejtepleji v lednu a nejchladněji v červenci?",

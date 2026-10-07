@@ -205,7 +205,7 @@ function templateD(): PracticeTask | null {
         `U každého slova se podívej, co stojí hned za písmenem d, t nebo n. Příklad mimo nabídku: „${priklad.word}“ čteme ${priklad.prepis}.`,
         "Skupiny di, ti, ni (i dí, tí, ní) a dě, tě, ně čteme měkce: [ďi], [ťi], [ňi], [ďe], [ťe], [ňe]. Po y, ý a po obyčejném e zůstává d, t, n tvrdé.",
       ],
-      explanation: `Ve slově „${spravne.word}“ je skupina ${spravne.skupina}, kterou čteme měkce — vzniká výslovnost ${spravne.prepis}. Ostatní slova (${distraktorySlova.join(", ")}) takovou skupinu nemají.`,
+      explanation: `Ve slově „${spravne.word}“ ${spravne.skupina.includes(" a ") ? `jsou skupiny ${spravne.skupina}, které` : `je skupina ${spravne.skupina}, kterou`} čteme měkce — vzniká výslovnost ${spravne.prepis}. Ostatní slova (${distraktorySlova.join(", ")}) takovou skupinu nemají.`,
     },
   );
 }
@@ -606,7 +606,7 @@ const SITUACE: Situace[] = [
     popis: "předčítáš pohádku malému sourozenci",
     posluchac: "Poslouchá malé dítě, které teprve sleduje, co se v příběhu děje.",
     spravna: "Pomalu a výrazně, jiným hlasem pro každou postavu, napětí vytvoř ztišením.",
-    proc: "Malé dítě potřebuje čas pochopit děj. Výrazná intonace a různé hlasy mu pomáhají rozlišit postavy a ztišení vytvoří napětí, aniž by se vylekalo.",
+    proc: "Malé dítě potřebuje čas pochopit děj. Výrazná intonace a různé hlasy mu pomáhají rozlišit postavy a ztišení vytvoří napětí, aniž by se dítě vylekalo.",
     spatne: [
       { text: "Pomalu a zřetelně, ale pořád stejným tónem, aby dítě nic nerozptylovalo.", why: "Jednotvárný hlas malé dítě nebaví a nepozná z něj, která postava zrovna mluví." },
       { text: "Výrazně, jiným hlasem pro každou postavu, ale svižně, ať pohádku stihneš.", why: "V rychlém tempu malé dítě nestihne pochopit, co se v pohádce děje." },

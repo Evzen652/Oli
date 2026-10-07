@@ -157,7 +157,7 @@ function genL1Cas(): PracticeTask | null {
     distraktory,
     {
       hints: [
-        `Otázka se ptá na den: ${cil.den}. Najdi v rozpisu řádek s tímhle dnem.`,
+        (/ a |víkend/.test(cil.den) ? `Otázka se ptá na dny: ${cil.den}. Najdi v rozpisu řádky s těmito dny.` : `Otázka se ptá na den: ${cil.den}. Najdi v rozpisu řádek s tímhle dnem.`),
         "Rozpis uvádí čas zvlášť pro každou skupinu dnů. Najdi řádek, ve kterém je den z otázky, a přečti dvě čísla za slovy „od“ a „do“.",
       ],
       explanation: `V rozpisu stojí u řádku „${cil.label}“ čas od ${cil.h1} do ${cil.h2} hodin. Proto má ${u.nazev} ${cil.den} otevřeno od ${cil.h1} do ${cil.h2} hodin.`,

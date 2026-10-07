@@ -88,7 +88,7 @@ const L2_DOK: Polozka[] = [
   { t: "mandelinka bramborová", proc: "se larva zakuklí v půdě a z kukly vyleze brouk" },
 ];
 const L2_NED_VODNI: Polozka[] = [
-  { t: "vážka", proc: "vodní larva sice dospělci nepodobá, ale kuklu nemá: dospělec vyleze přímo z ní", z: ["vodni-larva"] },
+  { t: "vážka", proc: "vodní larva se sice dospělci nepodobá, ale kuklu nemá: dospělec vyleze přímo z ní", z: ["vodni-larva"] },
   { t: "šídlo modré", proc: "je příbuzné vážce: z vodní larvy vyleze dospělec přímo, bez kukly", z: ["vodni-larva"] },
   { t: "jepice", proc: "larva žije ve vodě a roste svlékáním; okřídlená jepice se pak ještě jednou svlékne, kuklu ale nemá", z: ["vodni-larva"] },
 ];
@@ -138,7 +138,7 @@ const L3_VYVOJ_DOK: Polozka[] = [
 ];
 const L3_VYVOJ_NED: Polozka[] = [
   { t: "Z vajíčka se líhne larva podobná dospělci, jen bez křídel, a několikrát se svléká.", proc: "se larva jen svléká a roste, klidové stadium chybí", z: ["podobnost"] },
-  { t: "Larva žije ve vodě, dýchá žábrami a po posledním svlékání z ní vyleze okřídlený dospělec.", proc: "dospělec vzniká z larvy svlékáním, kukla chybí, i když larva dospělci nepodobá", z: ["vodni-larva"] },
+  { t: "Larva žije ve vodě, dýchá žábrami a po posledním svlékání z ní vyleze okřídlený dospělec.", proc: "dospělec vzniká z larvy svlékáním, kukla chybí, i když se larva dospělci nepodobá", z: ["vodni-larva"] },
   { t: "Mladý jedinec vypadá jako malý dospělec bez křídel, roste a svléká se, až má křídla.", proc: "vývoj probíhá jen svlékáním, bez klidového stadia", z: ["podobnost"] },
   { t: "Larva loví pod vodou, pak vyleze na stéblo, naposledy se svlékne a vyleze z ní okřídlený dospělec.", proc: "dospělec vzniká z larvy posledním svlékáním, bez klidového stadia", z: ["vodni-larva"] },
   { t: "Nymfa podobná dospělci saje rostlinné šťávy a po několika svlékáních dospěje.", proc: "nymfa dospívá svlékáním, klidové stadium chybí", z: ["podobnost"] },

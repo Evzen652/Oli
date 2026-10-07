@@ -617,8 +617,8 @@ const OBLASTI_L3: Fakt[] = [
       ["Papua-Nová Guinea", "Papua-Nová Guinea leží u rovníku, ne v mírném pásu, a Maory tam nenajdeš."],
       ["Fidži", "Fidži je tropické, s horkým vlhkým podnebím. Nemá mírné podnebí ani chov ovcí a původními obyvateli nejsou Maorové."],
     ],
-    "Znak Maorové a dva hlavní ostrovy patří jedinému státu.",
-    "Stát se vlhkým mírným podnebím má trávu pro ovce. Vyluč ty, které leží u rovníku, a ten, který má suché vnitrozemí.",
+    "Maorové a dva hlavní ostrovy patří jedinému státu.",
+    "Stát s vlhkým mírným podnebím má trávu pro ovce. Vyluč ty, které leží u rovníku, a ten, který má suché vnitrozemí.",
     "Dva velké ostrovy, mírné podnebí, ovce a Maorové označují Nový Zéland.",
   ),
 ];

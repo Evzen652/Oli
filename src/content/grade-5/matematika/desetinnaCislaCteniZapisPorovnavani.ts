@@ -11,6 +11,7 @@ import { TROJICE, ciselnaUloha, fdec, pick, rnd, sada, shuffle, slovy, type Chyb
 const celeSlovy = (c: number) => c === 0 ? "nula celá" : c === 1 ? "jedna celá" : c === 2 ? "dvě celé" : c < 5 ? `${slovy(c)} celé` : `${slovy(c)} celých`;
 const castSlovy = (k: number, jedna: string, dve: string, pet: string) =>
   k === 1 ? `jedna ${jedna}` : k === 2 ? `dvě ${dve}` : k < 5 ? `${slovy(k)} ${dve}` : `${slovy(k)} ${pet}`;
+const cap1 = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
 const desetinySlovy = (d: number) => castSlovy(d, "desetina", "desetiny", "desetin");
 const setinySlovy = (s: number) => castSlovy(s, "setina", "setiny", "setin");
 /** Setiny, jejichž tvar je jistý (1–19 a čísla končící 0, 5–9). */
@@ -30,7 +31,7 @@ function nahodne(): Des {
 function zapis(x: Des): PracticeTask | null {
   const chyby: Chyba[] = x.mist === 1
     ? [
-      { value: `${x.c},0${x.cast}`, why: `${desetinySlovy(x.cast)} je první místo za čárkou. ${x.c},0${x.cast} jsou setiny.` },
+      { value: `${x.c},0${x.cast}`, why: `${cap1(desetinySlovy(x.cast))} patří na první místo za čárkou. ${x.c},0${x.cast} jsou setiny.` },
       { value: `${x.c}${x.cast}`, why: "Chybí desetinná čárka — z desetin se staly jednotky." },
       ...(x.c > 0 && x.c < 10 ? [{ value: `${x.cast},${x.c}`, why: "Celé a desetiny se prohodily. Celé se píšou před čárku." }] : []),
       { value: `${x.c + 1},${x.cast}`, why: `Celých je ${x.c}, ne ${x.c + 1}.` },

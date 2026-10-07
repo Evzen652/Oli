@@ -64,7 +64,7 @@ const L1: PracticeTask[] = [
     { value: "česká hospodářská komora", why: "Hospodářská komora s ochranou přírody nesouvisí." },
     { value: "chovatelská hospodářská kontrola", why: "Taková zkratka v ochraně přírody není." },
   ], {
-    hints: ["Zkratka patří k ochraně přírody. Co může znamenat písmeno K a O?", "Jde o velké území, kde se chrání krajina i s vesnicemi a poli — třeba Český ráj."],
+    hints: ["Zkratka patří k ochraně přírody. Co mohou znamenat písmena K a O?", "Jde o velké území, kde se chrání krajina i s vesnicemi a poli — třeba Český ráj."],
     explanation: "CHKO je chráněná krajinná oblast — velké území s cennou krajinou, kde lidé žijí a hospodaří.",
   }),
   choice("Co se v národním parku nesmí?", "trhat chráněné rostliny", [

@@ -36,7 +36,7 @@ function vernostUloha(v: Vernost): PracticeTask {
       `Co přesně text říká o tom, ${v.naCo}? Zkontroluj to v každé možnosti.`,
       "Věrné převyprávění říká totéž jinými slovy: nic nepřidá, nic důležitého nevynechá a nic nezmění.",
     ],
-    explanation: `„${v.verne}“ říká totéž co text, jen jinými slovy.`,
+    explanation: `„${v.verne.replace(/„/g, "‚").replace(/“/g, "‘")}“ říká totéž co text, jen jinými slovy.`,
   });
 }
 

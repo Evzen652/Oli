@@ -1,6 +1,9 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { choice, shuffle } from "../_shared";
 import { urceni, type Kategorie, type Polozka } from "../_urceni";
+/** „věta" předřaď jen před sloveso („věta popisuje…"); jinak by měla dva podměty („věta vše dobře dopadlo"). */
+const sVetou = (klic: string): string => (/^(popisuje|představuje|říká|uvádí)(?=[\s,]|$)/.test(klic) ? `věta ${klic}` : klic);
+
 const zac = (s: string) => s.replace(/[„“]/g, "").split(" ").slice(0, 5).join(" ") + "…";
 
 // Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
@@ -161,7 +164,7 @@ function gen(level: number): PracticeTask[] {
     question: `Do které části vypravování patří věta „${p.veta}“?`,
     hints: [
       `Je věta „${zac(p.veta)}“ na začátku příběhu, u problému, v nejnapínavější chvíli, nebo na konci?`,
-      `Pomůže tohle: věta ${p.klic}.`,
+      `Pomůže tohle: ${sVetou(p.klic)}.`,
     ],
   }), ["Příběh jde od představení přes problém a největší napětí až k vyřešení.", "Zeptej se: už se něco stalo? Je napětí největší? Je už vyřešeno?"]);
 }

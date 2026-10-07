@@ -183,7 +183,7 @@ function l1Zastupce(g: Skupina, i: number): PracticeTask | null {
     // Nápověda smí vyřadit jen jednu špatnou možnost (o1) a řekne to výslovně,
     // aby ji dítě nebralo jako doporučenou. Zbylé tři zůstávají otevřené.
     hints: [
-      `${HLEDEJ[g]} Třeba ${o1.name} mezi ně nepatří.`,
+      `${HLEDEJ[g]} Třeba ${o1.name} mezi takové živočichy nepatří.`,
       `${PTEJ_SE[g]} Možnost ${o1.name} už máš vyřazenou. U zbylých si ověř i to, jestli jde vůbec o měkkýše.`,
     ],
     explanation: `Mezi ${MEZI[g]} patří ${z.name}. ${z.znak}`,
@@ -242,7 +242,7 @@ const L1_CASTI: Fakt[] = [
     q: "Jak se jmenuje svalnatá část těla, po které se hlemýžď pomalu plazí?",
     key: "noha",
     d: [
-      ["chapadlo", "Chapadla mají hlavonožci a chytají jimi kořist. Hlemýžď po chapadlech nelze."],
+      ["chapadlo", "Chapadla mají hlavonožci a chytají jimi kořist. Hlemýžď po chapadlech neleze."],
       ["plášť", "Plášť kryje útroby a vytváří schránku, k plazení neslouží."],
       ["tykadlo", "Tykadla nese hlava a slouží k hmatu a čichu, ne k pohybu."],
     ],
@@ -331,7 +331,7 @@ const L1_CASTI: Fakt[] = [
       ["na ulitě", "Ulita je neživá schránka, oči na ní být nemohou."],
     ],
     h: [
-      "Když hlemýždě jemně dotkneš, zatáhne z hlavy dva delší výběžky. Proč je chrání?",
+      "Když se hlemýždě jemně dotkneš, zatáhne z hlavy dva delší výběžky. Proč je chrání?",
       "Hlemýžď má na hlavě dva páry výběžků. Kratší slouží k hmatu a čichu, na koncích delších je tmavá tečka.",
     ],
     e: "Hlemýžď má oči na koncích delších tykadel. Při nebezpečí je zatáhne dovnitř.",
@@ -792,7 +792,7 @@ const L3: Fakt[] = [
     ],
     h: [
       "Kde žije sépie v přírodě? A jaká voda teče z kohoutku?",
-      "Krok 1: porovnej vodu, ve které sépie žije v přírodě, s vodou z kohoutku. Krok 2: co ten rozdíl udělá s živočichem, který jinde nežije?",
+      "Krok 1: porovnej vodu, ve které sépie žije v přírodě, s vodou z kohoutku. Krok 2: co ten rozdíl udělá se živočichem, který jinde nežije?",
     ],
     e: "Sépie i ostatní hlavonožci žijí jen v moři se slanou vodou. Ve sladké vodě z kohoutku nepřežijí. V dnešním Česku proto hlavonožci nežijí, zkameněliny z dávných moří se tu ale najdou.",
   },

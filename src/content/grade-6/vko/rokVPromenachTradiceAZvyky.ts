@@ -104,7 +104,7 @@ const L3_POOL: Record<string, Zvyk[]> = {
   [VANOCE]: [
     ["Večer, kdy na obloze zazáří první hvězda, usedá celá rodina ke slavnostní večeři a pak si pod ozdobeným stromkem nadělí dárky.", "je to rodinná večeře a nadílka 24. prosince, ne obchůzka za odměnu podle chování"],
     ["Rodina si u ozdobeného stromku zpívá tradiční písně, které vyprávějí příběh o narození, a zpívá se jen v tomto jednom zimním období.", "je to zpívání doma u stromečku o narození, ne obchůzka od domu k domu"],
-    ["Poté, co všichni usednou k štědrovečerní tabuli, přijde na řadu rozbalování dárků pod ozdobeným stromkem.", "nadílka je součástí rodinné večeře 24. prosince, ne obchůzky za básničku"],
+    ["Poté, co všichni usednou ke štědrovečerní tabuli, přijde na řadu rozbalování dárků pod ozdobeným stromkem.", "nadílka je součástí rodinné večeře 24. prosince, ne obchůzky za básničku"],
   ],
   [MIKULAS]: [
     ["Podvečer na začátku prosince obchází od domu k domu trojice postav; ta hodná dětem za básničku nadělí sladkost, ta postrašující je jen vyděsí řetězem.", "je to obchůzka za odměnu podle chování, ne rodinná večeře u stromečku"],
@@ -119,7 +119,7 @@ const L3_POOL: Record<string, Zvyk[]> = {
   [VELIKONOCE]: [
     ["Po skončení dlouhého čtyřicetidenního půstu chodí chlapci ráno s pomlázkou popřát dívkám zdraví a doma na ně čekají barevně zdobená vajíčka.", "je to oslava KONCE postu a příchodu jara, ne veselí před ním"],
     ["Chlapci ráno přednesou u dveří krátkou říkanku a dívkám jemně vyšlehají nohy pomlázkou z vrbových proutků, začež dostanou od hospodyně malovaná vajíčka.", "odměnou jsou vajíčka za pomlázku PO skončení postu, ne sladkost za básničku"],
-    ["Až skončí čtyřicetidenní půst, přijde jarní neděle, kdy si rodina k snídani upeče tradiční nadýchané pečivo a prohlíží si pestře pomalovaná vajíčka.", "sváteční pečivo a pomalovaná vajíčka patří k oslavě konce postu, ne k veselí před jeho začátkem"],
+    ["Až skončí čtyřicetidenní půst, přijde jarní neděle, kdy si rodina ke snídani upeče tradiční nadýchané pečivo a prohlíží si pestře pomalovaná vajíčka.", "sváteční pečivo a pomalovaná vajíčka patří k oslavě konce postu, ne k veselí před jeho začátkem"],
   ],
 };
 
@@ -163,7 +163,7 @@ function uloha(level: number): PracticeTask {
           ? `${RULE} Nerozhoduj podle ročního období (zima, předjaří), ale podle ÚČELU zvyku.`
           : RULE,
       ],
-      explanation: `${RULE} ${vse.map((x) => `„${x.n}“: ${x.proc} (patří k svátku ${x.g}).`).join(" ")}`,
+      explanation: `${RULE} ${vse.map((x) => `„${x.n}“: ${x.proc} (patří ke svátku ${x.g}).`).join(" ")}`,
     },
   );
 }

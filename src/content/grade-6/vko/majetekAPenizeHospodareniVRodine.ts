@@ -104,7 +104,7 @@ const POOL_L1: Polozka[] = [
     d: [
       { value: "platba za elektřinu, vodu a další podobné pravidelné účty", why: "Platba za energie je výdaj, peníze při ní odcházejí. Příjem naopak peníze do rodiny přináší, třeba výplata." },
       { value: "nákup nové pračky do domácnosti", why: "Koupě pračky je výdaj. Příjem jsou peníze, které do rodiny přicházejí, ne odcházejí." },
-      { value: "peníze odložené na dovolenou", why: "Odložené peníze jsou spoření, ne nová částka, která do rodiny přišla. Příjem je peníze, které rodina teprve získá, třeba výplatou." },
+      { value: "peníze odložené na dovolenou", why: "Odložené peníze jsou spoření, ne nová částka, která do rodiny přišla. Příjem jsou peníze, které rodina teprve získá, třeba výplatou." },
     ],
     hints: [
       "Přemýšlej, jestli u této položky peníze do rodiny přicházejí, nebo z ní odcházejí.",
@@ -187,7 +187,7 @@ const POOL_L1: Polozka[] = [
     key: "odkládá si část peněz stranou na pozdější použití",
     d: [
       { value: "utrácí všechny peníze hned, jak je dostane", why: "To je opak spoření. Kdo spoří, peníze si naopak nechává na později." },
-      { value: "půjčuje si peníze od kamaráda", why: "Půjčka je peníze si vzít a vracet, ne peníze odkládat z vlastních příjmů." },
+      { value: "půjčuje si peníze od kamaráda", why: "Půjčka znamená peníze si vzít a vracet, ne peníze odkládat z vlastních příjmů." },
       { value: "sestavuje si dopředu podrobný seznam všech plánovaných výdajů", why: "To je spíš sestavování rozpočtu. Spoření znamená peníze fyzicky odložit stranou, ne jen naplánovat, na co je utratí." },
     ],
     hints: [
@@ -288,7 +288,7 @@ const POOL_L2: Polozka[] = [
     q: "Ema chce mít nejnovější bezdrátová sluchátka, protože je má skoro celá třída a bez nich si připadá trapně. Do jaké kategorie tahle touha patří?",
     key: "přání",
     d: [
-      { value: "potřeba", why: "Bez sluchátek se dá běžně fungovat, i když si to Ema kvůli spolužákům tak nepřipadá. Jde o přání, ne o nezbytnost." },
+      { value: "potřeba", why: "Bez sluchátek se dá běžně fungovat, i když to Emě kvůli spolužákům tak nepřipadá. Jde o přání, ne o nezbytnost." },
       { value: "výdaj", why: "Výdaj jen popisuje, že by peníze z rozpočtu odešly, neřeší, jestli jde o nezbytnost, nebo chtěnou věc. Tady jde o přání." },
       { value: "spoření", why: "Spoření znamená peníze odkládat stranou, ne to, co si Ema přeje koupit. Její touha po sluchátkách je přání." },
     ],
@@ -345,7 +345,7 @@ const POOL_L2: Polozka[] = [
     key: "spoření",
     d: [
       { value: "utrácení", why: "Utrácet znamená peníze hned používat. Adam si je naopak odkládá stranou, to je spoření." },
-      { value: "kapesné", why: "Kapesné je peníze, které Adam dostává, ne to, co s nimi dělá. Jeho jednání se nazývá spoření." },
+      { value: "kapesné", why: "Kapesné jsou peníze, které Adam dostává, ne to, co s nimi dělá. Jeho jednání se nazývá spoření." },
       { value: "rozpočet", why: "Rozpočet je plán celého hospodaření rodiny, ne to, že si jednotlivec odkládá peníze stranou. Adamovo jednání je spoření." },
     ],
     hints: [
@@ -535,7 +535,7 @@ const POOL_L3: Polozka[] = [
       { value: "spořením, protože maminka peníze pro syna dala stranou", why: "Spoření znamená, že si někdo sám odkládá peníze stranou na později. Maminka mu je rovnou dala, neuložila je stranou na později — Kryštofovi jen přibyly, je to příjem, ne spoření." },
     ],
     hints: [
-      "Nezaměňuj se — otázka se ptá na Kryštofovo hospodaření, ne na maminčino, i když jde o tutéž platbu.",
+      "Nenech se splést — otázka se ptá na Kryštofovo hospodaření, ne na maminčino, i když jde o tutéž platbu.",
       "Stejná platba může být pro jednoho výdaj a pro druhého příjem zároveň — rozhoduje, čí rozpočet zrovna sledujeme, ne to, kolikrát se peníze v příběhu zmíní.",
     ],
     explanation: "Stejná platba je z pohledu maminky výdaj, protože jí peníze z rozpočtu odešly. Z pohledu Kryštofa ale peníze přibyly, takže pro něj jde o příjem — jedna platba může být pro dva lidi zároveň dvě různé věci.",

@@ -555,7 +555,7 @@ function l3Obraceny(): PracticeTask | null {
     d,
     {
       hints: [
-        `Celkové zvětšení ${x(t)} vzniklo spojením okuláru a objektivu, ${danyNazev} z toho dává ${x(dane)}. Jakou operací se spojují, a jaká operace ji tedy vrací zpátky?`,
+        `Celkové zvětšení ${x(t)} vzniklo spojením okuláru a objektivu, ${danyNazev} z toho dává ${x(dane)}. Jakou operací se spojují a jaká operace ji tedy vrací zpátky?`,
         `Celkové zvětšení je zvětšení okuláru krát zvětšení objektivu. Když jedno z nich chybí, vyděl celkové zvětšení ${x(t)} tím, které znáš (tady ${danyNazev}em ${x(dane)}). Výsledek si ověř násobením.`,
       ],
       solutionSteps: [

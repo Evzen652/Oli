@@ -133,7 +133,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   match("Spoj, co rostlině chybí, s tím, co se s ní stane.", p(["Voda", "Uvadne a svěsí listy"], ["Světlo", "Zbledne a vytáhne se"], ["Teplo", "Semena nevyklíčí"], ["Živiny", "Roste pomalu a listy žloutnou"]), {
     hints: ["Bez čeho rostlina rychle zvadne?", "Ve tmě rostlina bledne a natahuje se za světlem. V zimě semena v zemi čekají. Co se stane v chudé půdě?"],
-    explanation: "Bez vody rostlina vadne. Bez světla bledne a natahuje se. V chladu semena neklíčí. Bez živin roste pomalu a listy žloutnou.",
+    explanation: "Bez vody rostlina vadne. Bez světla bledne a natahuje se. V chladu semena neklíčí. Beze živin roste pomalu a listy žloutnou.",
   }),
 ];
 

@@ -125,7 +125,7 @@ const L1: Uloha[] = [
     ],
     hints: [
       "Slovo punský pochází z latinského jména pro Féničany. Hledej město, které Féničané založili v severní Africe.",
-      "Perská říše, Athény i Sparta patří do dějin Řecka a Orientu. Soupeřem Říma v punských válkách bylo bohaté obchodní město féničanského původu, které Římané nakonec srovnali se zemí.",
+      "Perská říše, Athény i Sparta patří do dějin Řecka a Orientu. Soupeřem Říma v punských válkách bylo bohaté obchodní město fénického původu, které Římané nakonec srovnali se zemí.",
     ],
     explanation: "Punské války vedl Řím s Kartágem, obchodním městem v severní Africe, které založili Féničané (latinsky Poeni, odtud punské). Roku 146 př. n. l. Římané Kartágo zničili. Persie, Athény a Sparta patří do dějin Řecka.",
   },
@@ -378,7 +378,7 @@ function poradi(idx: [number, number, number, number], smer: "nejdříve" | "nej
       `Porovnáváš tyto události: ${seznamText}. Všechny proběhly před naším letopočtem. Znamená tam větší číslo roku dřív, nebo později?`,
       `Před naším letopočtem se roky počítají pozpátku směrem k narození Krista, takže čím větší číslo, tím dál v minulosti. Vypiš si ze zadání čísla let u událostí ${seznamText} a vyber tu, jejíž číslo je ${smer === "nejdříve" ? "největší" : "nejmenší"}.`,
     ],
-    explanation: `Před naším letopočtem se roky počítají pozpátku, takže vyšší číslo znamená dřívější událost. ${smer === "nejdříve" ? "Nejvyšší" : "Nejnižší"} číslo má ${key.nazev} (${datace(key)}), proto je správně „${key.label}“.`,
+    explanation: `Před naším letopočtem se roky počítají pozpátku, takže vyšší číslo znamená dřívější událost. ${smer === "nejdříve" ? "Nejvyšší" : "Nejnižší"} číslo má tato událost: ${key.nazev} (${datace(key)}), proto je správně „${key.label}“.`,
     steps: [
       `Letopočty v zadání (od nejstaršího): ${[...ev].sort((a, b) => b.rok - a.rok).map(datace).join("; ")}`,
       "Před n. l. platí: vyšší číslo = starší událost.",

@@ -44,7 +44,7 @@ function zapis(x: Trojice): PracticeTask | null {
   const chyby: Chyba[] = varianty(x).map((o) => ({ value: fmt(hodnota(o.v)), why: o.why }));
   const casti = [x[0] && "miliardy", x[1] && "miliony", x[2] && "tisíce", x[3] && "jednotky"].filter(Boolean).join(", ");
   return ciselnaUloha(`Zapiš číslicemi: ${slova}.`, fmt(n), chyby, [
-    `Které trojice v čísle „${slova}“ jsou, a které chybí? Máš tu ${casti}.`,
+    `Které trojice v čísle „${slova}“ jsou a které chybí? Máš tu ${casti}.`,
     "Každá trojice (miliardy, miliony, tisíce, jednotky) má v zápisu tři číslice. Prázdnou trojici zapiš jako 000 a chybějící místa vpředu doplň nulami, třeba padesát tisíc je v trojici tisíců 050.",
   ], [
     `Trojice zleva: ${trojiceTxt(n).join(" | ")}`,

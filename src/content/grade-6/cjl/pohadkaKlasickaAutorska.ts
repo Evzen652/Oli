@@ -620,7 +620,7 @@ const L3B: NeznamyPripad[] = [
     option: "Lidová pohádka — šířila se dlouho ústně a zapisovatel na ní nic nezměnil.",
     vysvetleni: "Jde o lidovou pohádku — vyprávění se dlouho předávalo ústně z generace na generaci a zapisovatel na něm nic nezměnil.",
     d1: "Autorská pohádka — protože ji nakonec zapsal konkrétní člověk (učitel).",
-    w1: "Učitel je zapisovatel, ne autor. Kdo text zapsal, a kdo si ho vymyslel, jsou dvě různé věci — tenhle učitel na příběhu nic nezměnil.",
+    w1: "Učitel je zapisovatel, ne autor. Kdo text zapsal a kdo si ho vymyslel, jsou dvě různé věci — tenhle učitel na příběhu nic nezměnil.",
     d2: "Lidová pohádka — protože se v ní určitě objevuje princezna a kouzlo.",
     w2: "Závěr je správný, ale zdůvodnění ne: o princezně ani o kouzle v popisu nic není, jen si je domýšlíš. Rozhoduje způsob vzniku, ne hádaný obsah.",
     d3: "Nedá se to poznat, protože nevíme, jak babiččina babička pohádku poprvé vymyslela nebo odkud ji znala.",

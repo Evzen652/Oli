@@ -438,7 +438,7 @@ const MIKROSVET: Polozka[] = [
     ],
     h0: "Oba balonky jsou stejně velké a stejně nafouknuté. Co se tedy liší?",
     h1: "Při stejném objemu a stejném tlaku je v obou baloncích částic zhruba stejně. Rozdíl v hmotnosti tedy musí být v něčem jiném než v jejich počtu.",
-    vysvetleni: "Hmotnost plynu v balonku je počet částic krát hmotnost jedné. Helium je lehké proto, že jedna jeho částice váží zlomek toho co částice vzduchu.",
+    vysvetleni: "Hmotnost plynu v balonku je počet částic krát hmotnost jedné. Helium je lehké proto, že jedna jeho částice váží zlomek toho, co částice vzduchu.",
   },
 ];
 

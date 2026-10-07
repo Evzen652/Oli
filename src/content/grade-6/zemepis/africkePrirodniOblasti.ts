@@ -144,7 +144,7 @@ const BANKA_L1: Fakt[] = [
     d: [
       ["Je největší deštný les světa a leží kolem rovníku.", "To je popis deštného lesa v povodí Konga. Sahara je naopak oblast, kde téměř neprší."],
       ["Je největší savana světa a leží na jihu Afriky.", "Savana je travnatá krajina se střídáním dešťů a sucha. Sahara je suchá a leží na severu, ne na jihu."],
-      ["Je největší studená poušť světa a leží na jihu Afriky.", "Sahara je horká. Největší studenou pouští je led Antarktidy, a Sahara leží na severu, ne na jihu."],
+      ["Je největší studená poušť světa a leží na jihu Afriky.", "Sahara je horká. Největší studenou pouští je led Antarktidy a Sahara leží na severu, ne na jihu."],
     ],
     hints: [
       "Název Sahara se pojí s jedním z nejsušších míst světa. Uvažuj, kde na kontinentu leží a jaké tam bývá teplo.",
@@ -346,7 +346,7 @@ interface Zvire {
   safe: boolean;
 }
 const ZVIRATA: Zvire[] = [
-  { jm: "velbloud", o: "P", det: "je přizpůsobený vedru a suchu", clue: "Dlouho se obejde bez pití a jeho široké nohy se v písku nebořijí.", safe: true },
+  { jm: "velbloud", o: "P", det: "je přizpůsobený vedru a suchu", clue: "Dlouho se obejde bez pití a jeho široké nohy se v písku neboří.", safe: true },
   { jm: "fenek", o: "P", det: "se chladí velkýma ušima a žije v písku", clue: "Je to malá liška s obrovskýma ušima, kterými se zbavuje horka.", safe: true },
   { jm: "škorpion", o: "P", det: "přečká horko zavrtaný v písku", clue: "Je to pavoukovec s klepety a jedovatým bodcem na konci těla.", safe: false },
   { jm: "slon", o: "S", det: "se pase na trávě v otevřené krajině", clue: "Je to největší suchozemský savec, má chobot a dlouhé kly.", safe: false },
@@ -556,7 +556,7 @@ const ZIV_L2: ZivVar[] = [
     q: "Jak lidé nejčastěji využívají krajinu s rozlehlými pastvinami a velkými stády divokých zvířat?",
     hints: [
       "Pastviny jsou vhodné pro určité činnosti. Zamysli se, co se dá dělat s velkými travnatými plochami a s divokými zvířaty.",
-      "Velké travnaté plochy uživí stáda, která lidé chovají, a divoká zvířata jsou zajímavá pro návštěvníky z daleka. Vyřaď činnosti, které patří do hustého lesa nebo k pramenům v suché krajině.",
+      "Velké travnaté plochy uživí stáda, která lidé chovají, a divoká zvířata jsou zajímavá pro návštěvníky zdaleka. Vyřaď činnosti, které patří do hustého lesa nebo k pramenům v suché krajině.",
     ],
     explanation: "Rozlehlé pastviny se využívají k pastvě dobytka. Divoká zvířata jsou navíc atrakcí pro turisty a chrání se v národních parcích, kam se jezdí na safari.",
   },
@@ -849,7 +849,7 @@ const POPISY_L3: Popis[] = [
     q: "Lidé tu sbírají lesní plody, loví a na malých mýtinách pěstují kakaovníky; stezky za pár měsíců zarostou. O jakou oblast Afriky jde?",
     hints: [
       "Všimni si, co lidé v oblasti dělají a co se děje se stezkami. Zeptej se, jaká krajina tak rychle zarůstá.",
-      "Stezky, které se za pár měsíců zarostou, ukazují na velmi rychlý růst, a to je možné jen tam, kde je stále teplo a dost vody. Kakaovníky potřebují také vlhko a teplo.",
+      "Stezky, které za pár měsíců zarostou, ukazují na velmi rychlý růst, a to je možné jen tam, kde je stále teplo a dost vody. Kakaovníky potřebují také vlhko a teplo.",
     ],
     explanation: "Sběr lesních plodů, kakaovníky na mýtinách a rychle zarůstající stezky jsou znaky deštného lesa, kde je stále teplo a vlhko.",
   },

@@ -199,7 +199,7 @@ function ukolZnakPovesti(u: Ukazka): PracticeTask | null {
         "Poznáš to podle toho, čeho se ukázka drží — vymyšleného světa, zvířat, bohů, nebo něčeho, co doopravdy existuje.",
         "Ber možnosti jednu po druhé a u každé se zeptej, jestli na ukázku opravdu sedí: Začíná ukázka slovy „Bylo nebylo“? Mluví v ní zvířata jako lidé a končí ponaučením? Vystupují v ní bohové a mytičtí hrdinové starých Řeků? Tři možnosti takhle vyřadíš a zbude jediná, která na ukázku sedí.",
       ],
-      explanation: `V ukázce najdeš konkrétní pojmenování: ${u.jmeno ?? "skutečné místo nebo osobu"}. Pověst se váže ke jmenovanému místu nebo osobě — proto jde o pověst, i kdyby v ní byl kouzelný prvek.`,
+      explanation: `V ukázce najdeš konkrétní pojmenování: ${(u.jmeno ?? "skutečné místo nebo osobu").replace(/\.$/, "")}. Pověst se váže ke jmenovanému místu nebo osobě — proto jde o pověst, i kdyby v ní byl kouzelný prvek.`,
     },
   );
 }
@@ -606,7 +606,7 @@ function ukolUcel(u: UcelItem): PracticeTask | null {
         "Nehledej, co se v příběhu STALO, ale PROČ si ho lidé vlastně vyprávěli — co jim tím vyprávěním vysvětloval nebo připomínal.",
         "Vyřaď holé převyprávění děje, fantastický prvek vydávaný za fakt i tvrzení, o kterém ukázka vůbec nemluví. Zbude jediná možnost, která mluví o smyslu celého vyprávění, ne o tom, co se v něm odehrálo.",
       ],
-      explanation: `Pověst hlavně vysvětluje nebo připomíná ${u.ucel} — nejde o pouhé převyprávění děje ani o fantastický prvek jako skutečnost.`,
+      explanation: `Pověst hlavně vysvětluje nebo připomíná${/^(proč|jak|kdo|co|kde|kdy)\s/.test(u.ucel) ? "," : ""} ${u.ucel} — nejde o pouhé převyprávění děje ani o fantastický prvek jako skutečnost.`,
     },
   );
 }

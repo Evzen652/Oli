@@ -236,7 +236,7 @@ const POOL_L1: Uloha[] = [
       ["na březích Rubikonu", "Rubikon překročil roku 49 př. n. l. Zavražděn byl o pět let později a jinde."],
     ],
     hints: [
-      "Spiklenci byli senátoři. Kde se mohli ke Caesarovi dostat nejblíž, aniž by to budilo podezření?",
+      "Spiklenci byli senátoři. Kde se mohli k Caesarovi dostat nejblíž, aniž by to budilo podezření?",
       "Vražda se stala v Římě na idy březnové, v den, kdy měl Caesar úřední povinnosti. Který z nabízených dějů se odehrál přímo v Římě?",
     ],
     explanation: "Caesar byl zavražděn na idy březnové 44 př. n. l. na zasedání senátu. Spiklenci byli senátoři, proto se k němu dostali. Actium, Alexandrie i Rubikon patří k jiným událostem.",
@@ -314,7 +314,7 @@ function kolikLet(odUdalost: string, a: number, doUdalost: string, b: number, sa
       `Oba roky jsou př. n. l., starší je ${a} (větší číslo).`,
       `Ve stejné éře se odčítá: ${a} − ${b} = ${ans}.`,
     ],
-    explanation: `Obě události se staly před naším letopočtem, čísla let tehdy ubývala. Rozdíl je proto prosté odečtení: ${a} − ${b}, uplynulo ${pad(ans, "ROK")}.`,
+    explanation: `Obě události se staly před naším letopočtem, čísla let tehdy ubývala. Rozdíl je proto prosté odečtení: ${a} − ${b}, ${ans === 1 ? "uplynul" : ans <= 4 ? "uplynuly" : "uplynulo"} ${pad(ans, "ROK")}.`,
   };
 }
 

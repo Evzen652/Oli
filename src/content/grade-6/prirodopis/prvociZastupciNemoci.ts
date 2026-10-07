@@ -96,13 +96,13 @@ const L1: Fakt[] = [
     q: "Který prvok způsobuje malárii?",
     key: "zimnička",
     d: [
-      ["trypanozoma", "Trypanozomu přenáší moucha tse-tse a způsobuje spavou nemoc."],
+      ["trypanozoma", "Trypanozoma způsobuje spavou nemoc a přenáší ji moucha tse-tse."],
       ["trepka", "Trepka žije volně v tůních a nálevech, v krvi nežije."],
       ["krásnoočko", "Krásnoočko žije volně ve vodě a nemoci nezpůsobuje."],
     ],
     h: [
       "Trepka a krásnoočko žijí volně v tůních a nemoci nepůsobí. Zbývají dva původci nemocí. Který z nich patří k malárii?",
-      "Jednoho parazita přenáší africká moucha a způsobuje spavou nemoc. Druhého přenáší komár anofeles a ten v krvi ničí červené krvinky.",
+      "Jednoho parazita přenáší africká moucha a ten způsobuje spavou nemoc. Druhého přenáší komár anofeles a ten v krvi ničí červené krvinky.",
     ],
     e: "Malárii způsobuje prvok zimnička. Do krve ho přenáší komár anofeles a zimnička pak ničí červené krvinky.",
   },
@@ -180,7 +180,7 @@ const L1: Fakt[] = [
     q: "Kterého prvoka přenáší do krve člověka moucha tse-tse?",
     key: "trypanozomu",
     d: [
-      ["zimničku", "Zimničku přenáší komár anofeles a způsobuje malárii."],
+      ["zimničku", "Zimnička způsobuje malárii a přenáší ji komár anofeles."],
       ["trepku", "Trepka žije volně ve vodě a nemoci nezpůsobuje."],
       ["krásnoočko", "Krásnoočko žije volně v tůních a v krvi nežije."],
     ],
@@ -445,7 +445,7 @@ const L2: Fakt[] = [
       "Prvok je jediná drobná buňka. Co se s ní stane na suchu?",
       "Mnohobuněčné organismy chrání kůže, šupiny nebo kůra. Tělo prvoka tvoří jen jedna buňka, a ta sama ztrátu vody nevydrží.",
     ],
-    e: "Tělo prvoka je jediná buňka a na suchu by vyschla. Proto prvoci žijí ve vodě nebo ve vlhku. Některé přečkají sucho v odolné cystě, v ní ale nejsou aktivní.",
+    e: "Tělo prvoka je jediná buňka a na suchu by vyschla. Proto prvoci žijí ve vodě nebo ve vlhku. Někteří přečkají sucho v odolné cystě, v ní ale nejsou aktivní.",
   },
   {
     q: "Turistu v tropické Africe bodla velká moucha. Po čase má horečky a později poruchy chování, protože nemoc napadla nervovou soustavu. Kterou nemoc mohl dostat?",

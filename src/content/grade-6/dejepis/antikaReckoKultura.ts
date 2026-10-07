@@ -375,7 +375,7 @@ export const POOL_L2: Polozka[] = [
     correct: "Divadlo",
     distractors: [
       { value: "Stadion", why: "Stadion byl dlouhá rovná dráha pro běžce, ne půlkruh s místem pro herce." },
-      { value: "Agora", why: "Agora bylo náměstí a tržiště uprostřed města, sedadla ve svahu nemělo." },
+      { value: "Agora", why: "Agora byla náměstí a tržiště uprostřed města, sedadla ve svahu neměla." },
       { value: "Amfiteátr", why: "Amfiteátr stavěli až Římané pro zápasy gladiátorů a je uzavřený do oválu, ne otevřený půlkruh ve svahu." },
     ],
     hints: [

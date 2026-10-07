@@ -163,7 +163,7 @@ const L2: PracticeTask[] = [
     explanation: "Každý kus magnetu má zase severní i jižní pól — vzniknou dva menší magnety.",
   }),
   choice("Co se stane, když k sobě přiblížíš jižní póly dvou magnetů?", "budou se odpuzovat, protože jsou to stejné póly", [
-    { value: "přitáhnou se, protože jsou to oba magnety", why: "Že jde o magnety nestačí — rozhoduje, jestli jsou póly stejné, nebo opačné." },
+    { value: "přitáhnou se, protože jsou to oba magnety", why: "Že jde o magnety, nestačí — rozhoduje, jestli jsou póly stejné, nebo opačné." },
     { value: "nestane se nic, magnety působí jen severními póly", why: "Působí obojí. Jižní pól odpuzuje jižní stejně, jako severní odpuzuje severní." },
     { value: "přitáhnou se, když jsou magnety dost velké", why: "Velikost pravidlo nemění, jen zesílí sílu — a ta bude odpudivá." },
   ], {
@@ -218,7 +218,7 @@ const L3: PracticeTask[] = [
     { value: "stačí jeden drát od baterie k žárovce", why: "Jedním drátem se obvod neuzavře." },
     { value: "dráty spojím spolu a žárovku nechám stranou", why: "Žárovka musí být v obvodu." },
   ], {
-    hints: ["Proud musí téct dokola. Kolik cest potřebuje?", "Z jednoho pólu baterie vede drát k žárovce a z žárovky druhý drát zpět k druhému pólu."],
+    hints: ["Proud musí téct dokola. Kolik cest potřebuje?", "Z jednoho pólu baterie vede drát k žárovce a ze žárovky druhý drát zpět k druhému pólu."],
     explanation: "Obvod je uzavřený, když proud vede z jednoho pólu přes žárovku do druhého pólu.",
   }),
   choice("Svítilna přestala svítit. Co zkontroluješ nejdřív?", "jestli nejsou vybité baterie", [

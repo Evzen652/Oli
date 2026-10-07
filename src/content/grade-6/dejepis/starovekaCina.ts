@@ -401,7 +401,7 @@ export const POOL_L2: Polozka[] = [
     distractors: [
       { value: "Spojil je první císař a zeď vedla mezi bývalými státy", why: "Císař valy spojil, ale ne uvnitř říše. Valy mezi bývalými státy dal naopak zbourat a spojená zeď chránila severní hranici." },
       { value: "Spojili je až Chanové a zeď vedla po severní hranici", why: "Zeď opravdu vedla po severní hranici a Chanové ji později prodlužovali. Starší valy ale do jedné linie spojil už první císař z rodu Čchin." },
-      { value: "Spojili je až Chanové a zeď vedla mezi bývalými státy", why: "Obě části jsou chybně. Valy spojil první císař z rodu Čchin a zeď vedla po severní hranici, ne uvnitř říše." },
+      { value: "Spojili je až Chanové a zeď vedla mezi bývalými státy", why: "Obě části jsou chybné. Valy spojil první císař z rodu Čchin a zeď vedla po severní hranici, ne uvnitř říše." },
     ],
     hints: [
       "Rozhodni zvlášť dvě věci: kdo mohl valy různých států spojit a kde měla zeď smysl.",

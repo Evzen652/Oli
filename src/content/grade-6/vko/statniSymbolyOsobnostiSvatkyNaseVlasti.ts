@@ -79,7 +79,7 @@ const POOL_L1: Polozka[] = [
     q: "Červený štít, na kterém je jen stříbrný dvouocasý lev ve skoku se zlatou korunou, bez dalších zvířat. O jaký státní symbol jde?",
     key: "malý státní znak",
     d: [
-      { value: "velký státní znak", why: "Velký znak má štít rozdělený na čtyři pole s lvem i oběma orlicemi. Popsaný štít má jen samotného lva, to je malý státní znak." },
+      { value: "velký státní znak", why: "Velký znak má štít rozdělený na čtyři pole se lvem i oběma orlicemi. Popsaný štít má jen samotného lva, to je malý státní znak." },
       { value: "státní vlajka", why: "Vlajka je barevný list s pruhy a klínem, ne štít s vyobrazeným lvem. Popsaný symbol je malý státní znak." },
       { value: "státní hymna", why: "Hymna je píseň, ne štít s vyobrazením zvířete. Popsaný symbol je malý státní znak." },
     ],
@@ -391,7 +391,7 @@ const POOL_L2: Polozka[] = [
     q: "Na červeném poli štítu je jen samotný stříbrný lev ve skoku, bez orlic a bez rozdělení na další pole. O jaký symbol jde a o kterou jeho podobu konkrétně?",
     key: "znak, konkrétně malý státní znak",
     d: [
-      { value: "znak, konkrétně velký státní znak", why: "Velký znak má štít rozdělený na čtyři pole s lvem i oběma orlicemi. Štít jen s jedním lvem, bez rozdělení na pole, je malý státní znak." },
+      { value: "znak, konkrétně velký státní znak", why: "Velký znak má štít rozdělený na čtyři pole se lvem i oběma orlicemi. Štít jen s jedním lvem, bez rozdělení na pole, je malý státní znak." },
       { value: "vlajka, konkrétně její dolní pruh", why: "Vlajka je barevný list s pruhy a klínem, ne štít s vyobrazeným lvem. Popsaný symbol je znak, konkrétně malý státní znak." },
       { value: "hymna, konkrétně její melodie", why: "Hymna je píseň, ne štít s vyobrazeným zvířetem. Popsaný symbol je znak, konkrétně malý státní znak." },
     ],

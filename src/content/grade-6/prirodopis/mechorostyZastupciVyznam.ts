@@ -570,7 +570,7 @@ const BANKA_L3: Polozka[] = [
     ds: [
       ["má pravdu, mech kořeny čerpá šťávu z kmene", FB_KORENY],
       ["má pravdu, mech je houba a kmen rozkládá", FB_HOUBA],
-      ["mech šťávu bere jen ze severní strany kmene", "Mech stromu šťávu nebere z žádné strany. Roste tam, kde je vlhko a stín, a potravu si vyrábí sám."],
+      ["mech šťávu bere jen ze severní strany kmene", "Mech stromu šťávu nebere ze žádné strany. Roste tam, kde je vlhko a stín, a potravu si vyrábí sám."],
     ],
     h: [
       "Mech je zelený. Potřebuje od stromu potravu, nebo si ji umí vyrobit?",
@@ -662,7 +662,7 @@ const BANKA_L3: Polozka[] = [
     q: "V horském mokřadu vyvrtali vědci hluboký vrt. I několik metrů pod povrchem našli zbytky mechu, na kterých šly ještě poznat lístky. Proč se nerozložily?",
     key: "ve vodě bez vzduchu se skoro nerozkládají",
     ds: [
-      ["v hloubce je tepleji a rozklad je rychlejší", "Rychlejší rozklad by zbytky naopak zničil. Ve vodou nasáklé vrstvě chybí vzduch, a rozkladači tam skoro nepracují."],
+      ["v hloubce je tepleji a rozklad je rychlejší", "Rychlejší rozklad by zbytky naopak zničil. Ve vodou nasáklé vrstvě chybí vzduch a rozkladači tam skoro nepracují."],
       ["zbytky mechu tam dole pořád žijí a rostou", "Bez světla mech nemůže dělat fotosyntézu, v hloubce nežije. Jsou to odumřelé zbytky."],
       ["mech má tvrdé kořeny, které nic nerozloží", FB_KORENY],
     ],

@@ -176,8 +176,8 @@ const UROVNE: Record<number, Uroven> = {
       [Z]: [
         "Při které práci kov neteče, ale tvaruje se údery?",
         "Kterou novinku přinesli Keltové do řemesel a obchodu?",
-        "Který kov se získával z rudy ve zvláštní pícce, a kde se u nás poprvé platilo?",
-        "Která surovina je levná a skoro všude, a kdo stavěl první velká opevněná města?",
+        "Který kov se získával z rudy ve zvláštní pícce a kde se u nás poprvé platilo?",
+        "Která surovina je levná a skoro všude a kdo stavěl první velká opevněná města?",
       ],
     },
     vodítkaB2: [
@@ -228,7 +228,7 @@ const UROVNE: Record<number, Uroven> = {
     },
     vodítka: {
       [K]: [
-        "Ve které situaci lidé poprvé mění způsob obživy, a co to říká o jejich nástrojích?",
+        "Ve které situaci lidé poprvé mění způsob obživy a co to říká o jejich nástrojích?",
         "Kde se nic netaví a nástroje se jen upravují údery nebo broušením?",
         "Kde je nejcennější surovinou něco, co se nemusí tavit, nebo kde lidé ještě nepěstují?",
         "Která situace popisuje vynálezy prvních zemědělců?",
@@ -240,7 +240,7 @@ const UROVNE: Record<number, Uroven> = {
         "Kde se kov znovu taví, nebo kde ke vzniku kovu chybí jedna ze dvou surovin?",
       ],
       [Z]: [
-        "Kde je surovina dostupná skoro všude, a kde stojí velké opevněné sídlo s kováři?",
+        "Kde je surovina dostupná skoro všude a kde stojí velké opevněné sídlo s kováři?",
         "Kde se platí mincemi a kde je nepostradatelný řemeslník, který kov buší?",
         "Která novinka zrychlila hrnčířskou práci a proč by nástroje najednou zlevnily?",
         "Kde se kov kove a kde se ve městě razí peníze?",

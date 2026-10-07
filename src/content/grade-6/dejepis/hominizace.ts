@@ -616,7 +616,7 @@ const PRICINY: Pricina[] = [
     distr: [
       ["Protože se z neandrtálce přímo vyvinul.", "Lineární představa: neandrtálec není přímý předek dnešních lidí, žil souběžně s nimi."],
       ["Protože neandrtálec přišel do Evropy až po něm.", "Obrácené pořadí: neandrtálec žil v Evropě dřív, člověk rozumný přišel za ním."],
-      ["Protože ho neandrtálci naučili malovat zvířata.", "Malby zvířat po neandrtálcích nenacházíme, malovat je tedy nenaučili."],
+      ["Protože ho neandrtálci naučili malovat zvířata.", "Malby zvířat po neandrtálcích nenacházíme, malovat se tedy nenaučili."],
     ],
     hints: [
       "Nakresli si časovou osu Evropy v době ledové a vyznač, kdy tam žil neandrtálec a kdy přišel člověk rozumný.",

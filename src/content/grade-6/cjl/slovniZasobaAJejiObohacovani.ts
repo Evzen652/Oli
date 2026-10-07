@@ -250,7 +250,7 @@ function rodinaL2(r: Rodina): PracticeTask | null {
     {
       hints: [
         `„${r.derived[0]}“, „${r.derived[1]}“ a „${r.derived[2]}“ mají jen jeden základ s příponou. Jedna ze čtyř možností je jiná — má DVĚ celá slova vedle sebe. Která to je?`,
-        `Tři ze čtyř slov vznikly odvozením — mají jeden základ a příponu. Jen jedno z nich spojuje dva úplné slovní základy v jedno nové slovo (u ${r.obor === "voda" ? "vody" : r.obor === "vlak" ? "vlaku" : r.obor === "barvy" ? "barev" : "města"} to bývá vidět na dvou kořenech vedle sebe). Porovnej všechny čtyři možnosti a hledej tu se dvěma kořeny.`,
+        `Tři ze čtyř slov vznikla odvozením — mají jeden základ a příponu. Jen jedno z nich spojuje dva úplné slovní základy v jedno nové slovo (u ${r.obor === "voda" ? "vody" : r.obor === "vlak" ? "vlaku" : r.obor === "barvy" ? "barev" : "města"} to bývá vidět na dvou kořenech vedle sebe). Porovnej všechny čtyři možnosti a hledej tu se dvěma kořeny.`,
       ],
       explanation: `„${r.compound.word}“ vzniklo spojením dvou slovních základů (${r.compound.a} + ${r.compound.b}). Ostatní tři slova mají jen jeden základ s příponou — jsou odvozená.`,
     },
@@ -300,7 +300,7 @@ function zkratkaL2(p: ZkrPolozka): PracticeTask | null {
     {
       hints: [
         `Zkus si „${p.word}“ přečíst nahlas, tak jak ho lidi běžně říkají — vyslovují ho jako jedno slovo, nebo hláskují písmeno po písmenu?`,
-        `Pravidlo: zkrácenina, která se čte písmeno po písmenu (třeba „${u.word}“ jako ${u.ctenii}), se řadí mezi zkratky. Zkrácenina, kterou jde vyslovit vcelku jako obyčejné slovo, se řadí jinam. Zkus si podle toho přečíst i „${p.word}“.`,
+        `Pravidlo: zkrácenina, která se čte písmeno po písmenu (třeba „ZŠ“, které se čte zet-eš), se řadí mezi zkratky. Zkrácenina, kterou jde vyslovit vcelku jako obyčejné slovo, se řadí jinam. Zkus si podle toho přečíst i „${p.word}“.`,
       ],
       explanation: isZkratka
         ? `„${p.word}“ je zkratka spojení „${p.expansion}“ — čte se ${p.ctenii}.`
@@ -452,7 +452,7 @@ function zmenaL3(p: ZmenaPolozka): PracticeTask | null {
         `Slovo „${p.word}“ odjakživa znamenalo ${p.puvodni}. Až později se začalo používat i pro ${p.nove}. Vzniklo kvůli tomu nové slovo, nebo se použilo to staré?`,
         `Nevzniklo žádné nové slovo: k „${p.word}“ nic nepřibylo, nic se nezkrátilo a nic se nepřevzalo z ciziny. Staré slovo jen dostalo další smysl podle podobnosti. Který z nabízených způsobů tomu odpovídá?`,
       ],
-      explanation: `Slovo „${p.word}“ v češtině odedávna znamenalo ${p.puvodni}. Pro ${p.nove} se začalo používat kvůli podobnosti (tvaru, polohy nebo úlohy) — nevzniklo nové slovo, jen staré dostalo další význam. Jde o změnu významu.`,
+      explanation: `Slovo „${p.word}“ v češtině odedávna znamenalo ${p.puvodni}. Pro ${p.nove}${p.nove.includes(", ") ? "," : ""} se začalo používat kvůli podobnosti (tvaru, polohy nebo úlohy) — nevzniklo nové slovo, jen staré dostalo další význam. Jde o změnu významu.`,
     },
   );
 }

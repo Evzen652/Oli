@@ -48,7 +48,7 @@ const UDALOSTI: Udalost[] = [
   { uroven: 3, co: "Slovenské národní povstání", kdy: "29. 8. 1944", klic: 1944.0829,
     proc: "Slováci povstali proti fašistickému režimu a německé armádě ještě během války." },
   { uroven: 3, co: "Rudá armáda osvobodila tábor Osvětim", kdy: "27. 1. 1945", klic: 1945.0127,
-    proc: "Osvětim byl největší nacistický vyhlazovací tábor; osvobodili ho sovětští vojáci několik měsíců před koncem války." },
+    proc: "Tábor Osvětim byl největší nacistický vyhlazovací tábor; osvobodili ho sovětští vojáci několik měsíců před koncem války." },
   { uroven: 3, co: "Vysídlení většiny Němců z Československa", kdy: "1945–1946", klic: 1945.9,
     proc: "Po válce byla většina Němců z Československa vysídlena; vítězné mocnosti to schválily v Postupimi." },
 ];

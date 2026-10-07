@@ -384,7 +384,7 @@ export const POOL_L2: Polozka[] = [
     ],
     hints: [
       "Rozmysli si, kdo z nich umí vyrobit cukry a kdo má vlákna v celé půdě.",
-      "Cukry vyrábí jen organismus s chlorofylem. Houbová vlákna prorůstají velkým kusem půdy a sbírají z ní to, co kořeny samy nedosáhnou. Z toho odvoď, kdo co dává.",
+      "Cukry vyrábí jen organismus s chlorofylem. Houbová vlákna prorůstají velkým kusem půdy a sbírají z ní to, čeho kořeny samy nedosáhnou. Z toho odvoď, kdo co dává.",
     ],
     explanation: "Kozák březový a bříza žijí v soužití. Houbová vlákna dodávají bříze vodu a minerální látky z půdy a bříza houbě dává cukry, které si vyrobila v listech.",
   },

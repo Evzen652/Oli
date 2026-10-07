@@ -542,7 +542,7 @@ export const POOL_L3: Polozka[] = [
       "Kyslík vzniká při fotosyntéze. Co fotosyntéza potřebuje jako zdroj energie?",
       "Když ubude to, z čeho fotosyntéza bere energii, nemůže probíhat stejně rychle. Teplo ani odpočinek tu nic nezmění.",
     ],
-    explanation: "Kyslík řasy uvolňují při fotosyntéze a ta potřebuje světlo. Když světla ubude, fotosyntéza se zpomalí nebo zastaví, a kyslíku vzniká méně.",
+    explanation: "Kyslík řasy uvolňují při fotosyntéze a ta potřebuje světlo. Když světla ubude, fotosyntéza se zpomalí nebo zastaví a kyslíku vzniká méně.",
   },
   {
     q: "Organismus má buňky s jádrem a chloroplasty a tělo bez kořene, stonku a listu. Do které skupiny patří?",
@@ -682,7 +682,7 @@ export const POOL_L3: Polozka[] = [
       "Sestav potravní řetězec rybníka od začátku. Co se stane, když zmizí první článek?",
       "Drobní živočichové spásají řasy a ryby loví drobné živočichy. Navíc řasy dodávají do vody plyn, který všichni dýchají.",
     ],
-    explanation: "Řasy stojí na začátku potravního řetězce: jedí je drobní živočichové a ty ryby. Bez řas by ubylo potravy i kyslíku, a živočichů by ubývalo.",
+    explanation: "Řasy stojí na začátku potravního řetězce: jedí je drobní živočichové a ty ryby. Bez řas by ubylo potravy i kyslíku a živočichů by ubývalo.",
   },
 ];
 

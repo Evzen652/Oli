@@ -9,6 +9,7 @@
  *  • převod na kelviny změnou jednotky bez přičtení 273.
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { pad } from "@/lib/czechGrammar";
 import { pick, buildChoiceTask as task, ruzneUlohy } from "./_shared";
 
 const ri = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -190,7 +191,7 @@ function genL3(): PracticeTask {
       [
         {
           value: tC(s - d),
-          why: `To je teplota po jedné hodině. Pokles trvá ${h} hodin: ${d} × ${h} = ${drop} °C celkem.`,
+          why: `To je teplota po jedné hodině. Pokles trvá ${pad(h, "HODINA")}: ${d} × ${h} = ${drop} °C celkem.`,
         },
         {
           value: tC(s + drop),
@@ -210,7 +211,7 @@ function genL3(): PracticeTask {
           `Celkový pokles: ${d} × ${h} = ${drop} °C`,
           `${tC(s)} − ${drop} °C = ${tC(result)}`,
         ],
-        explanation: `Za ${h} hodin klesne o ${d} × ${h} = ${drop} °C. Z ${s} °C: ${s} − ${drop} = ${result} °C.`,
+        explanation: `Za ${pad(h, "HODINA")} klesne o ${d} × ${h} = ${drop} °C. Z ${s} °C: ${s} − ${drop} = ${result} °C.`,
       },
     );
   }

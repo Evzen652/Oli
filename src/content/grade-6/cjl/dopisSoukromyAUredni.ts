@@ -97,7 +97,7 @@ const FORMAT_A: (PracticeTask | null)[] = [
   radekTask("Žádost o uvolnění z vyučování", "věc", [
     { cast: "oslovení", why: "Oslovení je až následující řádek „Vážená paní ředitelko,“; tenhle řádek adresátku neoslovuje." },
     { cast: "úvod", why: "Úvod je souvislá věta za oslovením; tenhle řádek stojí nad oslovením a celou větou není." },
-    { cast: "místo a datum", why: "Místo a datum je řádek nad ním „V Plzni dne 5. března 2026“; tenhle řádek neříká kdy a odkud, ale o čem dopis je." },
+    { cast: "místo a datum", why: "Místo a datum je řádek nad ním „V Plzni dne 5. března 2026“; tenhle řádek neříká, kdy a odkud, ale o čem dopis je." },
   ],
   "Všimni si, že řádek stojí nad oslovením a není to celá věta. Co adresát z tak krátkého řádku pozná dřív, než začne číst samotný text?",
   "Krátký řádek nad oslovením jen pojmenovává, čeho se dopis týká — proto je to věc. Často se před ni píše i označení „Věc:“.",

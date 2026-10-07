@@ -783,7 +783,7 @@ function teplejsiMisto(): PracticeTask | null {
     choice(q, key, dist, {
       hints: [
         "Nejdřív podle písmen za šířkou zjisti polokouli každého místa a zamysli se, jaké roční období tam v daném měsíci je.",
-        "Roční doby dělá sklon zemské osy: kdy je léto na jedné polokouli, je na druhé zima. Porovnej pak roční období obou míst v tom měsíci a rozhodni, kde bude tepleji.",
+        "Roční doby dělá sklon zemské osy: když je léto na jedné polokouli, je na druhé zima. Porovnej pak roční období obou míst v tom měsíci a rozhodni, kde bude tepleji.",
       ],
       explanation: leto
         ? `Česko leží na severní polokouli (${cz.s}), místo ${b.s} na jižní. Sklon zemské osy způsobí, že je v ${mes} v Česku zima, ale na jižní polokouli léto, takže tam bude tepleji.`

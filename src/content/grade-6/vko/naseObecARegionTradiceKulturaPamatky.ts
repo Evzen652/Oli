@@ -183,7 +183,7 @@ const POOL_L1: Polozka[] = [
     d: [
       { value: "místní tradice", why: "Ta se váže jen k jedné obci nebo regionu, tenhle den platí stejně pro celou zemi." },
       { value: "obecní slavnost", why: "Tu si pořádá jedna konkrétní obec podle vlastního zvyku, tenhle den je daný zákonem pro celý stát." },
-      { value: "pracovní den", why: "Tenhle den je naopak volnem stanoveným zákonem, ne běžný pracovní den." },
+      { value: "pracovní den", why: "Tenhle den je naopak volnem stanoveným zákonem, ne běžným pracovním dnem." },
     ],
     hints: [
       "Přemýšlej, jestli takový den platí jen v jedné obci, nebo stejně pro úplně celou zemi.",
@@ -270,7 +270,7 @@ const POOL_L2: Polozka[] = [
     key: "zastupitelstvo obce",
     d: [
       { value: "obecní úřad", why: "Úřad rozhodnutí spíš provádí a vyřizuje, o stavbě nové školky rozhoduje volený sbor zastupitelů." },
-      { value: "krajské zastupitelstvo", why: "Školka jen pro děti jedné obce je záležitost místního dosahu, ne věcí kraje." },
+      { value: "krajské zastupitelstvo", why: "Školka jen pro děti jedné obce je záležitost místního dosahu, ne věc kraje." },
       { value: "náhodně vybraná skupina obyvatel", why: "O takové investici rozhoduje volený sbor zastupitelů, ne náhodně vybraní lidé." },
     ],
     hints: [
@@ -569,7 +569,7 @@ const POOL_L3: Polozka[] = [
     d: [
       { value: "o hrad, který dnes slouží jako přístupná muzejní expozice", why: "Popsaná stavba nemá žádné opevnění — věžičky jsou tu jen ozdobou, chybí zdi k obraně i příkop, které by ukazovaly na opevněné obranné sídlo." },
       { value: "o zámek, ve kterém dodnes bydlí šlechtická rodina", why: "Obrazy a nábytek přístupné návštěvníkům o víkendech jsou muzejní expozice, ne známka toho, že tam někdo běžně bydlí." },
-      { value: "o chrám s expozicí obrazů a nábytku", why: "Popsaná stavba je obytné sídlo s zahradou, ne stavba určená k bohoslužbám." },
+      { value: "o chrám s expozicí obrazů a nábytku", why: "Popsaná stavba je obytné sídlo se zahradou, ne stavba určená k bohoslužbám." },
     ],
     hints: [
       "Nejdřív rozhodni, jestli dům s věžičkami a zahradou, ale bez zdí a příkopu, byl stavěný k obraně, nebo k pohodlnému bydlení — a pak zvlášť posuď, k čemu slouží dnes: k bydlení, nebo je otevřený návštěvníkům.",

@@ -264,7 +264,7 @@ const POOL_L2: Polozka[] = [
       "Jde o dvě věci zároveň: houba je syrová a z lesa. Co z toho plyne pro kamaráda?",
       "Rozmysli si, jestli jde lesní houbu bezpečně jíst bez tepelné úpravy a jestli se jedovatost dá poznat chutí.",
     ],
-    explanation: "Syrové houby z lesa se nejedí, řada z nich je syrová jedovatá. Neznámé houby se neochutnávají, i malý kousek může být smrtelný, a jedovatá houba se chutí prozradit nemusí.",
+    explanation: "Syrové houby z lesa se nejedí, řada z nich je za syrova jedovatá. Neznámé houby se neochutnávají, i malý kousek může být smrtelný, a jedovatá houba se chutí prozradit nemusí.",
   },
   {
     q: "Rodina měla k obědu houbovou smaženici. Za několik hodin je tátovi zle, zvrací a má průjem. Co je správné?",
@@ -510,7 +510,7 @@ const POOL_L3: Polozka[] = [
       "Všechny možnosti mají rourky. Který znak z popisu mají jen některé z nich?",
       "Hnědý klobouk má víc hřibů. Rozhodni podle toho, jak se mění barva rourek a jakou barvu má síťka.",
     ],
-    explanation: "Růžovějící rourky a tmavá síťka na třeni jsou znaky hřibu žlučníku. Není jedovatý, ale je nejedlý, protože je velmi hořký a zhořkne celé jídlo. Hořkost ale houbař nezjišťuje jazykem, žlučník pozná podle rourek a síťky.",
+    explanation: "Růžovějící rourky a tmavá síťka na třeni jsou znaky hřibu žlučníku. Není jedovatý, ale je nejedlý, protože je velmi hořký a zhořčí celé jídlo. Hořkost ale houbař nezjišťuje jazykem, žlučník pozná podle rourek a síťky.",
   },
   {
     q: "Houba roste v trsech na pařezech. Klobouk je medově hnědý s drobnými šupinkami, lupeny bělavé a na třeni je prsten. Kterou houbu popisuje?",

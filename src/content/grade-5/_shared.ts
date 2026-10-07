@@ -170,7 +170,7 @@ export function chronologie(udalosti: Udalost[], level: number, oCem: string, po
     const h0 = `Která událost byla dřív: „${a.co}“, nebo „${b.co}“? A kam patří ${zbytek.map((u) => `„${u.co}“`).join(" a ")}?`;
     const h1 = sDatem
       ? `Porovnej data v závorkách a začni tím nejstarším. ${kotva.proc}`
-      : `Pomůže kotva: „${kotva.co}“ je z doby ${kotva.kdy}. ${kotva.proc} Ostatní události zařaď před ni, nebo za ni.`;
+      : `Pomůže kotva: „${kotva.co}“ se datuje: ${kotva.kdy}. ${kotva.proc} Ostatní události zařaď před ni, nebo za ni.`;
     return {
       question: sDatem
         ? `Seřaď ${n === 3 ? "tři" : "čtyři"} události ${oCem} od nejstarší po nejnovější.`

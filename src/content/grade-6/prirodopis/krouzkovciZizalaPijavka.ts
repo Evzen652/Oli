@@ -225,7 +225,7 @@ const L1: Fakt[] = [
     key: "v bahně znečištěných vod",
     d: [
       ["v suché lesní půdě", "Nitěnka potřebuje vodu. V půdě žije žížala."],
-      ["v čistých horských potocích", "Je to naopak: nitěnka snese i znečištěnou vodu s málem kyslíku a v čistých potocích jí moc nežije."],
+      ["v čistých horských potocích", "Je to naopak: nitěnka snese i znečištěnou vodu s málem kyslíku a v čistých potocích jich moc nežije."],
       ["ve střevech ryb", "Nitěnka není parazit. Žije volně na dně."],
     ],
     h: [
@@ -520,7 +520,7 @@ const L3: Fakt[] = [
       "Rozhodni podle prostředí: kdo z kroužkovců žije v bahně znečištěné vody?",
       "Tento drobný červený kroužkovec snese vodu s málem kyslíku. Akvaristé ho kupují jako krmivo pro ryby.",
     ],
-    e: "V bahně znečištěné vody žije nitěnka, drobný červený kroužkovec. Snese málo kyslíku, proto jí tam žije mnoho.",
+    e: "V bahně znečištěné vody žije nitěnka, drobný červený kroužkovec. Snese málo kyslíku, proto jich tam žije mnoho.",
   },
   {
     q: "V ulehlé jílovité půdě bez žížal rostou rostliny hůř než v kypré zahradní půdě. Co je nejpravděpodobnější příčina?",

@@ -237,7 +237,7 @@ function rostouciKrok(): PracticeTask | null {
 function ruce(): PracticeTask | null {
   const n = rnd(4, 9), key = (n * (n - 1)) / 2;
   const hints: [string, string] = [
-    `Dětí je ${n}. S kolika dalšími si podá ruku první z nich a kolik nových podání přidá druhé dítě, když s prvním už se pozdravilo?`,
+    `Dětí je ${n}. S kolika dalšími si podá ruku první z nich a kolik nových podání přidá druhé dítě, když se s prvním už pozdravilo?`,
     `První dítě podá ruku ${n - 1} dětem, druhé už jen ${n - 2} dalším (s prvním se pozdravilo), třetí ${n - 3} a tak dál až k poslednímu; sečti to. Druhá cesta: každé dítě podá ruku ${n - 1} dalším, jenže každé podání je tak započítané ze dvou stran.`,
   ];
   return ciselnaUloha(`Počet dětí na schůzce je ${n}. Každé dítě si podá ruku s každým jednou. Kolik podání rukou proběhne?`, key, [

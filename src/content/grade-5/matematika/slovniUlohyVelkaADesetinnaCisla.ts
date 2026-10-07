@@ -65,9 +65,9 @@ function hrad(): Uloha {
     q: `Hrad navštívilo v červenci ${fmt(a)} lidí. V srpnu ho navštívilo o ${fmt(b)} lidí víc. Kolik lidí navštívilo hrad v srpnu?`,
     a: x,
     h0: "V srpnu přišlo víc lidí, nebo méně než v červenci? Podle toho vyber početní operaci.",
-    h1: `„O ${fmt(b)} víc" znamená, že k červencovému počtu ${fmt(a)} přičteš ${fmt(b)}. Čísla napiš pod sebe, jednotky pod jednotky, a hlídej přenos.`,
+    h1: `„O ${fmt(b)} víc“ znamená, že k červencovému počtu ${fmt(a)} přičteš ${fmt(b)}. Čísla napiš pod sebe, jednotky pod jednotky, a hlídej přenos.`,
     steps: [`V srpnu o ${fmt(b)} víc → sčítám.`, `${fmt(a)} + ${fmt(b)} = ${fmt(x)}`],
-    e: `„O … víc" znamená přičíst: ${fmt(a)} + ${fmt(b)} = ${fmt(x)}. V srpnu hrad navštívilo ${fmt(x)} lidí.`,
+    e: `„O … víc“ znamená přičíst: ${fmt(a)} + ${fmt(b)} = ${fmt(x)}. V srpnu hrad navštívilo ${fmt(x)} lidí.`,
     d: [
       { v: a - b, why: "„O … víc“ se přečetlo jako „o … míň“. V srpnu přišlo víc lidí než v červenci, proto se přičítá." },
       { v: bezPrenosu(a, b), why: PRENOS },

@@ -120,7 +120,7 @@ function l1Soused(): PracticeTask | null {
   const smer = pod ? "pod" : "nad";
   const kand: [number, string][] = [
     [x - s, `Tohle je opačný směr – nahoře je nejširší skupina (říše), dole nejužší (druh). ${cap(smer)} kategorií „${X}“ hledáš skupinu ${pod ? "užší" : "širší"}.`],
-    [x + 2 * s, `Jednu kategorii jsi přeskočil. „${KAT[x + 2 * s] ?? ""}“ leží o dvě místa ${pod ? "níž" : "výš"}, hned ${smer} „${X}“ je ještě jiná.`],
+    [x + 2 * s, `Jednu kategorii jsi přeskočil. „${KAT[x + 2 * s] ?? ""}“ leží o dvě místa ${pod ? "níž" : "výš"}, hned ${smer} kategorií „${X}“ je ještě jiná.`],
     [x - 2 * s, `Tahle kategorie leží o dvě místa ${pod ? "výš" : "níž"} – je to opačný směr, a ještě s přeskočením.`],
   ];
   for (const i of [0, 6, 1, 5, 2, 4, 3]) {

@@ -295,7 +295,7 @@ export const POOL_L2: Polozka[] = [
       "Pes nemůže poznat, že je voda nebezpečná. Co by se stalo, kdyby si pak olizoval srst?",
       "Zelená kaše u břehu je nahromaděný vodní květ. Pes by vodu spolykal při plavání i při olizování srsti. Rozhodni, jestli pro něj existuje bezpečná část té vody, a ověř i důvod.",
     ],
-    explanation: "Sinice ohrožují i psy. Pes vodu polyká a olizuje si ji ze srsti, a u břehu je sinic nejvíc. Proto ho do vodního květu nepouštěj vůbec.",
+    explanation: "Sinice ohrožují i psy. Pes vodu polyká a olizuje si ji ze srsti a u břehu je sinic nejvíc. Proto ho do vodního květu nepouštěj vůbec.",
   },
   {
     q: "Filip se omylem vykoupal v rybníce se zelenou zakalenou vodou. Co má udělat hned potom?",
@@ -604,7 +604,7 @@ function podleRozdilu(chybi: Podminka, R: string, S: string) {
           { value: `Ve vodě ${R}, protože je v ní víc světla`, why: `Voda ${R} je správně, ale ne kvůli světlu. Světla mají v létě obě vody dost, liší se přísunem živin.` },
         ],
         rozdil: `Obě vody jsou v létě teplé a stojí. Liší se přísunem živin: do vody ${R} se dostávají hnojiva nebo odpadní vody, do vody ${S} nic.`,
-        proc: "nepřicházejí do ní živiny",
+        proc: "do vody nepřicházejí živiny",
       };
     case "teplo":
       return {
@@ -615,7 +615,7 @@ function podleRozdilu(chybi: Podminka, R: string, S: string) {
           { value: `Ve vodě ${R}, protože v ní voda stojí`, why: `Voda ${R} je správně, ale ne proto. Voda stojí v obou, liší se teplotou.` },
         ],
         rozdil: `Obě vody stojí a přicházejí do nich živiny. Liší se teplotou: voda ${R} je v létě teplá, voda ${S} je na jaře ještě studená.`,
-        proc: "je ještě studená",
+        proc: "voda je ještě studená",
       };
     case "proud":
       return {
@@ -626,7 +626,7 @@ function podleRozdilu(chybi: Podminka, R: string, S: string) {
           { value: `Ve vodě ${R}, protože je v ní teplejší voda`, why: `Voda ${R} je správně, ale ne proto. Teplé jsou obě vody, liší se tím, jestli voda stojí, nebo teče.` },
         ],
         rozdil: `Obě vody jsou teplé a přicházejí do nich živiny. Liší se pohybem: voda ${R} stojí, voda ${S} rychle teče.`,
-        proc: "rychle teče a proud sinice odnáší",
+        proc: "voda rychle teče a proud sinice odnáší",
       };
   }
 }

@@ -77,7 +77,7 @@ const L1: PracticeTask[] = [
     { value: "na zámku v Lánech", why: "V Lánech má prezident letní sídlo, jeho úřad je na Hradě." },
     { value: "ve Strakově akademii", why: "Ve Strakově akademii sídlí vláda." },
   ], {
-    hints: ["Sídlo prezidenta je nejznámější stavba nad Vltavou v Praze.", "Na tomto místě sídlili už čeští knížata a králové; stojí tam i katedrála sv. Víta."],
+    hints: ["Sídlo prezidenta je nejznámější stavba nad Vltavou v Praze.", "Na tomto místě sídlili už česká knížata a králové; stojí tam i katedrála sv. Víta."],
     explanation: "Prezident sídlí na Pražském hradě, stejně jako kdysi čeští panovníci.",
   }),
   choice("Jak se jmenuje zastupitelský orgán obce?", "zastupitelstvo obce", [
@@ -109,7 +109,7 @@ const L1: PracticeTask[] = [
     { value: "ve Strakově akademii", why: "Tam sídlí vláda." },
     { value: "v Thunovském paláci", why: "V Thunovském paláci zasedá Poslanecká sněmovna." },
   ], {
-    hints: ["Senát sídlí v barokní budově na Malé Straně s velkou zahradou.", "Budovu postavil vojevůdce z doby třicetileté války a nese jeho jméno dodnes — dnes v ní zasedají senátoři."],
+    hints: ["Senát sídlí v barokní budově na Malé Straně s velkou zahradou.", "Budovu postavil vojevůdce z doby třicetileté války a budova nese jeho jméno dodnes — dnes v ní zasedají senátoři."],
     explanation: "Senát zasedá ve Valdštejnském paláci, který dal postavit Albrecht z Valdštejna.",
   }),
 ];
@@ -284,7 +284,7 @@ const L3: PracticeTask[] = [
     { value: "dát zákon podepsat premiérovi", why: "Premiér nemůže nahradit podpis prezidenta." },
   ], {
     hints: ["Má prezident u zákonů poslední slovo?", "Vrácený zákon platí, když ho Sněmovna odhlasuje ještě jednou nadpoloviční většinou všech poslanců."],
-    explanation: "Prezidentské veto může Sněmovna přehlasovat, a zákon pak platí.",
+    explanation: "Prezidentské veto může Sněmovna přehlasovat a zákon pak platí.",
   }),
   choice("Kolik senátorů se volí každé dva roky?", "27", [
     { value: "81", why: "Všech 81 senátorů se najednou nevolí." },

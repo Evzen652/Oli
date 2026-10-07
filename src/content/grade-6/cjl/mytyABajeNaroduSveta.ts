@@ -298,7 +298,7 @@ const KRATKY_FAKT: Record<string, string> = {
   "Daidalos": "byl to zkušený stavitel a Ikarův otec, který mu křídla vyrobil, ale sám doletěl v pořádku",
   "Héraklés": "vykonal dvanáct takřka nesplnitelných úkolů",
   "Theseus": "zabil Minotaura v labyrintu",
-  "Odysseus": "se deset let vracel domů z trojské války",
+  "Odysseus": "deset let se vracel domů z trojské války",
   "Zeus": "je nejvyšší řecký bůh a vládce blesku",
   "Poseidon": "je bůh moře",
   "Thor": "je severský bůh hromu s kladivem",

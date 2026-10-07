@@ -19,14 +19,14 @@ export { pick, shuffle, pickN, ruzneUlohy, type Distractor };
 
 const STRATEGIE_VYBER = [
   "Zkus si situaci představit a rozhodni, ke kterému pojmu skutečně patří.",
-  "Nejdřív vylouči možnost, která je jasně mimo, a pak porovnej zbylé.",
+  "Nejdřív vylouč možnost, která je jasně mimo, a pak porovnej zbylé.",
 ];
 const STRATEGIE_RAZENI = [
   "Najdi nejdřív první a poslední krok, zbytek doplň mezi ně.",
   "U každé položky se ptej, co musí proběhnout před ní.",
 ];
 const STRATEGIE_TRIDENI = [
-  "Zařaď nejdřív položky, u kterých si jsi jistý nebo jistá, a zbytek podle rozlišovacího znaku.",
+  "Zařaď nejdřív položky, u kterých jsi si jistý nebo jistá, a zbytek podle rozlišovacího znaku.",
   "U každé položky se ptej, podle jakého znaku do skupiny patří, ne jak zní podobně.",
 ];
 

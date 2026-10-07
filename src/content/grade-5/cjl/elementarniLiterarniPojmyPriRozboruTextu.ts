@@ -77,7 +77,7 @@ function gen(level: number): PracticeTask[] {
     hints: [
       level >= 3
         ? `Porovnává věta „${p.veta.split(" — ")[0]}“ dvě věci, přehání, zmenšuje, nebo se v ní něco chová jako člověk?`
-        : `Týká se otázka „…${p.veta.slice(-40)}“ formy básně, nebo příběhu?`,
+        : `Týká se otázka „…${p.veta.slice(-40).replace(/^\S*\s/, "")}“ formy básně, nebo příběhu?`,
       `Pomůže tohle: ${p.klic}.`,
     ],
   }));

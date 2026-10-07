@@ -7,6 +7,14 @@ import { urceni, type Kategorie, type Polozka } from "../_urceni";
 // ukázce (objektivní × subjektivní popis × pracovní postup × vyprávění)
 // · L2 totéž v méně nápadných ukázkách · L3 přepsat subjektivní větu objektivně.
 
+/**
+ * „ukázka" předřaď jen tam, kde `klic` začíná slovesem („ukázka radí…").
+ * Klíč s vlastním podmětem („pisatel říká…", „je tu přirovnání") by jinak
+ * měl dva podměty — „ukázka pisatel říká". Opraveno 2026-10-07.
+ */
+const sUkazkou = (klic: string): string =>
+  /^(stručně |věcně )?(líčí|oznamuje|radí|uvádí|vede|vyjmenovává|vysvětluje|začíná|popisuje)(?=[\s,]|$)/.test(klic) ? `ukázka ${klic}` : klic;
+
 const DRUHY: Kategorie[] = [
   { nazev: "objektivní popis", znak: "věcně uvádí, jak věc vypadá (barva, tvar, velikost), bez pocitů a hodnocení." },
   { nazev: "subjektivní popis", znak: "přidává pocity, hodnocení a přirovnání pisatele." },
@@ -86,7 +94,7 @@ function gen(level: number): PracticeTask[] {
     question: `Co je to za text? ${p.veta}`,
     hints: [
       `Říká ukázka ${p.veta}, jak věc vypadá, radí, co dělat, nebo líčí, co se stalo? A jsou v ní pocity?`,
-      `Pomůže tohle: ukázka ${p.klic}. Porovnej ji se znaky každé možnosti.`,
+      `Pomůže tohle: ${sUkazkou(p.klic)}. Porovnej ji se znaky každé možnosti.`,
     ],
   }), ["Hodnoticí slova a přirovnání prozradí pocity pisatele.", "Pokyny poznáš podle rozkazovacího způsobu, příhodu podle sloves v minulém čase."]);
 }

@@ -57,7 +57,7 @@ const L1_KAMARADSTVI: (() => PracticeTask)[] = [
         "Kamarádství je víc než to, že jsou děti spolu na jednom místě — co k tomu ještě musí přibýt?",
         "Zkus si vzpomenout na vlastního kamaráda: co mezi vámi je navíc oproti spolužákovi, se kterým jen sedíš ve třídě?",
       ],
-      explanation: "Kamarádství se od pouhé známosti liší tím, že k sobě navíc mají vzájemnou důvěru a ochotu si pomoct — ne jen společné místo, soupeření nebo lhostejnost.",
+      explanation: "Kamarádství se od pouhé známosti liší tím, že k sobě kamarádi navíc mají vzájemnou důvěru a ochotu si pomoct — ne jen společné místo, soupeření nebo lhostejnost.",
     },
   ),
   c(
@@ -103,7 +103,7 @@ const L1_KAMARADSTVI: (() => PracticeTask)[] = [
     {
       hints: [
         "Která vlastnost dělá vztah kamarádstvím, a ne jen výhodným spojenectvím?",
-        "Zvaž, jestli je nejdůležitější stejné koníčky, užitečnost, poslušnost, nebo něco jiného.",
+        "Zvaž, jestli je nejdůležitější mít stejné koníčky, užitečnost, poslušnost, nebo něco jiného.",
       ],
       explanation: "Nejdůležitější pro kamarádství je důvěra — že se na kamaráda dá spolehnout. Stejné koníčky, užitečnost ani poslušnost to nenahradí.",
     },
@@ -139,7 +139,7 @@ const L1_JA_VYROK: (() => PracticeTask)[] = [
     {
       hints: [
         "Má já-výrok popisovat, co si myslím o druhém, nebo co cítím sám?",
-        "Rozmysli si rozdíl mezi popsat vlastní pocit a hodnotit chování druhého.",
+        "Rozmysli si rozdíl mezi popsáním vlastního pocitu a hodnocením chování druhého.",
       ],
       explanation: "Já-výrok popisuje, co cítím a co bych potřeboval — ne to, co si myslím o druhém, co udělal, nebo jak by se měl chovat.",
     },
@@ -548,7 +548,7 @@ const L3_JA_VYROK: (() => PracticeTask)[] = [
     "Karolína řekla Adamovi: „Je mi líto, že jsme se nedomluvili na čase, a mrzí mě, že jsme kvůli tomu nestihli program.“ Co tahle věta doopravdy je?",
     "Skutečný já-výrok – popisuje Karolínin pocit, ne Adamovu vinu",
     [
-      { value: "Skrytá výtka, protože mluví o zmeškaném programu", why: "Popsat, co se stalo, a jak se kvůli tomu Karolína cítí, není obviňování." },
+      { value: "Skrytá výtka, protože mluví o zmeškaném programu", why: "Popsat, co se stalo a jak se kvůli tomu Karolína cítí, není obviňování." },
       { value: "Jednostranný ústupek, protože Karolína se omlouvá", why: "Ústupek znamená vzdát se něčeho ve sporu (například souhlasit s tím, co vlastně nechci). Slova „je mi líto“ tu vyjadřují lítost nad tím, co se stalo, ne vzdání se vlastního přání — Karolína se ničeho nevzdává, jen popisuje svůj pocit." },
       { value: "Přivolání dospělého, protože jde o vážnou situaci", why: "Tahle věta neřeší, koho zavolat na pomoc, jen popisuje pocit mezi dvěma kamarády." },
     ],
@@ -674,7 +674,7 @@ const L3_PRIVOLAT: (() => PracticeTask)[] = [
     ],
     {
       hints: [
-        "Opakuje se to, a daří se ostatním situaci sami změnit?",
+        "Opakuje se to a daří se ostatním situaci sami změnit?",
         "Podívej se, jestli jde o jednorázovou drobnost, nebo o dlouhodobě nerovnou situaci.",
       ],
       explanation: "Situace se opakuje, je dlouhodobě nerovná a ostatní se jí sami nedokážou vzepřít — v takovém případě je vhodné přivolat dospělého.",
@@ -690,7 +690,7 @@ const L3_PRIVOLAT: (() => PracticeTask)[] = [
     ],
     {
       hints: [
-        "Stalo se to jednou, a vyřešilo se to hned samo?",
+        "Stalo se to jednou a vyřešilo se to hned samo?",
         "Podívej se, jestli jde o opakovaný problém, nebo o rychle vysvětlenou drobnost.",
       ],
       explanation: "Šlo o jednorázovou neshodu, kterou si dívky hned samy vysvětlily — takovou drobnou situaci není třeba hlásit dospělému.",
@@ -706,7 +706,7 @@ const L3_PRIVOLAT: (() => PracticeTask)[] = [
     ],
     {
       hints: [
-        "Opakuje se to, a zkoušeli to spolužáci už sami změnit?",
+        "Opakuje se to a zkoušeli to spolužáci už sami změnit?",
         "Podívej se, jestli jde o jednorázovou drobnost, nebo o dlouhodobě nerovnou situaci, kterou se nedaří změnit.",
       ],
       explanation: "Situace se opakuje, je dlouhodobě nerovná a spolužáci ji sami přes pokusy nezvládli změnit — proto je vhodné přivolat dospělého.",
@@ -722,7 +722,7 @@ const L3_PRIVOLAT: (() => PracticeTask)[] = [
     ],
     {
       hints: [
-        "Opakuje se to, a daří se kamarádům situaci pokaždé sami vyřešit?",
+        "Opakuje se to a daří se kamarádům situaci pokaždé sami vyřešit?",
         "Podívej se, jestli jde o problém, který přesahuje jejich síly, nebo o drobnost, kterou zvládají sami.",
       ],
       explanation: "Jde o drobné neshody, které kamarádi pokaždé sami rychle vyřeší — takovou situaci není třeba hlásit dospělému.",

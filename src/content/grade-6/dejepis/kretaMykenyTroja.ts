@@ -552,7 +552,7 @@ export const POOL_L3: Polozka[] = [
       { value: "Že obě kultury psaly ve stejné době stejně", claimKind: "other", why: "Krétané dřív psali lineárním písmem A. Písmo B se v Knóssu objevilo až později, spolu s mykénskou správou." },
     ],
     hints: [
-      "Uvědom si, čím jazykem je písmo B a kdo tímto jazykem mluvil.",
+      "Uvědom si, jaký jazyk písmo B zapisuje a kdo tímto jazykem mluvil.",
       "Písmo B je raná řečtina, jazyk lidí z pevniny. Když se objeví v krétském paláci, musel se tam změnit jazyk správy. Zeptej se, kdo tam začal vládnout.",
     ],
     explanation: "Písmo B zapisuje řečtinu Mykéňanů. Jeho tabulky v Knóssu ukazují, že palác později spravovali Mykéňané, kteří Krétu ovládli.",

@@ -182,7 +182,7 @@ function genL3(): PracticeTask {
     [
       {
         value: `${cz(targetG + haveG)} g`,
-        why: `Sečetl jsi místo odečetl. Chybějící množství = potřeba − to, co máš.`,
+        why: `Sečetl jsi, místo abys odečetl. Chybějící množství = potřeba − to, co máš.`,
       },
       {
         value: `${cz(targetKg - haveG / 1000)} g`,

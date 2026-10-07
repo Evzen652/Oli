@@ -253,7 +253,7 @@ function genL1(): PracticeTask {
   const p = pick(PREDMETY);
   return task(`Přitáhne magnet ${p.co4}?`, p.klic, CHYBNE[p.druh], {
     hints: [
-      `Rozhodni podle jediné věci — z čeho je ${p.kdo}.`,
+      `Rozhodni podle jediné věci — z čeho ${/nůžky$/.test(p.kdo) ? "jsou" : "je"} ${p.kdo}.`,
       `Magnet přitahuje jen železo, nikl a kobalt a slitiny, ve kterých jsou; z těch potkáš nejčastěji ocel. Ostatní kovy jako hliník, měď, mosaz, stříbro a zlato nechává být úplně stejně jako plast, dřevo nebo sklo. Nerozhoduje ani lesk, ani hmotnost, ani to, jestli je předmět kovový. U ${p.koho} se proto ptej jen na materiál.`,
     ],
     solutionSteps: KROKY_L1,
