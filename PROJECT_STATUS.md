@@ -203,6 +203,15 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
     dívat", „kdy jí ho vrátí" místo „mu") — zámek přegenerován, diff jen
     toho tématu. Žádná kontrola je nechytila.
   Vědomě ponecháno (důvody v `fdd3238`): bajka „Kdo…", osnova o míči 2. r.
+- ✅ **Gramatická revize textových klíčů a možností** (`ee02694`, 53 souborů
+  obsahu). Spouštěč: dvě chyby v klíčích, které prošly všemi kontrolami.
+  19 289 textů (≥ 3 slova) rozdělených mezi 9 čtenářů po ročníku ×
+  předmětu, každý nález ručně ověřen. Nejvážnější: šablona vzkazu 5. r.
+  psala „volal paní učitelka" v 6 klíčích; „pane Novák" v tématu
+  o oslovení; „pole a stáda vyžadovaly"; Hannibal bez „by" (tipovatelné).
+  Dva nálezy po ověření zamítnuty, eliptické „plži, protože…" ponechány.
+  Zámek: 26 témat, každé odpovídá opravě. 📌 **Automatika gramatiku textu
+  nehlídá** (jen shodu s číslovkou) — příští revize stejným postupem.
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).

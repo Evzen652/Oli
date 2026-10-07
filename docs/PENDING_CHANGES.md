@@ -31,6 +31,9 @@ Detail v `PROJECT_STATUS.md` §6, session 2026-10-07b. Krátce, co se tu tím za
   📌 Dvě gramatické chyby v klíčích vrstevnických vztahů prošly všemi
   kontrolami — automatika gramatiku klíčů nehlídá, jen shodu s číslovkou.
 
+- ✅ **Gramatická revize obsahu** — 53 souborů, nálezy ověřené ručně
+  (`ee02694`). Detail `PROJECT_STATUS.md` §6.
+
 **Zůstává otevřené (rozhodnutí):** `android:allowBackup="true"` u dětské
 aplikace (záloha může nést přihlašovací token) — `STORE_DATA_FORMS.md` §6.
 
