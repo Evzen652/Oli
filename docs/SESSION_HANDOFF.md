@@ -721,6 +721,18 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
   — a zásady tvrdí opak. Dnes nedosažitelné (ověřeno 7. 10.). Patří smazat
   s ostatní AI větví.
 
+- **Karty témat mají prázdnou plochu místo obrázku (rozhodnutí o vzhledu).**
+  Ověřeno v prohlížeči 7. 10. (3. r. → Čeština → Sloh): všechny čtyři karty
+  mají nahoře prázdnou růžovou dlaždici přes většinu karty. Změřeno nad
+  registrem: **305 z 348 témat** nemá ani obrázek (v úložišti jsou jen 4
+  obrázky témat), ani emoji (`getTopicEmoji` vrací `null`).
+  `IllustrationImg` pak nevykreslí nic a dlaždice s tintem zůstane prázdná.
+  Marné požadavky to neposílá (`useImageVersions` zná existující obrázky).
+  Možnosti: (a) dlaždici bez obsahu nevykreslit a nechat textovou kartu,
+  (b) emoji okruhu jako náhradu — v mřížce by se opakovalo, což pravidlo
+  z 7. 9. („sdílený obrázek klame") zakazuje u obrázků, (c) nakreslit
+  obrázky témat. Souvisí s bodem „Rozcestník: levandulová… 72 %" níž.
+
 ### 🟠 Přibylo 30. 9.
 
 - **RVP uzel pro slovní úlohy 4. a 5. ročníku.** `data/rvp_data.json` (jen ke
@@ -904,7 +916,7 @@ Otevření 7. ročníku by oslabilo rodičovskou bránu — hlídá `parent-gate
   nullability chyby.
 - ✅ (7. 10., klientská strana — `anon-server-record.test.ts`; zápis na ostrý server se záměrně netestuje) **Dopsat ověření serverové kopie anonymního pokroku** — `serverRecordTask`
   v `anonProgress.ts` existuje, ale že se zápis provede, ověřené není.
-- **Dvě češtinové karty mají tentýž obrázek** („Příbuzná vyjmenovaná"
+- ✅ (vysvětleno 7. 10. — je to obrázek PŘEDMĚTU s jeho popiskem na kartách „Dnes ti Oli doporučuje“, ne obrázek tématu; záměr, ne chyba) **Dvě češtinové karty mají tentýž obrázek** („Příbuzná vyjmenovaná"
   a „Pravidla rozhovoru", 3. ročník). Projít mapování napříč předměty.
 - **Rozcestník:** levandulová `bg-[#E3EDFD]` je předmětový tint, neměla by být
   pozadím celé karty (v `TopicBrowser` zabírá 72 %).

@@ -184,6 +184,11 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   `anon-server-record.test.ts` — po splnění úkolu odejde právě jedno
   `record` s tématem, ročníkem, ořezaným skóre a tokenem z localStorage;
   výpadek serveru localStorage neshodí. Obráceně ověřeno.
+- 🟠 **Nález k rozhodnutí: prázdné dlaždice na kartách témat.** 305 z 348
+  témat nemá obrázek ani emoji, karta má nahoře prázdnou tintovanou plochu
+  (ověřeno v prohlížeči, 3. r. → Čeština → Sloh). Možnosti v
+  `SESSION_HANDOFF.md` §4 „Přibylo 7. 10.". Bod „dvě češtinové karty mají
+  tentýž obrázek" vysvětlen: obrázek předmětu na doporučených kartách, záměr.
 - ⚠️ **`types.ts` nepřegenerován:** Supabase MCP tady míří na jiný projekt
   (`woruujaoqewlmygmbmat`), ne na `uusaczibimqvaazpaopy`. Zbývá CLI s PAT.
 
