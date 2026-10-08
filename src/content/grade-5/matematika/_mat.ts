@@ -12,9 +12,9 @@ export function fmt(n: number): string {
 }
 
 /** Desetinné číslo česky (3,5 · 1 234,75 · −4 s typografickým minusem). */
-export function fdec(n: number): string {
-  const r = Math.round(n * 10000) / 10000;
-  const s = Math.abs(r).toLocaleString("cs-CZ", { maximumFractionDigits: 4 }).replace(/\s/g, " ");
+export function fdec(n: number, mist = 4): string {
+  const r = Math.round(n * 10 ** mist) / 10 ** mist;
+  const s = Math.abs(r).toLocaleString("cs-CZ", { maximumFractionDigits: mist }).replace(/\s/g, " ");
   return r < 0 ? `−${s}` : s;
 }
 

@@ -40,7 +40,7 @@ function zapis(x: Des): PracticeTask | null {
       { value: x.cast < 10 ? `${x.c},${x.cast}` : `${x.c},0${x.cast}`, why: x.cast < 10 ? `${setinySlovy(x.cast)} patří na druhé místo za čárkou, první místo (desetiny) je 0.` : `Setiny jsou dvě místa za čárkou; ${x.c},0${x.cast} by byly tisíciny.` },
       { value: x.cast < 10 ? `${x.c},00${x.cast}` : `${x.c}${String(x.cast).padStart(2, "0")}`, why: x.cast < 10 ? "To by byly tisíciny — setiny mají jen dvě místa za čárkou." : "Chybí desetinná čárka." },
       ...(x.cast >= 10 && x.cast % 10 !== 0 ? [{ value: `${x.c},${String(x.cast).split("").reverse().join("")}`, why: "Číslice za čárkou se prohodily." }] : []),
-      { value: x.cast < 10 ? `${x.c + 1},0${x.cast}` : `${x.c},${x.cast}${x.cast % 10}`, why: x.cast < 10 ? `Celých je ${x.c}, ne ${x.c + 1}.` : "Za čárkou mají být jen dvě číslice — setiny." },
+      { value: x.cast < 10 ? `${x.c + 1},0${x.cast}` : `${x.c},${x.cast}${x.cast % 10 || Math.floor(x.cast / 10)}`, why: x.cast < 10 ? `Celých je ${x.c}, ne ${x.c + 1}.` : "Za čárkou mají být jen dvě číslice — setiny." },
     ];
   return ciselnaUloha(`Zapiš číslem: ${slovne(x)}.`, txt(x), chyby, [
     `Kolik je celých a kolik ${x.mist === 1 ? "desetin" : "setin"} v zápisu „${slovne(x)}“?`,

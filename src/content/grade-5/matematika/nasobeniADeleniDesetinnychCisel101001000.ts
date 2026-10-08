@@ -1,6 +1,10 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { ciselnaUloha, fdec, fmt, pick, rnd, sada, type Chyba } from "./_mat";
 
+// 2,47 : 1 000 = 0,00247 má pět desetinných míst; výchozí fdec zaokrouhluje
+// na čtyři a klíč pak vycházel 0,0025 (opraveno 2026-10-08).
+const fd = (n: number) => fdec(n, 6);
+
 // Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
 // a bez vysvětlení chybných možností. Teď generátor s typickými chybami:
 // čárka posunutá o špatný počet míst, posun na špatnou stranu, jen připsané
@@ -23,16 +27,16 @@ function nasob(): PracticeTask | null {
   const x = cislo(), k = rnd(0, 2), m = MOCNINY[k];
   const key = x * m;
   const chyby: Chyba[] = [
-    ...MOCNINY.filter((q) => q !== m).map((q) => ({ value: fdec(x * q), why: `Čárka se posunula ${MIST[MOCNINY.indexOf(q)]}, ale ${fmt(m)} má ${NULY[k]}.` })),
-    { value: fdec(x / m), why: "Čárka se posunula doleva. Při násobení se číslo zvětší — čárka jde doprava." },
-    { value: `${fdec(x)}${"0".repeat(k + 1)}`, why: "Nuly se jen připsaly za desetinná místa, číslo se tím nezměnilo. Čárka se musí posunout." },
+    ...MOCNINY.filter((q) => q !== m).map((q) => ({ value: fd(x * q), why: `Čárka se posunula ${MIST[MOCNINY.indexOf(q)]}, ale ${fmt(m)} má ${NULY[k]}.` })),
+    { value: fd(x / m), why: "Čárka se posunula doleva. Při násobení se číslo zvětší — čárka jde doprava." },
+    { value: `${fd(x)}${"0".repeat(k + 1)}`, why: "Nuly se jen připsaly za desetinná místa, číslo se tím nezměnilo. Čárka se musí posunout." },
   ];
-  return ciselnaUloha(`Vypočítej: ${fdec(x)} × ${fmt(m)}`, fdec(key), chyby, [
-    `Kolik nul má ${fmt(m)}? O tolik míst posuň desetinnou čárku v čísle ${fdec(x)}.`,
+  return ciselnaUloha(`Vypočítej: ${fd(x)} × ${fmt(m)}`, fd(key), chyby, [
+    `Kolik nul má ${fmt(m)}? O tolik míst posuň desetinnou čárku v čísle ${fd(x)}.`,
     "Při násobení deseti, stem nebo tisícem se čárka posouvá doprava — o tolik míst, kolik nul má násobitel. Chybějící místa doplníš nulami.",
   ], [
     `${fmt(m)} má ${NULY[k]} → čárka ${MIST[k]} doprava`,
-    `${fdec(x)} × ${fmt(m)} = ${fdec(key)}`,
+    `${fd(x)} × ${fmt(m)} = ${fd(key)}`,
   ]);
 }
 
@@ -41,16 +45,16 @@ function del(): PracticeTask | null {
   if (Number.isInteger(x) && x % 10 === 0) return null;
   const key = x / m;
   const chyby: Chyba[] = [
-    ...MOCNINY.filter((q) => q !== m).map((q) => ({ value: fdec(x / q), why: `Čárka se posunula ${MIST[MOCNINY.indexOf(q)]}, ale ${fmt(m)} má ${NULY[k]}.` })),
-    { value: fdec(x * m), why: "Čárka se posunula doprava. Při dělení se číslo zmenší — čárka jde doleva." },
-    { value: fdec(x), why: "Číslo zůstalo stejné — čárka se neposunula." },
+    ...MOCNINY.filter((q) => q !== m).map((q) => ({ value: fd(x / q), why: `Čárka se posunula ${MIST[MOCNINY.indexOf(q)]}, ale ${fmt(m)} má ${NULY[k]}.` })),
+    { value: fd(x * m), why: "Čárka se posunula doprava. Při dělení se číslo zmenší — čárka jde doleva." },
+    { value: fd(x), why: "Číslo zůstalo stejné — čárka se neposunula." },
   ];
-  return ciselnaUloha(`Vypočítej: ${fdec(x)} : ${fmt(m)}`, fdec(key), chyby, [
-    `Kolik nul má ${fmt(m)}? O tolik míst posuň desetinnou čárku v čísle ${fdec(x)} doleva.`,
+  return ciselnaUloha(`Vypočítej: ${fd(x)} : ${fmt(m)}`, fd(key), chyby, [
+    `Kolik nul má ${fmt(m)}? O tolik míst posuň desetinnou čárku v čísle ${fd(x)} doleva.`,
     "Při dělení deseti, stem nebo tisícem se čárka posouvá doleva. Když nejsou číslice, doplň vpředu nuly a před čárku napiš 0.",
   ], [
     `${fmt(m)} má ${NULY[k]} → čárka ${MIST[k]} doleva`,
-    `${fdec(x)} : ${fmt(m)} = ${fdec(key)}`,
+    `${fd(x)} : ${fmt(m)} = ${fd(key)}`,
   ]);
 }
 
@@ -67,15 +71,15 @@ function prevod(): PracticeTask | null {
   if (!naMale && x % 10 === 0) return null;
   const key = naMale ? x * f : x / f;
   const jine = MOCNINY.filter((q) => q !== f);
-  return ciselnaUloha(`Kolik ${naMale ? malaGen : velkaGen} je ${fdec(x)} ${naMale ? velka : mala}?`, fdec(key), [
-    ...jine.map((q) => ({ value: fdec(naMale ? x * q : x / q), why: `1 ${velka} = ${fmt(f)} ${mala}, ne ${fmt(q)} ${mala}.` })),
-    { value: fdec(naMale ? x / f : x * f), why: naMale ? "Na menší jednotky vyjde číslo větší — čárka jde doprava." : "Na větší jednotky vyjde číslo menší — čárka jde doleva." },
+  return ciselnaUloha(`Kolik ${naMale ? malaGen : velkaGen} je ${fd(x)} ${naMale ? velka : mala}?`, fd(key), [
+    ...jine.map((q) => ({ value: fd(naMale ? x * q : x / q), why: `1 ${velka} = ${fmt(f)} ${mala}, ne ${fmt(q)} ${mala}.` })),
+    { value: fd(naMale ? x / f : x * f), why: naMale ? "Na menší jednotky vyjde číslo větší — čárka jde doprava." : "Na větší jednotky vyjde číslo menší — čárka jde doleva." },
   ], [
-    `Kolik ${malaGen} má jeden ${velka === "l" ? "litr" : velka === "kg" ? "kilogram" : velka === "km" ? "kilometr" : velka === "cm" ? "centimetr" : "metr"}? Bude číslo v odpovědi víc, nebo míň než ${fdec(x)}?`,
+    `Kolik ${malaGen} má jeden ${velka === "l" ? "litr" : velka === "kg" ? "kilogram" : velka === "km" ? "kilometr" : velka === "cm" ? "centimetr" : "metr"}? Bude číslo v odpovědi víc, nebo míň než ${fd(x)}?`,
     `1 ${velka} = ${fmt(f)} ${mala}. ${naMale ? "Na menší jednotku násob — čárka jde doprava." : "Na větší jednotku děl — čárka jde doleva."} Posouváš o tolik míst, kolik nul má ${fmt(f)}. Malých jednotek se do jedné velké vejde hodně — proto číslo v malých jednotkách vyjde vždycky vyšší.`,
   ], [
     `1 ${velka} = ${fmt(f)} ${mala}`,
-    `${fdec(x)} ${naMale ? `× ${fmt(f)}` : `: ${fmt(f)}`} = ${fdec(key)}`,
+    `${fd(x)} ${naMale ? `× ${fmt(f)}` : `: ${fmt(f)}`} = ${fd(key)}`,
   ]);
 }
 
@@ -83,14 +87,14 @@ function obracene(): PracticeTask | null {
   const x = cislo(), k = rnd(0, 2), m = MOCNINY[k], nasobeni = Math.random() < 0.5;
   const y = nasobeni ? x * m : x / m;
   const key = `${nasobeni ? "×" : ":"} ${fmt(m)}`;
-  return ciselnaUloha(`Čím se číslo ${fdec(x)} vynásobilo nebo vydělilo, když vyšlo ${fdec(y)}?`, key, [
+  return ciselnaUloha(`Čím se číslo ${fd(x)} vynásobilo nebo vydělilo, když vyšlo ${fd(y)}?`, key, [
     ...MOCNINY.filter((q) => q !== m).map((q) => ({ value: `${nasobeni ? "×" : ":"} ${fmt(q)}`, why: `Čárka se posunula ${MIST[k]}, to odpovídá číslu ${fmt(m)}.` })),
     { value: `${nasobeni ? ":" : "×"} ${fmt(m)}`, why: nasobeni ? "Číslo se zvětšilo, takže se násobilo." : "Číslo se zmenšilo, takže se dělilo." },
   ], [
-    `Zvětšilo se číslo ${fdec(x)} na ${fdec(y)}, nebo zmenšilo? O kolik míst se posunula čárka?`,
+    `Zvětšilo se číslo ${fd(x)} na ${fd(y)}, nebo zmenšilo? O kolik míst se posunula čárka?`,
     "Když se číslo zvětší, násobilo se; když se zmenší, dělilo se. Počet míst, o které se čárka posunula, je počet nul v čísle, kterým se násobilo nebo dělilo (deset, sto, nebo tisíc).",
   ], [
-    `${fdec(x)} → ${fdec(y)}: čárka ${MIST[k]} ${nasobeni ? "doprava" : "doleva"}`,
+    `${fd(x)} → ${fd(y)}: čárka ${MIST[k]} ${nasobeni ? "doprava" : "doleva"}`,
     `To je ${key}`,
   ]);
 }

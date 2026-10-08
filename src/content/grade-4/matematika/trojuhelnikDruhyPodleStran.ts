@@ -45,9 +45,12 @@ function druhUloha(): PracticeTask {
   };
   const optionFeedback: Record<string, string> = {};
   for (const d of DRUHY) if (d !== druh) optionFeedback[d] = `${proc[d]} Tady jsou strany ${cm(s)}.`;
+  // Rovnostranný je zvláštní případ rovnoramenného — „rovnoramenný“ tu není
+  // nepravda, jen méně přesný název. Proto zadání chce nejpřesnější název.
+  if (druh === "rovnostranný") optionFeedback["rovnoramenný"] = `Rovnostranný trojúhelník je sice zároveň rovnoramenný, ale přesnější název říká víc: stejné jsou tu všechny tři strany (${cm(s)}).`;
   return {
     visual: troj(s),
-    question: `Trojúhelník má strany ${cm(s)}. Jaký je podle stran?`,
+    question: `Trojúhelník má strany ${cm(s)}. Jaký je podle stran? Vyber nejpřesnější název.`,
     correctAnswer: druh,
     options: [...DRUHY],
     optionFeedback,

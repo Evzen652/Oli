@@ -19,6 +19,8 @@ interface Tema {
   prumer: string;
   vic: (k1: string, k2: string) => string;
   nejvicTvrzeni: (k: string) => string;
+  /** Horní mez hodnot, když obecná (40) nedává smysl — dnů v měsíci je nejvýš 31. */
+  max?: number;
 }
 
 // Součet: „za celý týden" / „ve všech pěti měsících" platilo jen pro 5 položek,
@@ -32,7 +34,7 @@ const TEMATA: Tema[] = [
     vic: (a, b) => `${a[0].toUpperCase()}${a.slice(1)} se prodalo víc zmrzlin než ${b}.`, nejvicTvrzeni: (k) => `Nejvíc zmrzlin se prodalo ${k}.`,
   },
   {
-    nadpis: "Slunečné dny v měsíci", popisky: ["březen", "duben", "květen", "červen", "září"], kde: ["v březnu", "v dubnu", "v květnu", "v červnu", "v září"],
+    nadpis: "Slunečné dny v měsíci", max: 25, popisky: ["březen", "duben", "květen", "červen", "září"], kde: ["v březnu", "v dubnu", "v květnu", "v červnu", "v září"],
     kolik: (k) => `Kolik slunečných dní bylo ${k}?`, nejvic: "Ve kterém měsíci bylo nejvíc slunečných dní?",
     rozdil: (a, b) => `O kolik slunečných dní víc bylo ${a} než ${b}?`, celkem: "Kolik slunečných dní bylo ve všech uvedených měsících dohromady?", prumer: "Kolik slunečných dní bylo průměrně za měsíc?",
     vic: (a, b) => `${a[0].toUpperCase()}${a.slice(1)} bylo víc slunečných dní než ${b}.`, nejvicTvrzeni: (k) => `Nejvíc slunečných dní bylo ${k}.`,
@@ -56,7 +58,7 @@ interface Data { t: Tema; n: number; hodnoty: number[]; typ: "tabulka" | "graf" 
 function data(n = rnd(4, 5)): Data {
   const t = pick(TEMATA);
   const s = new Set<number>();
-  while (s.size < n) s.add(rnd(3, 40));
+  while (s.size < n) s.add(rnd(3, t.max ?? 40));
   return { t, n, hodnoty: [...s], typ: Math.random() < 0.5 ? "tabulka" : "graf" };
 }
 const zadani = (d: Data) => d.typ === "tabulka"

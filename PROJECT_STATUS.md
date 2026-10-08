@@ -249,6 +249,15 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   „plodnice" ve výpiscích, „Bez práce nejsou koláče" u Elišky. Dále
   „Ezop je známý vypravěč bajka", čárka před „a pak", povídka bez děje,
   včelaři vracející se do úlu. 6. r. část A bez nálezu.
+- ✅ **Kontrola klíčů matematiky 2.–6. r.** (2026-10-08): 12 672 úloh,
+  10 čtenářů (většinou přepočet skriptem + ruční geometrie). 5 nálezů,
+  všechny ověřeny a opraveny: (1) **chybné klíče** — `fdec` zaokrouhloval
+  na 4 místa, takže 4,24 : 1 000 mělo klíč 0,0042 (i obrácená úloha
+  ukazovala zaokrouhlený výsledek); `fdec(n, mist)`, téma ×/: 10/100/1000
+  používá 6 míst, přepočet 12 000 úloh bez chyby; (2) rovnostranný
+  trojúhelník je i rovnoramenný → zadání „Vyber nejpřesnější název";
+  (3) součet úhlů: distraktor „142° 70′" = klíč 143° 10′; (4) „12,900"
+  = klíč „12,90"; (5) „Slunečné dny" až 40 za měsíc → strop 25.
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).

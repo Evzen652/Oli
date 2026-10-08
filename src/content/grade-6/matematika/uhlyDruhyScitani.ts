@@ -266,7 +266,9 @@ function genL2Soucet(): PracticeTask | null {
   const a = u(d1, m1), b = u(d2, m2), s = a + b;
   if (s >= u(180, 0)) return null;
   const dis: Distractor[] = [
-    { value: surovy(D, M), why: `Minuty jsi nepřevedl. 1° má 60′, takže ${cis(M)}′ = ${uhel(M)} a ten 1° patří ke stupňům.` },
+    // Nepřevedené „D° M′“ (např. 142° 70′) tu NENÍ: má stejnou hodnotu jako
+    // klíč, jen je zapsané bez převodu — šlo by o druhou správnou odpověď.
+    { value: uhel(s + 10), why: `Minuty vyšly o 10′ víc. Sečti je znovu: ${cis(m1)}′ + ${cis(m2)}′ = ${cis(M)}′.` },
     { value: surovy(D, M - 60), why: NEPROMITL_SCIT },
   ];
   if (M >= 100) dis.push({ value: surovy(D + 1, M - 100), why: SETINY });
