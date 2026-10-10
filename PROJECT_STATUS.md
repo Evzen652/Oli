@@ -286,6 +286,8 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).
+  10. 10.: timeout se jednou vrátil (1 ze 2 běhů, všech 9 348 testů
+  prošlo, exit 1 jen kvůli němu) — zmírněno, ne odstraněno. Čti součty.
 - 🟠 **Nález k rozhodnutí: prázdné dlaždice na kartách témat.** 305 z 348
   témat nemá obrázek ani emoji, karta má nahoře prázdnou tintovanou plochu
   (ověřeno v prohlížeči, 3. r. → Čeština → Sloh). Možnosti v
