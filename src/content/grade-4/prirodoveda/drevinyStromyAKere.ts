@@ -292,7 +292,7 @@ const POOL_L3: PracticeTask[] = [
     { value: "Listy obarví ostré podzimní slunce", why: "Slunce listy nebarví. Zelená z nich mizí." },
     { value: "Listy jsou nemocné", why: "Je to přirozené, stromy nejsou nemocné." },
   ], {
-    hints: ["Proč jsou listy v létě zelené?", "Zelené barvivo zakrývá v listu i jiné barvy. Když ho strom na podzim odebere, co zůstane vidět?"],
+    hints: ["Proč jsou listy v létě zelené?", "Žlutá a červená barviva má list v sobě celé léto, jen nejsou vidět. Co je přes léto zakrývá a co se s tím na podzim stane?"],
     explanation: "Listy jsou zelené díky zelenému barvivu. Na podzim ho strom z listů odebere a uschová si živiny. Pak se objeví žluté a červené barvy, které byly v listu schované.",
   }),
   choice("Jak se šíří plody lípy?", "Točí se na listenu a nese je vítr", [

@@ -280,7 +280,7 @@ const POOL_L3: PracticeTask[] = [
     { value: "Liška loví jen ve dne", why: "Liška loví hlavně za soumraku a v noci. Na Slunci závisí přes potravu." },
     { value: "Liška Slunce nepotřebuje", why: "Potřebuje. Bez rostlin by nebyli zajíci ani myši, které loví." },
   ], {
-    hints: ["Co liška jí a co jí to zvíře?", "Liška loví zajíce a myši. Ti se živí rostlinami. A rostliny rostou díky čemu?"],
+    hints: ["Co liška jí a co jí to zvíře?", "Sleduj potravu krok za krokem: čím se živí kořist lišky, třeba zajíc, a co potřebuje k růstu jeho potrava?"],
     explanation: "Liška jí zajíce a myši, a ti se živí rostlinami. Rostliny rostou díky slunečnímu světlu. Bez Slunce by nebyly rostliny, býložravci ani lišky.",
   }),
   choice("Vyrábějí solární panely elektřinu i v noci?", "Ne, v noci na ně nesvítí Slunce", [

@@ -278,7 +278,11 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   (L1 měla jen 11 různých úloh). Tři úlohy elektřiny 6. r. měly klíč 2×
   delší než distraktory → distraktory dopsány (klíč nejdelší v 21 % → 9 %).
   Zbytek (klíč ve znění otázky, opakovaná obecná nápověda, VELKÁ písmena
-  u přízvuku a diktátu) je šum heuristiky.
+  u přízvuku a diktátu) je šum heuristiky. Z 90 „hint leak" byly skutečné
+  dva (4. r.): velká nápověda doslova popsala klíč u lišky a Slunce
+  („Liška loví zajíce a myši. Ti se živí rostlinami.") a u podzimního
+  listí („Když ho strom na podzim odebere…") → přepsány na strategii.
+  `docs-check` bez `IDS` teď prochází celý rejstřík.
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).
