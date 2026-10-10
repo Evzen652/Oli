@@ -1,9 +1,9 @@
-# Předání práce — stav k 2026-10-07 (doplněno), jinak k 2026-09-30
+# Předání práce — stav k 2026-10-10, jinak k 2026-09-30
 
-> ## ▶ 7. 10. 2026 — autonomní průchod (nic nepushnuto!)
+> ## ▶ 7.–10. 10. 2026 — autonomní průchod (nic nepushnuto!)
 >
 > Evžen řekl „pokračuj autonomně"; push do `main` = produkce, ten
-> neschválil. **Lokálně je ~30 commitů navíc proti `origin/main`** —
+> neschválil. **Lokálně je 39 commitů navíc proti `origin/main`** —
 > `git log origin/main..main`. Shrnutí v `PROJECT_STATUS.md` §6, sessions
 > 2026-10-07 a 2026-10-07b. Hlavně:
 > - mazání dítěte maže i jeho auth účet → **nasadit `delete-child`**;
