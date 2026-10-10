@@ -33,6 +33,17 @@ describe("Generator validation – all topics × levels 1-3", () => {
               expect(task.options, `task[${i}] correctAnswer "${task.correctAnswer}" not in options`).toContain(task.correctAnswer);
             }
 
+            // Vazba k možnosti se dohledává přesným textem možnosti
+            // (getTargetedFeedback). Klíč „v obchodě" u možnosti „v obchodě
+            // s potravinami" se tedy nikdy nezobrazí a dítě dostane jen obecné
+            // vysvětlení. Tři takové prošly v g2-prv-nase-obec (2026-10-10),
+            // protože stejnou kontrolu měla jen ručně spouštěná brána tématu.
+            if (task.options && task.optionFeedback) {
+              for (const k of Object.keys(task.optionFeedback)) {
+                expect(task.options, `task[${i}] optionFeedback klíč "${k}" není mezi options`).toContain(k);
+              }
+            }
+
             // If drag_order, items must exist
             if (topic.inputType === "drag_order") {
               expect(task.items, `task[${i}] missing items for drag_order`).toBeDefined();

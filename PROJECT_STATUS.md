@@ -258,6 +258,14 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   trojúhelník je i rovnoramenný → zadání „Vyber nejpřesnější název";
   (3) součet úhlů: distraktor „142° 70′" = klíč 143° 10′; (4) „12,900"
   = klíč „12,90"; (5) „Slunečné dny" až 40 za měsíc → strop 25.
+- ✅ **Zpětná vazba k možnostem** (2026-10-10): průchod 77 398 úloh
+  (vazba „Správně…" u chybné možnosti, „Ne…" u klíče, klíč vazby mimo
+  možnosti, duplicitní možnosti). Jediný skutečný nález: 3 vazby
+  v `g2-prv-nase-obec` měly klíč jiný než text možnosti („v obchodě" ×
+  „v obchodě s potravinami", „adresa" × „adresa domu", „adresy" ×
+  „adresy domů") → dítě dostalo jen obecné vysvětlení. Opraveno
+  a `generator-validation.test.ts` to teď hlídá u všech témat (dřív jen
+  ručně spouštěná brána jednoho tématu).
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).

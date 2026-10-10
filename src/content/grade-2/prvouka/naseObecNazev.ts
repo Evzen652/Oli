@@ -221,7 +221,7 @@ const POOL_L2: PracticeTask[] = [
     optionFeedback: {
       vesnice: "Na vesnici tramvaje nejezdí a vysokých domů je málo.",
       náves: "Náves je jen prostranství uprostřed vesnice, ne celé místo.",
-      adresa: "Adresa je zápis, kde někdo bydlí, ne místo samotné.",
+      "adresa domu": "Adresa domu je zápis, kde někdo bydlí, ne místo samotné.",
     },
     explanation:
       "Mnoho ulic, vysoké domy, obchody a tramvaje jsou typické pro město. Vesnice bývá mnohem menší.",
@@ -301,7 +301,7 @@ const POOL_L2: PracticeTask[] = [
       "V obchodě se nakupuje a na hřišti hraje. Hledej budovu, kde pracuje starosta a kde se rozhoduje o penězích a opravách pro celou obec.",
     ],
     optionFeedback: {
-      "v obchodě": "V obchodě se nakupuje, o obci se tam nerozhoduje.",
+      "v obchodě s potravinami": "V obchodě se nakupuje, o obci se tam nerozhoduje.",
       "na hřišti": "Na hřišti si děti hrají.",
       "v lese": "V lese se o obci nerozhoduje.",
     },
@@ -336,7 +336,7 @@ const POOL_L2: PracticeTask[] = [
     optionFeedback: {
       ulice: "Ulice je jen jedna cesta s domy, takový kousek města jich má mnoho.",
       náměstí: "Náměstí je jedno prostranství, ne celý kus města.",
-      adresy: "Adresa je zápis bydliště, ne kus města.",
+      "adresy domů": "Adresa je zápis bydliště, ne kus města.",
     },
     explanation:
       "Velké obce se dělí na části obce s vlastními názvy — například Staré Město nebo nějaké sídliště. Každá část má mnoho ulic i náměstí.",
