@@ -326,15 +326,15 @@ const ZAPOJENI: Polozka[] = [
     klic: "Aby proud zůstal uvnitř drátu, nedostal se, kam nemá, a nešel chytit do ruky.",
     chybne: [
       {
-        value: "Aby se drát neohnul.",
+        value: "Aby se drát neohnul a uvnitř spotřebiče držel svůj tvar.",
         why: "Plast drát nezpevňuje. Kabely se ohýbají velmi snadno.",
       },
       {
-        value: "Aby drát nerezavěl.",
+        value: "Aby drát nerezavěl, když se do spotřebiče dostane vlhkost.",
         why: "Proti korozi se používá jiná ochrana. Plast je tam kvůli tomu, že nevede proud.",
       },
       {
-        value: "Aby obvodem lépe procházel proud.",
+        value: "Aby obvodem lépe procházel proud a spotřebič měl víc síly.",
         why: "Vedení se izolací nezlepší. Vede vodivé jádro uvnitř, plast naopak nevede vůbec.",
       },
     ],

@@ -270,6 +270,15 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   úplná?" (5. r.) jen opakovalo nápovědu → teď říká, proč právě tahle.
   „Kolik os souměrnosti má…" (4. r.) dávalo u každé chybné možnosti totéž
   → vazba podle směru chyby (přehlédnutá osa × přeložení, které nekryje).
+- ✅ **`docs-check` přes celý rejstřík** (2026-10-10; s prázdným `IDS`
+  hlásí „vše v pořádku" a neprojde nic — pozor). Nálezy:
+  **chybný klíč** v `g6-fyz-latka-a-teleso` L3 — „teplota tání" vycházela
+  jako vlastnost látky i u dřeva, papíru a gumy, které netají → jen u kovů;
+  přibyla „vodivost" (ať nekovy nemají klíč pořád „hustota") a vlna
+  (L1 měla jen 11 různých úloh). Tři úlohy elektřiny 6. r. měly klíč 2×
+  delší než distraktory → distraktory dopsány (klíč nejdelší v 21 % → 9 %).
+  Zbytek (klíč ve znění otázky, opakovaná obecná nápověda, VELKÁ písmena
+  u přízvuku a diktátu) je šum heuristiky.
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).

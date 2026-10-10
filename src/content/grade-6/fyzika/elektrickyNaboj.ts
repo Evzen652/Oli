@@ -521,15 +521,15 @@ const PRITAHOVANI: Polozka[] = [
     klic: "Balonek přeskupí náboje ve zdi, takže je k němu přitahována stejně jako papírek k hřebenu.",
     chybne: [
       {
-        value: "Zeď se od balonku nabila na opačný náboj.",
+        value: "Zeď se od balonku nabila na opačný náboj, a tak se k sobě přitahují.",
         why: "Zeď je izolant a náboj z balonku na ni nepřejde. Uvnitř se náboje jen posunou.",
       },
       {
-        value: "Balonek se na zeď přisál, protože je z gumy.",
+        value: "Balonek se na zeď přisál jako přísavka, protože je z měkké gumy.",
         why: "Nepotřený balonek se na zeď nepřisaje. Rozhoduje náboj, ne guma.",
       },
       {
-        value: "Drží ho tam vlhkost ze vzduchu.",
+        value: "Drží ho tam vlhkost ze vzduchu, která se na gumě sráží a lepí.",
         why: "Ve vlhku pokus naopak nevyjde — vlhký vzduch náboj z balonku odvede a balonek spadne.",
       },
     ],
@@ -544,15 +544,15 @@ const PRITAHOVANI: Polozka[] = [
     klic: "Oba balonky mají souhlasný náboj, kdežto zeď nabitá není — u nenabitého tělesa jde vždycky o přitahování.",
     chybne: [
       {
-        value: "Zeď je nabitá opačně než balonky.",
+        value: "Zeď je nabitá opačně než balonky, a proto je k sobě přitahuje.",
         why: "Zeď nabitá není. Kdyby byla, udržela by i nepotřený balonek — a ten po ní sklouzne dolů.",
       },
       {
-        value: "Balonky jsou u zdi blíž, a proto se chovají jinak.",
+        value: "Balonky jsou u zdi blíž než u sebe navzájem, a proto se chovají jinak.",
         why: "Vzdálenost mění jen sílu, ne to, jestli jde o přitahování nebo odpuzování.",
       },
       {
-        value: "Zeď je těžší, a proto přitahování vyhraje.",
+        value: "Zeď je mnohem těžší než balonek, a proto u ní přitahování vyhraje.",
         why: "Hmotnost do elektrické síly nevstupuje vůbec.",
       },
     ],

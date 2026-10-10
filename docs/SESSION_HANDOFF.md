@@ -19,7 +19,8 @@
 > - kontrola klíčů češtiny 2.–6. r. (25 oprav, 8. 10.);
 > - kontrola klíčů matematiky 2.–6. r. (5 nálezů, mj. chybné klíče
 >   „: 1 000" kvůli zaokrouhlení na 4 místa);
-> - zpětná vazba k možnostem: 3 mrtvé vazby opraveny, nově hlídá test (10. 10.).
+> - zpětná vazba k možnostem: 3 mrtvé vazby opraveny, nově hlídá test (10. 10.);
+> - `docs-check` přes rejstřík: chybný klíč „teplota tání" u dřeva (10. 10.).
 > Rozhodnutí pro Evžena: push, nasadit `delete-child`, `allowBackup`,
 > prázdné dlaždice karet témat, fyzikální zjednodušení (PENDING_CHANGES).
 >

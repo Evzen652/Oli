@@ -46,6 +46,8 @@ Detail v `PROJECT_STATUS.md` §6, session 2026-10-07b. Krátce, co se tu tím za
 - ✅ **Zpětná vazba k možnostem** (2026-10-10) — 3 mrtvé vazby
   v `g2-prv-nase-obec` opraveny, hlídá je `generator-validation.test.ts`;
   cílené vazby u počtu os souměrnosti, vysvětlení u úplné žádosti.
+- ✅ **`docs-check` přes celý rejstřík** (2026-10-10) — chybný klíč „teplota
+  tání" u dřeva/papíru (látka a těleso 6. r.), délkové vodítko u elektřiny.
 - 🟠 **K rozhodnutí — fyzika 6. r., učebnicová zjednodušení, která jsou
   fyzikálně chybná:** (1) `pohyb-castic`: inkoust „za hodinu obarví celou
   sklenici", voňavka „za chvíli" u protější stěny, „desítky vteřin" —
