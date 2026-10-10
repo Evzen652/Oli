@@ -266,6 +266,10 @@ na rozhodnutí. Pět commitů, nic nepushnuto.
   „adresy domů") → dítě dostalo jen obecné vysvětlení. Opraveno
   a `generator-validation.test.ts` to teď hlídá u všech témat (dřív jen
   ručně spouštěná brána jednoho tématu).
+  Nápovědy: všude dvě, neprázdné a různé. Vysvětlení u „Která žádost je
+  úplná?" (5. r.) jen opakovalo nápovědu → teď říká, proč právě tahle.
+  „Kolik os souměrnosti má…" (4. r.) dávalo u každé chybné možnosti totéž
+  → vazba podle směru chyby (přehlédnutá osa × přeložení, které nekryje).
 - ✅ **Vitest bez `onTaskUpdate` timeoutu:** `maxWorkers: "50%"` (0 ze 4
   běhů, dřív 3 z 5). Logger auditu sezení píše do konzole jen ve vývoji
   (výpis testů 19 MB → 0,2 MB; s timeoutem to nesouviselo).

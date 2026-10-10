@@ -44,7 +44,8 @@ Detail v `PROJECT_STATUS.md` §6, session 2026-10-07b. Krátce, co se tu tím za
 - ✅ **Kontrola klíčů matematiky 2.–6. r.** (2026-10-08) — 5 nálezů
   opraveno (mj. chybné klíče dělení 1 000 kvůli zaokrouhlení `fdec`).
 - ✅ **Zpětná vazba k možnostem** (2026-10-10) — 3 mrtvé vazby
-  v `g2-prv-nase-obec` opraveny, hlídá je `generator-validation.test.ts`.
+  v `g2-prv-nase-obec` opraveny, hlídá je `generator-validation.test.ts`;
+  cílené vazby u počtu os souměrnosti, vysvětlení u úplné žádosti.
 - 🟠 **K rozhodnutí — fyzika 6. r., učebnicová zjednodušení, která jsou
   fyzikálně chybná:** (1) `pohyb-castic`: inkoust „za hodinu obarví celou
   sklenici", voňavka „za chvíli" u protější stěny, „desítky vteřin" —

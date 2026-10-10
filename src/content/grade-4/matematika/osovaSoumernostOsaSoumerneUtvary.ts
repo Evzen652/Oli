@@ -64,10 +64,20 @@ const OSY: Osy[] = [
 ];
 const POCTY = ["0", "1", "2", "3", "4", "nekonečně mnoho"];
 
+/** Vazba podle směru chyby: přehlédnutá osa × přeložení, které poloviny nekryje. */
+function proc(o: Osy, p: string): string {
+  const poradi = (x: string) => POCTY.indexOf(x);
+  if (p === "0") return `Aspoň jednu osu ${o.tvar} má. ${o.proc}`;
+  if (p === "nekonečně mnoho") return `Nekonečně mnoho os mají jen kulaté tvary jako kruh. ${o.proc}`;
+  if (o.pocet === "0") return `Ne každé přeložení dá dvě shodné části. ${o.proc}`;
+  if (poradi(p) < poradi(o.pocet)) return `Některá osa ti chybí. ${o.proc}`;
+  return `Tolik os ${o.tvar} nemá — ne každé přeložení dá dvě shodné části. ${o.proc}`;
+}
+
 function osy(o: Osy): PracticeTask {
   const spatne = shuffle(POCTY.filter((p) => p !== o.pocet)).slice(0, 3);
   return choice(`Kolik os souměrnosti má ${o.tvar}?`, o.pocet,
-    spatne.map((p) => ({ value: p, why: o.proc })) as never, {
+    spatne.map((p) => ({ value: p, why: proc(o, p) })) as never, {
       hints: [
         `Kolika různými způsoby jde ${o.tvar} přeložit, aby se obě části překryly?`,
         `Zkus v duchu přehnout ${o.tvar} svisle, vodorovně i šikmo přes roh. Každé přeložení, při kterém se části přesně kryjí, je jedna osa.`,

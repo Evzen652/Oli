@@ -323,7 +323,7 @@ const L3: PracticeTask[] = [
     { value: "Vážený pane řediteli, prosím o uvolnění na závody 5. května.", why: "Chybí pozdrav a podpis." },
   ], {
     hints: ["Co všechno má žádost obsahovat od oslovení po podpis?", "Úplná žádost má oslovení, prosbu s důvodem a datem, pozdrav a podpis."],
-    explanation: "Úplná žádost má oslovení, prosbu s důvodem a datem, pozdrav a podpis.",
+    explanation: "Jen tahle žádost má všechno: oslovení („Vážený pane řediteli“), prosbu s důvodem (závody) a datem (5. května), pozdrav i podpis.",
   }),
 ];
 
