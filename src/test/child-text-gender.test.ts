@@ -25,6 +25,16 @@ const SOUBORY = [
   "src/lib/topicInsight.ts",
   "src/lib/studentLabels.ts",
   "src/lib/i18n/cs.ts",
+  // Rodičovské texty o dítěti — pohlaví nezná ani rodič-čtenář přehledu,
+  // a „Tonda procvičoval/a" vypadá jako formulář, ne jako zpráva (10. 10.).
+  "src/lib/weeklyReportGenerator.ts",
+  "src/lib/skillFeedback.ts",
+  "src/pages/Report.tsx",
+  "src/pages/SessionHistory.tsx",
+  "src/pages/ParentDashboard.tsx",
+  "src/components/AssignmentCreator.tsx",
+  "src/components/ChildActivityBadge.tsx",
+  "src/lib/edgeFunctionError.ts",
 ];
 
 // „zvládl/a", „hrdý/á", „přihlášen/a", „sám/sama", „došel/došla" i „vedl(a)".

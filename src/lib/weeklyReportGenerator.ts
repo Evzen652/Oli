@@ -129,7 +129,7 @@ export async function generateWeeklyReport(
     const periodNoun = range === "week" ? "týden" : range === "month" ? "měsíc" : "dosavadní období";
     return {
       summary: childName
-        ? `${childName} ${rangeLabel} ještě neprocvičoval/a žádné úlohy. Zadejte úkol nebo motivujte k procvičování.`
+        ? `${childName} ${rangeLabel} zatím nemá za sebou žádné procvičování. Zadejte úkol nebo motivujte k procvičování.`
         : `Za ${periodNoun} zatím žádná aktivita.`,
       recommendations: "Doporučujeme procvičovat alespoň 3× týdně po 10 minutách.",
       skills: [],
@@ -196,12 +196,12 @@ export async function generateWeeklyReport(
   const strongSkillIds = topStrong.map(s => s.skill);
 
   // Build summary — bohatší, víc konkrétních pozorování
-  const name = childName ?? "Žák";
+  const name = childName ?? "Dítě";
   let summary: string;
   if (accuracy >= 80) {
-    summary = `${name} si ${rangeLabel} vedl/a výborně! Učení jde správným směrem — jen tak dál.`;
+    summary = `${name} má ${rangeLabel} výborné výsledky! Učení jde správným směrem — jen tak dál.`;
   } else if (accuracy >= 50) {
-    summary = `${name} ${rangeLabel} procvičoval/a pravidelně. Základ je dobrý, ale některá témata si zaslouží víc pozornosti.`;
+    summary = `${name} má ${rangeLabel} solidní základ, ale některá témata si zaslouží víc pozornosti.`;
   } else {
     summary = `${name} ${rangeLabel} potřebuje s učením trochu pomoct. Doporučujeme se zaměřit na slabší témata a procvičovat kratší dobu, ale častěji.`;
   }
@@ -256,7 +256,7 @@ export async function generateWeeklyReport(
         icon: "🧠",
         label: "Samostatnost",
         tone: "positive",
-        text: `Většinu úloh (${correctAlone} z ${attempts}) vyřešil/a samostatně — silná známka, že látku skutečně ovládá.`,
+        text: `Většinu úloh (${correctAlone} z ${attempts}) zvládá samostatně — silná známka, že látku skutečně ovládá.`,
       });
     }
   }
@@ -308,11 +308,11 @@ export async function generateWeeklyReport(
     const pct = Math.round((s.correct / s.attempts) * 100);
     positive_observation = `Téma "${s.skill}" zvládá na ${pct} % (${s.correct} z ${s.attempts}).`;
   } else if (days >= 4) {
-    positive_observation = `Procvičoval/a pravidelně ${pad(days, "DEN")} ${rangeLabel}.`;
+    positive_observation = `Procvičuje pravidelně — ${pad(days, "DEN")} ${rangeLabel}.`;
   } else if (attempts >= 10) {
-    positive_observation = `Procvičoval/a ${pad(attempts, "ÚLOHA")} ${rangeLabel}.`;
+    positive_observation = `Má za sebou ${pad(attempts, "ÚLOHA")} ${rangeLabel}.`;
   } else if (attempts > 0) {
-    positive_observation = `Začal/a s procvičováním (${pad(attempts, "ÚLOHA")} ${rangeLabel}).`;
+    positive_observation = `S procvičováním začíná (${pad(attempts, "ÚLOHA")} ${rangeLabel}).`;
   }
 
   // ── Plán na příští týden — z weakSkillIds (repeat) nebo strongSkillIds (new) ──

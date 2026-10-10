@@ -3,7 +3,7 @@
 > ## ▶ 7.–10. 10. 2026 — autonomní průchod (nic nepushnuto!)
 >
 > Evžen řekl „pokračuj autonomně"; push do `main` = produkce, ten
-> neschválil. **Lokálně je 40 commitů navíc proti `origin/main`** —
+> neschválil. **Lokálně je 41 commitů navíc proti `origin/main`** —
 > `git log origin/main..main`. Shrnutí v `PROJECT_STATUS.md` §6, sessions
 > 2026-10-07 a 2026-10-07b. Hlavně:
 > - mazání dítěte maže i jeho auth účet → **nasadit `delete-child`**;
@@ -584,7 +584,8 @@ i obráceně — po dočasném vrácení chyby spadne).
 mimo jiné v `i18n/cs.ts` („Procvičovat si sám/sama", „Zapomněl/a jsem heslo"),
 `categoryInfo.ts`, `weeklyReportGenerator.ts` a na dětských obrazovkách.
 ✅ **10. 10.: dětské plochy opravené** (hlídá `child-text-gender.test.ts`);
-zbývají rodičovské texty o dítěti (`weeklyReportGenerator`, `Report.tsx`).
+✅ i rodičovské texty o dítěti (týdenní zpráva, report). Zbývá jen obsah,
+který oslovuje dítě v mužském rodě („Zapomněl jsi…") — nehlídá se.
 
 ### Session 40 (2026-09-11/12) — opravný průchod obsahu, uzavřeno
 

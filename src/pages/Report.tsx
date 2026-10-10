@@ -280,7 +280,7 @@ export default function Report() {
               {range === "all" && "Zatím žádná aktivita"}
             </p>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
-              {childName ? `${childName} ${report.rangeLabel ?? ""} ještě neprocvičoval/a.` : `Dítě ${report.rangeLabel ?? ""} ještě neprocvičovalo.`} Zkuste zadat první úkol.
+              {childName ? `${childName} ${report.rangeLabel ?? ""} zatím nemá za sebou žádné procvičování.` : `Dítě ${report.rangeLabel ?? ""} ještě neprocvičovalo.`} Zkuste zadat první úkol.
             </p>
             {range !== "all" && (
               <Button variant="outline" size="sm" onClick={() => handleRangeChange("all")}>

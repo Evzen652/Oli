@@ -140,7 +140,7 @@ export function AssignmentCreator({ childId, childName, grade, onCreated, prefil
     if (existing && existing.length > 0) {
       setSaving(false);
       toast({
-        description: `Tohle téma už ${childName} zadané má a zatím ho nesplnil/a. Najdete ho v „Zadaných úkolech".`,
+        description: `Tohle téma už ${childName} zadané má a úkol zatím není splněný. Najdete ho v „Zadaných úkolech".`,
       });
       return;
     }

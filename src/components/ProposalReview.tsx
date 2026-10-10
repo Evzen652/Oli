@@ -200,7 +200,7 @@ export function ProposalReview({ proposals, explanation, onDone, onDismiss, onNe
     try {
       await saveProposalToDb(item);
       setItems((prev) => prev.map((it, i) => (i === index ? { ...it, saving: false, saved: true } : it)));
-      const actionLabel = item.action === "delete" ? "smazán/a" : "použito";
+      const actionLabel = item.action === "delete" ? "smazáno" : "použito";
       toast.success(`${getTypeLabel(item.type)} "${item.data.name}" – ${actionLabel}`);
     } catch (e) {
       setItems((prev) => prev.map((it, i) => (i === index ? { ...it, saving: false } : it)));

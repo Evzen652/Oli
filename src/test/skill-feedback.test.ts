@@ -143,7 +143,7 @@ describe("skillFeedback — úvodní věta", () => {
   it("rodič vidí jméno dítěte a třetí osobu", () => {
     const veta = getIntroSentence("parent", last, 1, "Tonda");
     expect(veta).toContain("Tonda");
-    expect(veta).toContain("procvičoval/a uvedené téma");
+    expect(veta).toContain("má téma procvičené");
   });
 
   it("rodič bez jména dostane neosobní tvar, ne prázdné místo", () => {

@@ -158,11 +158,15 @@ src/
 - ✅ **Hlídá `src/test/child-text-gender.test.ts`** — řetězcové literály
   devíti dětských souborů + úvodní věta zpětné vazby. Ověřeno obráceně:
   vrácený „nebyl/a" v `topicInsight` test shodil.
-- ⏸ **Nechané:** rodičovské texty o dítěti ve třetí osobě
-  (`weeklyReportGenerator`, `Report.tsx`, `AssignmentCreator`, rodičovská
-  úvodní věta v `skillFeedback`) — dospělému lomítko nevadí tolik a přepis
-  zprávy je větší zásah. Mimo to obsah místy oslovuje jen v mužském rodě
-  („Zapomněl jsi…", „sečetl jsi") — to je jiná, větší třída, nehlídá se.
+- ✅ **Druhý commit: rodičovské texty o dítěti** — týdenní zpráva
+  (`weeklyReportGenerator`: „má výborné výsledky", „zvládá samostatně",
+  „procvičuje pravidelně"; náhradní podmět „Dítě" místo „Žák"), `Report.tsx`,
+  `AssignmentCreator`, rodičovská úvodní věta v `skillFeedback`, hláška
+  o vypršelém přihlášení. Hlídá tentýž test (soubory přidány do seznamu).
+  Mimochodem zmizel nesmysl „procvičoval/a pravidelně" u úspěšnosti 50–80 %
+  — pravidelnost s úspěšností nesouvisí, teď „má solidní základ".
+- ⏸ **Nechané:** obsah místy oslovuje dítě jen v mužském rodě
+  („Zapomněl jsi…", „sečetl jsi") — jiná, větší třída, nehlídá se.
 - ✅ Sonda edge funkcí 10. 10.: `semantic-gate` i `tutor-chat` vrací **404**
   (Evžen je odebral; předání tvrdilo, že běží). `delete-child` pořád 404 —
   nenasazená.

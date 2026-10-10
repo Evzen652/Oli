@@ -78,7 +78,7 @@ function formatMessage({
     );
   }
   // Auth
-  if (status === 401) return "Nejste přihlášen/a — přihlaste se prosím znovu.";
+  if (status === 401) return "Přihlášení vypršelo — přihlaste se prosím znovu.";
   if (status === 403) return "Nemáte oprávnění — pouze admin může používat tuto funkci.";
   // Rate limit
   if (status === 429) return "Příliš mnoho požadavků — počkejte chvíli a zkuste znovu.";

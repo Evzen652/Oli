@@ -88,7 +88,7 @@ export function getIntroSentence(
   }
 
   const head = childName
-    ? `${childName} procvičoval/a uvedené téma dne ${when}, celkem ${count}.`
+    ? `${childName} má téma procvičené ${when}, celkem ${count}.`
     : `Procvičování ze dne ${when}, celkem ${count}.`;
   if (grade <= 2) return `${head} Výsledek výborný (${last.pct} %).`;
   if (grade === 3) return `${head} Výsledek průměrný (${last.pct} %).`;

@@ -126,7 +126,7 @@ export function AdminAIChat({ grade, subject, category, topic, skillId, skillDet
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error("Nejste přihlášen/a — přihlaste se prosím znovu.");
+      if (!session) throw new Error("Přihlášení vypršelo — přihlaste se prosím znovu.");
 
       // Použít supabase.functions.invoke — automaticky řeší auth, CORS,
       // a vrací srozumitelnější chybové hlášky (rozliší 404/500/network).
