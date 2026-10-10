@@ -1,10 +1,9 @@
 # Předání práce — stav k 2026-10-10, jinak k 2026-09-30
 
-> ## ▶ 7.–10. 10. 2026 — autonomní průchod (nic nepushnuto!)
+> ## ▶ 7.–10. 10. 2026 — autonomní průchod (✅ pushnuto 10. 10., `origin/main` = `198ed0b`)
 >
-> Evžen řekl „pokračuj autonomně"; push do `main` = produkce, ten
-> neschválil. **Lokálně je 41 commitů navíc proti `origin/main`** —
-> `git log origin/main..main`. Shrnutí v `PROJECT_STATUS.md` §6, sessions
+> Evžen řekl „pokračuj autonomně"; 10. 10. schválil push (41 commitů).
+> Nasazení na Vercelu odsud ověřit nejde — zkontroluj v dashboardu. Shrnutí v `PROJECT_STATUS.md` §6, sessions
 > 2026-10-07 a 2026-10-07b. Hlavně:
 > - mazání dítěte maže i jeho auth účet → **nasadit `delete-child`**;
 > - text dítěte k modelu už nevede žádná cesta (`semantic-gate` odpojen);
@@ -22,7 +21,7 @@
 > - zpětná vazba k možnostem: 3 mrtvé vazby opraveny, nově hlídá test (10. 10.);
 > - rodové lomítkové tvary pryč z dětských ploch, hlídá test (10. 10. odpoledne);
 > - `docs-check` přes rejstřík: chybný klíč „teplota tání" u dřeva (10. 10.).
-> Rozhodnutí pro Evžena: push, nasadit `delete-child`, `allowBackup`,
+> Rozhodnutí pro Evžena: nasadit `delete-child`, `allowBackup`,
 > prázdné dlaždice karet témat, fyzikální zjednodušení (PENDING_CHANGES).
 >
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
