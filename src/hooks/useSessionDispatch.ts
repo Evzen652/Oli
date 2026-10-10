@@ -257,7 +257,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
         .select("id");
       if (updated && updated.length > 0) {
         toast.success("Úkol splněn! 🎉", {
-          description: "Tvůj rodič uvidí, že jsi úkol úspěšně zvládl/a.",
+          description: "Tvůj rodič uvidí, že je úkol hotový.",
         });
       }
     } catch { /* silent */ }

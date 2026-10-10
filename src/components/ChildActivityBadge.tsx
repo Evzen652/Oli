@@ -120,7 +120,7 @@ export function ChildActivityBadge({ childId = "", compact }: Props) {
             <Sparkles className="h-4 w-4" />
           </span>
           <div className="space-y-0.5">
-            <p className="text-sm font-bold text-foreground">Tento týden ještě nezačal/a</p>
+            <p className="text-sm font-bold text-foreground">Tento týden zatím bez procvičování</p>
             <p className="text-[12px] text-muted-foreground leading-snug">
               Můžete dítě jemně motivovat — zadat menší úkol nebo zkusit společně.
             </p>

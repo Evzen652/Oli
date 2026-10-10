@@ -485,7 +485,7 @@ export const SLOVNI_ULOHY_VELKA_A_DESETINNA_CISLA: TopicMetadata[] = [
       hint: "Nejdřív si řekni, na co se úloha ptá. Pak hledej, co k tomu potřebuješ vědět — někdy to musíš spočítat v mezikroku.",
       steps: [
         "Přečti si úlohu a najdi otázku.",
-        "Rozmysli, co potřebuješ znát, abys na ni odpověděl/a. Chybí-li to, spočítej to jako první krok.",
+        "Rozmysli, co potřebuješ znát k odpovědi. Chybí-li to, spočítej to jako první krok.",
         "Spočítej to pod sebou; u korun piš čárku pod čárku.",
         "Udělej zkoušku: dosaď výsledek zpátky do příběhu.",
       ],

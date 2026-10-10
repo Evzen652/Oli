@@ -7,6 +7,13 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-10-10 — rodové lomítkové tvary na dětských plochách
+
+Bod ze `SESSION_HANDOFF.md` §1 („lomítkové tvary jsou i jinde, ~60 výskytů")
+— dětské plochy opraveny, hlídá `child-text-gender.test.ts`. Rodičovské texty
+o dítěti (týdenní zpráva, report) zůstávají, detail `PROJECT_STATUS.md` §6,
+session 2026-10-10.
+
 ## ✅ VYŘÍZENO 2026-10-07 (b) — kontroly, mazání dítěte, zásady, podklad pro obchody
 
 Detail v `PROJECT_STATUS.md` §6, session 2026-10-07b. Krátce, co se tu tím zavírá:

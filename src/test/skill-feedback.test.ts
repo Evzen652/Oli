@@ -155,7 +155,8 @@ describe("skillFeedback — úvodní věta", () => {
   it("dítě je oslovené ve druhé osobě a bez svého jména", () => {
     const veta = getIntroSentence("child", last, 1, "Tonda");
     expect(veta).not.toContain("Tonda");
-    expect(veta).toContain("jsi");
+    // Druhá osoba bez rodu („máš", „ti") — „jsi procvičoval/a" by rod potřebovalo.
+    expect(veta).toMatch(/(?<!\p{L})(jsi|máš|ti)(?!\p{L})/u);
   });
 
   it("dítě dostane u slabého výsledku rovnou informaci, ne diagnózu", () => {

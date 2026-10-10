@@ -376,7 +376,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     whatIsIt:
       "Naučíš se orientovat podle světových stran, číst jednoduchou mapu, pracovat s hodinami a kalendářem — a seřadit dny i měsíce.",
     whyWeUseIt:
-      "Tyto dovednosti potřebuješ každý den — abys věděl/a, kolik je hodin, jaký je den, nebo kudy se vydat na výlet.",
+      "Tyto dovednosti potřebuješ každý den — ať víš, kolik je hodin, jaký je den, nebo kudy se vydat na výlet.",
     visualExamples: [
       {
         label: "Světové strany",
@@ -664,7 +664,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     title: "Vyjmenovaná slova po B",
     hook: "Být, bydlit, bylina — tahle slova po B píšeš s tvrdým Y! 🅱️",
     whatIsIt: "Vyjmenovaná slova po B jsou skupina slov, kde se po písmenu B píše tvrdé Y/Ý. Musíš je znát i s příbuznými slovy.",
-    whyWeUseIt: "Abys správně psal/a slova jako bydlet, obyvatel, kobyla a nepletl/a si je se slovy jako bít (= tlouci).",
+    whyWeUseIt: "Ať správně píšeš slova jako bydlet, obyvatel, kobyla a nepleteš si je se slovy jako bít (= tlouci).",
     visualExamples: [
       { label: "Hlavní slova", illustration: "být, bydlit, bylina, kobyla, býk,\nbystrý, Přibyslav, aby\n\n💡 + příbuzná: bydlet, obyvatel, byt, příbytek..." },
     ],
@@ -676,7 +676,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     title: "Vyjmenovaná slova po L",
     hook: "Lyže, slyšet, mlýn — po L taky někdy píšeš Y! 🇱",
     whatIsIt: "Vyjmenovaná slova po L jsou slova, kde se po L píše tvrdé Y/Ý, i když vyslovuješ stejně jako I.",
-    whyWeUseIt: "Abys věděl/a, že 'lyže' se píše s Y, ale 'lípa' s I.",
+    whyWeUseIt: "Ať víš, že 'lyže' se píše s Y, ale 'lípa' s I.",
     visualExamples: [
       { label: "Hlavní slova", illustration: "slyšet, mlýn, blýskat se, polykat,\nplynout, plýtvat, vzlykat, lysý,\nlýko, lyže, lýtko, lžíce\n\n💡 + příbuzná: slýchat, mlynář, blýskavice..." },
     ],
@@ -686,9 +686,9 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
   "čeština::Vyjmenovaná slova::Vyjmenovaná slova po M": {
     buttonLabel: "K čemu jsou slova po M?",
     title: "Vyjmenovaná slova po M",
-    hook: "My, myslet, mýlit se — po M je Y častější, než bys čekal/a! Ⓜ️",
+    hook: "My, myslet, mýlit se — po M je Y častější, než by se zdálo! Ⓜ️",
     whatIsIt: "Vyjmenovaná slova po M obsahují slova, kde se po M píše tvrdé Y/Ý.",
-    whyWeUseIt: "Abys správně psal/a slova jako 'my' (= my všichni) a nepletl/a si to s 'mi' (= mně).",
+    whyWeUseIt: "Ať správně píšeš slova jako 'my' (= my všichni) a nepleteš si to s 'mi' (= mně).",
     visualExamples: [
       { label: "Hlavní slova", illustration: "my, myslet, mýlit se, hmyz, myš,\nhřmít, mýtit, zamykat, smýkat,\ndmýchat, chmýří, mýto, mykat\n\n💡 my = my všichni, mi = mně" },
     ],
@@ -700,7 +700,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     title: "Vyjmenovaná slova po P",
     hook: "Pýcha, pytel, pyl — i po P se schová tvrdé Y! 🅿️",
     whatIsIt: "Vyjmenovaná slova po P jsou slova s tvrdým Y/Ý po písmenu P.",
-    whyWeUseIt: "Abys správně zapsal/a 'pytel' (= taška) a nezaměnil/a s 'pít' (= napít se).",
+    whyWeUseIt: "Ať správně zapíšeš 'pytel' (= taška) a nezaměníš ho s 'pít' (= napít se).",
     visualExamples: [
       { label: "Hlavní slova", illustration: "pýcha, pytel, pysk, netopýr, slepýš,\npyl, kopyto, klopýtat, třpytit se,\nzpytovat, pykat, pýřit se\n\n💡 + příbuzná: pytlík, pyšný, kopýtko..." },
     ],
@@ -712,7 +712,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     title: "Vyjmenovaná slova po S",
     hook: "Syn, sýr, sychravý — po S se taky občas píše Y! 🔤",
     whatIsIt: "Vyjmenovaná slova po S jsou slova, kde se po S píše tvrdé Y/Ý.",
-    whyWeUseIt: "Abys nezaměnil/a 'sýr' (= jídlo) za 'sir' a správně psal/a celou rodinu příbuzných slov.",
+    whyWeUseIt: "Ať nezaměníš 'sýr' (= jídlo) za 'sir' a správně píšeš celou rodinu příbuzných slov.",
     visualExamples: [
       { label: "Hlavní slova", illustration: "syn, sytý, sýr, syrový, sýkora,\nsychravý, usychat, sypat\n\n💡 + příbuzná: synovec, sýrový, sýkorka, nasytit..." },
     ],
@@ -736,7 +736,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     title: "Vyjmenovaná slova po Z",
     hook: "Jazyk, brzy, nazývat — i po Z občas píšeš Y! 💤",
     whatIsIt: "Vyjmenovaná slova po Z jsou nejmenší skupinka — jen pár slov, ale o to důležitější je je znát.",
-    whyWeUseIt: "Abys správně psal/a 'jazyk', 'brzy' a jejich příbuzná slova.",
+    whyWeUseIt: "Ať správně píšeš 'jazyk', 'brzy' a jejich příbuzná slova.",
     visualExamples: [
       { label: "Hlavní slova", illustration: "brzy, jazyk, nazývat, Ruzyně\n\n💡 + příbuzná: brzičko, jazykový,\njazykovědec, nazývaný..." },
     ],
@@ -958,7 +958,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     title: "Čas",
     hook: "Hodiny, dny, měsíce, roky — čas plyne pořád, a ty se v něm umíš vyznat! ⏰",
     whatIsIt: "Čas měříme hodinami, kalendářem a znalostí dnů v týdnu a měsíců v roce. Naučíš se číst hodiny, řadit dny a orientovat se v kalendáři.",
-    whyWeUseIt: "Bez času bys nevěděl/a, kdy jít do školy, kdy jsou narozeniny nebo kolik minut zbývá do přestávky!",
+    whyWeUseIt: "Bez hodin a kalendáře nevíš, kdy jít do školy, kdy jsou narozeniny nebo kolik minut zbývá do přestávky!",
     visualExamples: [
       { label: "Jednotky času", illustration: "⏱️ 1 minuta = 60 sekund\n⏰ 1 hodina = 60 minut\n📅 1 den = 24 hodin\n📅 1 týden = 7 dní\n📅 1 rok = 12 měsíců = 365 dní" },
     ],
@@ -1181,7 +1181,7 @@ export const CATEGORY_INFO: Record<string, CategoryInfo> = {
     whatIsIt:
       "Vzory jsou modelová slova, podle kterých skloňuješ ostatní podstatná jména. Každý rod má své vzory: mužský (pán, hrad, muž, stroj, předseda, soudce), ženský (žena, růže, píseň, kost), střední (město, moře, kuře, stavení).",
     whyWeUseIt:
-      "Vzor ti řekne, jakou koncovku má slovo v kterém pádě. Bez vzorů bys musel/a hádat!",
+      "Vzor ti řekne, jakou koncovku má slovo v kterém pádě. Bez vzorů nezbývá než hádat!",
     visualExamples: [
       {
         label: "Mužský rod",

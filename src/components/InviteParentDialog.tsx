@@ -26,7 +26,7 @@ function normalizePhone(raw: string): string | null {
 function buildWhatsAppUrl(phone: string, childName?: string, grade?: number): string {
   const name = childName ? childName : "moje dítě";
   const gradeText = grade ? ` (${grade}. třída)` : "";
-  const text = `Ahoj! Procvičuji na Oli${gradeText} a chci, abys viděl/a můj pokrok. Podívej se na: https://oli-edu.com`;
+  const text = `Ahoj! Procvičuji na Oli${gradeText} a chci, ať vidíš můj pokrok. Podívej se na: https://oli-edu.com`;
   return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }
 

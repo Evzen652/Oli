@@ -144,6 +144,31 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-10-10 — rodové lomítkové tvary na dětských plochách
+
+- ✅ **„zvládl/a", „sám/sama", „vedl(a)" pryč z dětských textů** — domovská
+  stránka, dialogy sezení (návrat, odchod), karty „Co je dobré vědět"
+  (`topicInsight`), popisy okruhů (`categoryInfo`), dětská větev zpětné vazby
+  k dovednosti (`skillFeedback`), štítek úspěšnosti („Zvládnuto"), toast po
+  splnění úkolu, zpráva rodiči přes WhatsApp a tři texty v obsahu (nápověda
+  2. a 5. r., vysvětlení 4. r.). Přepsáno na neutrální tvar (přítomný čas,
+  „máš hotovo", „bez nápovědy"), ne na mužský rod. Pár rodičovských míst
+  šlo levně přepsat taky (`ChildActivityBadge`, `ParentDashboard`,
+  „Zapomenuté heslo?").
+- ✅ **Hlídá `src/test/child-text-gender.test.ts`** — řetězcové literály
+  devíti dětských souborů + úvodní věta zpětné vazby. Ověřeno obráceně:
+  vrácený „nebyl/a" v `topicInsight` test shodil.
+- ⏸ **Nechané:** rodičovské texty o dítěti ve třetí osobě
+  (`weeklyReportGenerator`, `Report.tsx`, `AssignmentCreator`, rodičovská
+  úvodní věta v `skillFeedback`) — dospělému lomítko nevadí tolik a přepis
+  zprávy je větší zásah. Mimo to obsah místy oslovuje jen v mužském rodě
+  („Zapomněl jsi…", „sečetl jsi") — to je jiná, větší třída, nehlídá se.
+- ✅ Sonda edge funkcí 10. 10.: `semantic-gate` i `tutor-chat` vrací **404**
+  (Evžen je odebral; předání tvrdilo, že běží). `delete-child` pořád 404 —
+  nenasazená.
+- Brána: typecheck, `audit:ui` (baseline 13), build, celá sada
+  (251 souborů, 0 pádů), prohlížeč `/student` v anonymním režimu.
+
 ### Session 2026-10-07b — kontroly, mazání dítěte, zásady, podklad pro obchody
 
 Autonomní průchod otevřenými body z `SESSION_HANDOFF.md` §4, které nečekají

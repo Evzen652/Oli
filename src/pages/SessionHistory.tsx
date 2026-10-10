@@ -187,7 +187,7 @@ export default function SessionHistory() {
                       {independent > 0 && (
                         <span className="flex items-center gap-1 text-green-600">
                           <CheckCircle2 className="h-3.5 w-3.5" />
-                          {independent} sám/sama
+                          {independent} bez nápovědy
                         </span>
                       )}
                       {s.help_used > 0 && (

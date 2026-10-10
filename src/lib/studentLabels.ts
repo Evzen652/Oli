@@ -31,7 +31,7 @@ export function getStudentLabel(successRate: number): string {
   switch (tier) {
     case "excellent": return "Výborně!";
     case "good":      return "Pěkně!";
-    case "passing":   return "Zvládl/a";
+    case "passing":   return "Zvládnuto";
     case "partial":   return "Skoro to bylo";
     case "retry":     return "Zkus to znovu";
   }

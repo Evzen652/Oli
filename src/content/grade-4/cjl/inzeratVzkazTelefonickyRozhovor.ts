@@ -295,7 +295,7 @@ const L3: PracticeTask[] = [
     { value: "začnu křičet", why: "Křik nepomůže, jen poprosit o zopakování." },
   ], {
     hints: ["Jak se dozvíš, co druhý řekl?", "Nerozumět je normální. Zdvořile řekni, že jsi nerozuměl nebo nerozuměla, a požádej, ať to zopakuje."],
-    explanation: "Slušně poprosíme: „Promiňte, nerozuměl/a jsem, můžete to zopakovat?“",
+    explanation: "Slušně poprosíme: „Promiňte, nebylo vám dobře rozumět. Můžete to prosím zopakovat?“",
   }),
   choice("Kamarád ti zavolá, když píšeš úkol. Jak hovor ukončíš?", "Musím psát úkol, zavolám ti potom. Ahoj!", [
     { value: "Zavěsím bez jediného slova.", why: "To je nezdvořilé — kamarád neví, co se stalo." },

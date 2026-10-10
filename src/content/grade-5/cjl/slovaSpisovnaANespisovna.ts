@@ -213,7 +213,7 @@ export const SLOVASPISOVNAANESPISOVNA: TopicMetadata[] = [
     contentType: "conceptual",
     generator: gen,
     helpTemplate: {
-      hint: "Zeptej se sám nebo sama sebe: 'Řekl/a bych to řediteli školy nebo napsal/a v novinách?' Pokud ano – je to asi spisovné.",
+      hint: "Zeptej se: Dalo by se to takhle říct řediteli školy nebo napsat do novin? Pokud ano – je to asi spisovné.",
       steps: [
         "Přemýšlej, v jaké situaci se slovo používá.",
         "Zkus si vzpomenout, zda je slovo v učebnici nebo jen v hovoru.",

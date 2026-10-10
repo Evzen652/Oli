@@ -227,7 +227,7 @@ export const DELENISLOVNAKONCIRADKU: TopicMetadata[] = [
       steps: [
         "Rozděl slovo na slabiky.",
         "Najdi hranici mezi slabikami — tam patří rozdělovník.",
-        "Zkontroluj, že na žádné straně nezůstalo jen jedno písmeno a že jsi nerozdělil(a) ou, au ani ch.",
+        "Zkontroluj, že na žádné straně nezůstalo jen jedno písmeno a že nejsou rozdělená ou, au ani ch.",
       ],
       commonMistake: "Rozdělit slovo uprostřed slabiky, nebo nechat jedno písmeno samotné na řádku (např. 'a-no').",
       example: "dárek → dá-rek (správně). ucho → nelze rozdělit, protože by zůstalo samotné 'u'.",

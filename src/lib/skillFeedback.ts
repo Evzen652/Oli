@@ -43,7 +43,7 @@ export const FEEDBACK_LABELS: Record<Audience, {
 }> = {
   parent: {
     history: "Historie",
-    breakdown: "Jak si vedl(a)",
+    breakdown: "Jak se dařilo",
     advice: "Doporučení",
     answeredPrefix: "Dítě odpovědělo:",
     correctAnswer: "Správná odpověď:",
@@ -52,7 +52,7 @@ export const FEEDBACK_LABELS: Record<Audience, {
     history: "Dřívější pokusy",
     breakdown: "Jak ti to šlo",
     advice: "Co dál",
-    answeredPrefix: "Odpověděl/a jsi:",
+    answeredPrefix: "Tvoje odpověď:",
     correctAnswer: "Správně mělo být:",
   },
 };
@@ -81,7 +81,7 @@ export function getIntroSentence(
   const count = pad(last.total, "OTÁZKA");
 
   if (audience === "child") {
-    const head = `Tohle téma jsi procvičoval/a ${when} — ${count}.`;
+    const head = `Tohle téma máš procvičené ${when} — ${count}.`;
     if (grade <= 2) return `${head} Šlo ti to dobře (${last.pct} %).`;
     if (grade === 3) return `${head} Vyšlo to na ${last.pct} % — půlka správně, půlka ne.`;
     return `${head} Zatím to moc nešlo (${last.pct} %), a to je v pořádku — jde to spravit.`;
@@ -132,13 +132,13 @@ function getChildRecommendations(sessions: SessionSummary[], overallPct: number,
 
   // === SITUAČNÍ SIGNÁL ===
   if (lastPct !== null && prevPct !== null && lastPct >= 80 && prevPct < 55) {
-    return ["Oproti minule velký skok nahoru. Ať jsi udělal/a cokoliv jinak, drž se toho."];
+    return ["Oproti minule ti to šlo mnohem líp. Cokoli bylo tentokrát jinak, drž se toho."];
   }
   if (lastPct !== null && prevPct !== null && lastPct < 50 && prevPct >= 80) {
-    return ["Minule ti to šlo líp. Zkus to znovu, až budeš odpočatý/a — někdy je to jen tím."];
+    return ["Minule ti to šlo líp. Zkus to znovu, až si odpočineš — někdy je to jen tím."];
   }
   if (helpRatio >= 0.4) {
-    return ["Nápovědu jsi potřeboval/a často. Příště zkus nejdřív odpovědět sám/sama a teprve pak se podívat."];
+    return ["Nápověda ti pomáhala často. Příště zkus nejdřív odpovědět bez ní a teprve pak se podívat."];
   }
   if (n === 1 && grade <= 3) {
     return ["Zkus téma ještě jednou jiný den — uvidíš, co ti z něj zůstalo."];

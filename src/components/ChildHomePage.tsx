@@ -88,7 +88,7 @@ function PairingCodeInput({ onPaired }: { onPaired: (childName: string, grade: n
     setStatus("loading");
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { setStatus("error"); setErrorMsg("Nejsi přihlášen/a"); return; }
+      if (!user) { setStatus("error"); setErrorMsg("Přihlášení vypršelo — přihlas se znovu."); return; }
       const { data, error } = await supabase
         .from("children").update({ child_user_id: user.id })
         .eq("pairing_code", code).gte("pairing_code_expires_at", new Date().toISOString())
@@ -168,7 +168,7 @@ const TIPS = [
   "Radost z pochopení je lepší pocit než jakákoliv hra.",
   "Klid a soustředění — dvě věci, které ti Oli vždycky dá.",
   "Dnes se naučíš něco, co ti za rok přijde samozřejmé.",
-  "Zkus si po procvičování říct, co ses dnes naučil/a nového.",
+  "Zkus si po procvičování říct, co nového dnes umíš.",
 ];
 
 // ── Motivační věta ────────────────────────────────────────────────────────────
@@ -213,7 +213,7 @@ export function motivationalMessage(days: number, tasks: number, accuracy: numbe
     manyDays && goodAccuracy ? [
       "Chodíš sem pravidelně a je to znát. Pokračuj ve stejném tempu.",
       "Tohle ti sedí — látku zvládáš. Jen tak dál!",
-      "Máš to zažité. Co kdyby sis dnes zkusil/a něco těžšího?",
+      "Máš to zažité. Co zkusit dnes něco těžšího?",
     ] : [],
 
     // Hodně dnů s procvičováním, slabší úspěšnost
@@ -224,7 +224,7 @@ export function motivationalMessage(days: number, tasks: number, accuracy: numbe
 
     // Hodně úloh
     manyTasks ? [
-      "Tenhle týden jsi toho zvládl/a hodně. Mozek ti poděkuje, až přijde písemka.",
+      "Tenhle týden máš za sebou hodně práce. Mozek ti poděkuje, až přijde písemka.",
       "Pěkná dávka práce. Výsledky se dostaví, neboj.",
     ] : [],
 
@@ -465,8 +465,8 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                   s tooltipem „za sebou bez přerušení" — dítěti to lhalo
                   a zároveň to byl streak, který invariant „no gamification"
                   zakazuje. Popisek proto říká přesně to, co se měří. */}
-              <StatPill icon={CalendarDays} main={pluralDays(stats.daysActive)} sub="s procvičováním" tone="primary" tooltip={`Kolik různých dní jsi procvičoval/a (${periodLabel.toLowerCase()}).`} />
-              <StatPill icon={CheckCircle2} main={String(stats.tasks)} sub={pluralTasks(stats.tasks)} tone="success" tooltip={`Kolik úloh jsi splnil/a (${periodLabel.toLowerCase()}).`} />
+              <StatPill icon={CalendarDays} main={pluralDays(stats.daysActive)} sub="s procvičováním" tone="primary" tooltip={`Kolik různých dní máš s procvičováním (${periodLabel.toLowerCase()}).`} />
+              <StatPill icon={CheckCircle2} main={String(stats.tasks)} sub={pluralTasks(stats.tasks)} tone="success" tooltip={`Kolik úloh máš splněných (${periodLabel.toLowerCase()}).`} />
               <StatPill icon={Star} main={`${stats.accuracy} %`} sub="úspěšnost" tone="warning" tooltip={`Z každých 100 odpovědí máš ${stats.accuracy} správně.`} />
             </div>
           )}
@@ -701,7 +701,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           {isAnonUser && (
             <div className="mx-5 mt-4 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800 flex items-start gap-2">
               <span className="text-base leading-none mt-0.5">⚠️</span>
-              <span>V anonymním režimu se výsledky neukládají. <strong>Vytvoř si účet</strong>, aby ses mohl/a k výsledkům vrátit.</span>
+              <span>V anonymním režimu se výsledky neukládají. <strong>Vytvoř si účet</strong>, ať se k výsledkům můžeš vrátit.</span>
             </div>
           )}
           <div className="px-5 pt-3 pb-1">

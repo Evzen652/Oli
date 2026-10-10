@@ -481,7 +481,7 @@ export default function ParentDashboard() {
                       </button>
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">Co {child.child_name} procvičoval/a sám/a, bez vašeho zadání.</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Co {child.child_name} procvičuje samostatně, bez vašeho zadání.</p>
                 </div>
                 <div className="px-4 pb-4">
                   <ChildSessionLog

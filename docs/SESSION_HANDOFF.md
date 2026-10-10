@@ -3,7 +3,7 @@
 > ## ▶ 7.–10. 10. 2026 — autonomní průchod (nic nepushnuto!)
 >
 > Evžen řekl „pokračuj autonomně"; push do `main` = produkce, ten
-> neschválil. **Lokálně je 39 commitů navíc proti `origin/main`** —
+> neschválil. **Lokálně je 40 commitů navíc proti `origin/main`** —
 > `git log origin/main..main`. Shrnutí v `PROJECT_STATUS.md` §6, sessions
 > 2026-10-07 a 2026-10-07b. Hlavně:
 > - mazání dítěte maže i jeho auth účet → **nasadit `delete-child`**;
@@ -20,6 +20,7 @@
 > - kontrola klíčů matematiky 2.–6. r. (5 nálezů, mj. chybné klíče
 >   „: 1 000" kvůli zaokrouhlení na 4 místa);
 > - zpětná vazba k možnostem: 3 mrtvé vazby opraveny, nově hlídá test (10. 10.);
+> - rodové lomítkové tvary pryč z dětských ploch, hlídá test (10. 10. odpoledne);
 > - `docs-check` přes rejstřík: chybný klíč „teplota tání" u dřeva (10. 10.).
 > Rozhodnutí pro Evžena: push, nasadit `delete-child`, `allowBackup`,
 > prázdné dlaždice karet témat, fyzikální zjednodušení (PENDING_CHANGES).
@@ -582,7 +583,8 @@ i obráceně — po dočasném vrácení chyby spadne).
 ⚠️ **Lomítkové tvary jsou i jinde:** `grep` najde ~60 výskytů v 19 souborech,
 mimo jiné v `i18n/cs.ts` („Procvičovat si sám/sama", „Zapomněl/a jsem heslo"),
 `categoryInfo.ts`, `weeklyReportGenerator.ts` a na dětských obrazovkách.
-Opraveno zatím jen slovní hodnocení — zbytek čeká na rozhodnutí.
+✅ **10. 10.: dětské plochy opravené** (hlídá `child-text-gender.test.ts`);
+zbývají rodičovské texty o dítěti (`weeklyReportGenerator`, `Report.tsx`).
 
 ### Session 40 (2026-09-11/12) — opravný průchod obsahu, uzavřeno
 
@@ -744,7 +746,7 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
   nesrozumitelný vstup dítěte ke Groqu; z dětského UI to bylo nedosažitelné,
   ale stačilo cestu otevřít a slib v zásadách by padl. Volání
   i `src/lib/semanticGate.ts` jsou pryč, hlídá `child-free-text.test.ts`.
-  **Edge funkce `semantic-gate` zůstává nasazená** — odebrat ji jde jen
+  ✅ **Edge funkce `semantic-gate` je pryč** (sonda 10. 10. vrací 404). Dřív tu stálo: odebrat ji jde jen
   z konzole Supabase (Evžen).
 
 - **Karty témat mají prázdnou plochu místo obrázku (rozhodnutí o vzhledu).**
@@ -867,7 +869,7 @@ Odchody z dětské části jsou za rodičovskou bránou (`39b4ecc`). Zbývá:
   Být `false` nestačilo: `loadOverrides()` čte `localStorage`, takže flag není
   ochrana, jen skrytí — a zásady soukromí rodičům tvrdí „v aplikaci není chat“.
   Slib daný v zásadách nesmí stát na hodnotě, kterou si kdokoli přepne
-  z konzole. **Edge funkce `tutor-chat` zůstává nasazená** (odebrat ji jde jen
+  z konzole. ✅ **Edge funkce `tutor-chat` je pryč** (sonda 10. 10.: 404). Dřív: (odebrat ji jde jen
   z konzole Supabase); její testy proto zůstávají.
 - ✅ **`/report` odstraněn z dětské větve routeru (13. 9.).** Rodičovský přehled
   o dítěti patří jen rodiči a adminovi.

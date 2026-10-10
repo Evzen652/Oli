@@ -49,8 +49,8 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     funFact: "Metr má přesně tisíc milimetrů. Když si představíš tisíc, představuješ si obyčejné pravítko rozdělené na nejmenší dílky.",
   },
   "matematika::Číslo a početní operace::Číselný obor 0–1 000 000": {
-    useful: "Milion potkáš u počtu obyvatel, u cen bytů i u zhlédnutí videí. Bez něj bys neuměl/a říct, jestli je číslo velké, nebo obrovské.",
-    funFact: "Kdybys počítal/a jedno číslo za sekundu bez přestávky, k milionu bys došel/došla až za jedenáct a půl dne.",
+    useful: "Milion potkáš u počtu obyvatel, u cen bytů i u zhlédnutí videí. Bez něj nepoznáš, jestli je číslo velké, nebo obrovské.",
+    funFact: "Při počítání rychlostí jedno číslo za sekundu bez přestávky trvá cesta k milionu jedenáct a půl dne.",
   },
   "matematika::Číslo a početní operace::Násobení a dělení": {
     useful: "Násobení je zkratka pro sčítání pořád dokola. Místo „4 + 4 + 4 + 4 + 4“ řekneš „pětkrát čtyři“ a máš hotovo.",
@@ -73,7 +73,7 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     funFact: "Staří Egypťané uměli zapsat skoro jen zlomky s jedničkou nahoře. Tři čtvrtiny proto psali jako polovinu a čtvrtinu dohromady.",
   },
   "matematika::Geometrie v rovině a v prostoru::Body, přímky, úsečky": {
-    useful: "Bez úsečky a pravítka bys nenakreslil/a plán pokoje ani nezměřil/a, jestli se skříň vejde ke zdi.",
+    useful: "Bez úsečky a pravítka nenakreslíš plán pokoje ani nezměříš, jestli se skříň vejde ke zdi.",
     funFact: "Přímka je nekonečná, takže se na papír nikdy nevejde celá. Kreslíme z ní vždycky jen kousek.",
   },
   "matematika::Geometrie v rovině a v prostoru::Rovinné útvary": {
@@ -122,7 +122,7 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     funFact: "Nejstarší slovní úlohy jsou na egyptském papyru starém přes tři a půl tisíce let. I v nich šlo o chleba a pivo.",
   },
   "matematika::Nestandardní aplikační úlohy a problémy::Slovní a logické úlohy": {
-    useful: "Když si úlohu umíš přeložit do čísel, poradíš si i s tím, co jsi nikdy předtím neviděl/a.",
+    useful: "Když si úlohu umíš přeložit do čísel, poradíš si i s tím, co vidíš poprvé.",
     funFact: "Hlavolam s převozem vlka, kozy a zelí sepsal mnich Alkuin už kolem roku 800.",
   },
   "matematika::Nestandardní aplikační úlohy a problémy::Logické úlohy": {
@@ -142,7 +142,7 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
   "čeština::Jazyková výchova::Zvuková stránka jazyka": {
     // Platí pro celý okruh (y/i, párové souhlásky, dě/tě/ně, slabiky, dělení
     // slov). Dřív mluvila jen o tvrdých a měkkých souhláskách, i u slabik.
-    useful: "Když víš, co ve slově slyšíš a kde se píše jinak, než se vyslovuje, napíšeš správně i slovo, které jsi nikdy neviděl/a.",
+    useful: "Když víš, co ve slově slyšíš a kde se píše jinak, než se vyslovuje, napíšeš správně i slovo, které vidíš poprvé.",
     funFact: "Háček nad písmeny se připisuje Janu Husovi. Do té doby se „č“ psalo jako „cz“ a texty byly o poznání delší.",
   },
   "čeština::Jazyková výchova::Slovní zásoba": {
@@ -256,7 +256,7 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     funFact: "Listy na podzim nezežloutnou. Žluté barvivo v nich bylo celou dobu, jen ho přebíjela zelená.",
   },
   "prvouka::Rozmanitost přírody::Domácí a hospodářská zvířata": {
-    useful: "Znát, co která zvířata potřebují, je základ toho, aby ses o ně uměl/a starat.",
+    useful: "Znát, co která zvířata potřebují, je základ péče o ně.",
     funFact: "Kráva stráví přežvykováním kolem osmi hodin denně. To je skoro celá pracovní směna.",
   },
   "prvouka::Rozmanitost přírody::Živá a neživá příroda": {
@@ -328,7 +328,7 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
 
   // ───────────────────────── VLASTIVĚDA ─────────────────────────
   "vlastivěda::Místo, kde žijeme::Místo, kde žijeme": {
-    useful: "Mapa je návod, jak se dostat kamkoli. I tam, kde jsi nikdy nebyl/a.",
+    useful: "Mapa je návod, jak se dostat kamkoli. I tam, kam jedeš poprvé.",
     funFact: "Sněžka měří 1 603 metrů. Everest je víc než pětkrát vyšší.",
   },
   "vlastivěda::Místo, kde žijeme::Evropa a svět": {
@@ -537,11 +537,11 @@ export const CATEGORY_INSIGHT: Record<string, TopicInsight> = {
     funFact: "Když člověk vypráví příběh, posluchači se v mozku rozsvítí podobná místa jako vypravěči.",
   },
   "čeština::Literární výchova": {
-    useful: "Čtení je nejlevnější způsob, jak zažít něco, co bys jinak nezažil/a.",
+    useful: "Čtení je nejlevnější způsob, jak zažít něco, co by jinak zůstalo daleko.",
     funFact: "Knihovny existovaly už ve starověku. Ta v Alexandrii měla podle odhadů statisíce svitků.",
   },
   "prvouka::Místo, kde žijeme": {
-    useful: "Orientovat se v okolí je první krok k tomu, aby ses neztratil/a nikde jinde.",
+    useful: "Orientovat se v okolí je první krok: kdo se vyzná doma, neztratí se ani jinde.",
     funFact: "Sever je na mapách nahoře jen z dohody. Staré mapy mívaly nahoře východ, odkud vychází slunce.",
   },
   "prvouka::Lidé kolem nás": {
@@ -549,7 +549,7 @@ export const CATEGORY_INSIGHT: Record<string, TopicInsight> = {
     funFact: "Děti si pravidla hry často vymýšlejí samy. Je to úplně stejný postup, jakým vznikají zákony.",
   },
   "prvouka::Lidé a čas": {
-    useful: "Čas se dá měřit i vyprávět. Obojí potřebuješ, abys věděl/a, kde ve světě zrovna jsi.",
+    useful: "Čas se dá měřit i vyprávět. Obojí potřebuješ, ať víš, kde ve světě zrovna jsi.",
     funFact: "Rok má 365 dní a ještě skoro čtvrt dne navíc. Proto máme každý čtvrtý rok jeden den přidaný.",
   },
   "prvouka::Rozmanitost přírody": {
