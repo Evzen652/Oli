@@ -1,10 +1,16 @@
 // Kontrola úplnosti dokumentace úloh (CONTENT_AUTHORING §0) pro zadaná témata.
 // Spuštění: IDS=id1,id2 npx vite-node scripts/docs-check.ts   (z kořene repa)
+//           npx vite-node scripts/docs-check.ts                  (celý rejstřík)
 // Na rozdíl od brány (vzorek 18 úloh) prochází VŠECHNY unikátní úlohy.
+//
+// Bez IDS dřív neprošel nic a skončil „vse v poradku" — 2026-10-10 se tak
+// tvářil čistě, i když v rejstříku ležel chybný klíč (teplota tání u dřeva).
+// Proto teď bez IDS bere celý rejstřík a na konci vypíše, kolik témat prošel.
 import { getAllTopics } from "@/lib/contentRegistry";
 import { checkHintLeakage } from "../supabase/functions/_shared/hintLeakage";
 
-const ids = (process.env.IDS ?? "").split(",").filter(Boolean);
+const zadane = (process.env.IDS ?? "").split(",").filter(Boolean);
+const ids = zadane.length > 0 ? zadane : getAllTopics().filter((t) => t.generator).map((t) => t.id);
 const SEL = new Set(["select_one", "true_false", "multi_select"]);
 const norm = (s: string) => s.toLowerCase().replace(/[.,;:!?„“"()]/g, " ").replace(/\s+/g, " ").trim();
 const containsPhrase = (hay: string, needle: string) => (` ${norm(hay)} `).includes(` ${norm(needle)} `);
@@ -57,5 +63,5 @@ for (const id of ids) {
   for (const p of probs) console.log("    " + p);
   if (probs.length) bad++;
 }
-console.log(bad ? `\n${bad} temat s nalezy` : "\nvse v poradku");
+console.log(bad ? `\n${bad} z ${ids.length} temat s nalezy` : `\nvse v poradku (${ids.length} temat)`);
 process.exit(bad ? 1 : 0);
